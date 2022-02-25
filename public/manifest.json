@@ -1,7 +1,7 @@
 {
-  "name": "Next.JS Progressive Web App",
-  "short_name": "Next PWA",
-  "theme_color": "#ffffff",
+  "name": "Ciclovía Progressive Web App",
+  "short_name": "Ciclovía App",
+  "theme_color": "#5048E5",
   "background_color": "#004740",
   "display": "fullscreen",
   "orientation": "portrait",
