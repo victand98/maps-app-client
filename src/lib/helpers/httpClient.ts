@@ -4,7 +4,7 @@ import { CustomErrorResponse } from "@types";
 
 const instance = axios.create({
   baseURL: SERVER_URI,
-  withCredentials: true,
+  withCredentials: process.env.NODE_ENV === "development" ? true : undefined,
 });
 
 const responseHandler = (response: AxiosResponse) => {

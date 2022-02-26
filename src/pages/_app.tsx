@@ -8,6 +8,7 @@ import { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import { ReactElement } from "react";
 import { ToastContainer } from "react-toastify";
+import { RecoilRoot } from "recoil";
 
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/globals.css";
@@ -43,7 +44,9 @@ export default function MyApp({
         <ThemeProvider theme={theme}>
           <CssBaseline />
 
-          {getLayout(<Component currentUser={currentUser} {...pageProps} />)}
+          <RecoilRoot>
+            {getLayout(<Component currentUser={currentUser} {...pageProps} />)}
+          </RecoilRoot>
 
           <ToastContainer
             position="top-right"

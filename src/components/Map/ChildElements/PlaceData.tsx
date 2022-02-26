@@ -1,14 +1,7 @@
 import { PlaceInfo } from "@components";
 import { MarkerDivIcon } from "@components/Icon";
 import { usePlaces } from "@lib";
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
+import { Dialog } from "@mui/material";
 import { PlaceModel } from "@types";
 import { Feature, FeatureCollection, Point } from "geojson";
 import L from "leaflet";
@@ -68,16 +61,10 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-        maxWidth="sm"
+        maxWidth="xs"
         fullWidth
       >
-        {/* <DialogTitle id="alert-dialog-title">Información del Lugar</DialogTitle> */}
-        <PlaceInfo place={currentPlace} />
-        <DialogActions>
-          <Button onClick={handleClose} autoFocus>
-            Cerrar
-          </Button>
-        </DialogActions>
+        <PlaceInfo place={currentPlace} handleClose={handleClose} />
       </Dialog>
     </Fragment>
   );

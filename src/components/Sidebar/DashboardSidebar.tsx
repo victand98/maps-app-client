@@ -17,6 +17,8 @@ import { HiOutlineSelector } from "react-icons/hi";
 import { AiFillHome } from "react-icons/ai";
 import { MdOpenInNew } from "react-icons/md";
 import { FaParking } from "react-icons/fa";
+import { useAuthContext } from "@lib";
+import { Logout } from "@mui/icons-material";
 
 const items: ISidebar.SidebarRoutes = [
   {
@@ -33,6 +35,7 @@ const items: ISidebar.SidebarRoutes = [
 
 export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
   const { open, onClose } = props;
+  const { currentUser } = useAuthContext();
   const router = useRouter();
   const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
@@ -60,7 +63,7 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
       >
         <div>
           <Box sx={{ p: 3 }}>
-            <Link href="/" passHref>
+            <Link href="/panel" passHref>
               <SvgIcon
                 sx={{
                   height: 42,
@@ -83,13 +86,14 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
                 py: "11px",
                 borderRadius: 1,
               }}
+              onClick={() => router.push("/salir")}
             >
               <div>
                 <Typography color="inherit" variant="subtitle1">
-                  Acme Inc
+                  {currentUser?.firstName} {currentUser?.lastName}
                 </Typography>
                 <Typography color="neutral.400" variant="body2">
-                  Your tier : Premium
+                  {currentUser?.email}
                 </Typography>
               </div>
               <SvgIcon
@@ -99,7 +103,7 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
                   height: 14,
                 }}
               >
-                <HiOutlineSelector />
+                <Logout />
               </SvgIcon>
             </Box>
           </Box>
@@ -128,10 +132,10 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
           }}
         >
           <Typography color="neutral.100" variant="subtitle2">
-            Need more features?
+            Ciclovía App
           </Typography>
           <Typography color="neutral.500" variant="body2">
-            Check out our Pro solution template.
+            Panel de administración del sistema
           </Typography>
           <Box
             sx={{
@@ -145,13 +149,9 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
             }}
           >
             {/* TODO: Change image */}
-            <img alt="Go to pro" src="https://picsum.photos/350/150" />
+            <img alt="Loja" src="/images/Loja.jpg" />
           </Box>
-          <Link
-            href="https://material-kit-pro-react.devias.io/"
-            passHref
-            withAnchor={false}
-          >
+          <Link href="/" passHref withAnchor={false}>
             <Button
               color="secondary"
               component="a"
@@ -160,7 +160,7 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
               sx={{ mt: 2 }}
               variant="contained"
             >
-              Pro Live Preview
+              Ver página principal
             </Button>
           </Link>
         </Box>

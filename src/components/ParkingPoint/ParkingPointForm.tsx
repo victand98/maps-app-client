@@ -1,4 +1,9 @@
-import { ParkingPointService, PlaceTypes, useRequest } from "@lib";
+import {
+  parkingPointPreviewState,
+  ParkingPointService,
+  PlaceTypes,
+  useRequest,
+} from "@lib";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -24,6 +29,7 @@ import { FaMapMarkedAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { NumberFormat, TextInput } from "..";
 import { IParkingPoint } from "./ParkingPoint";
+import { useRecoilState } from "recoil";
 
 const MapPicker = dynamic(() => import("@components/Map/MapPicker"), {
   ssr: false,
@@ -32,8 +38,11 @@ const MapPicker = dynamic(() => import("@components/Map/MapPicker"), {
 export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
   props
 ) => {
-  const [showMap, setShowMap] = React.useState(false);
   const router = useRouter();
+  const [parkingPointPreview, setParkingPointPreview] = useRecoilState(
+    parkingPointPreviewState
+  );
+  const [showMap, setShowMap] = React.useState(false);
   const { doRequest } = useRequest<ParkingPointModel.ParkingPointResponse>({
     request: ParkingPointService.save,
     onSuccess: (data) => {
@@ -59,7 +68,13 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
   const handleChooseOnMap = () => setShowMap(!showMap);
 
   const onChangePosition = (position: LatLng) => {
-    setValue("location.coordinates", `${position.lng},${position.lat}`);
+    setValue("location.coordinates", `${position.lng},${position.lat}`, {
+      shouldValidate: true,
+    });
+    setParkingPointPreview((prev) => ({
+      ...prev,
+      location: { coordinates: `${position.lng},${position.lat}` },
+    }));
   };
 
   const onSubmit = (data: ParkingPointModel.ParkingPointValues) => {
@@ -96,6 +111,11 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
                     value: 4,
                     message: "Escriba al menos 4 caracteres",
                   },
+                  onChange: (e) =>
+                    setParkingPointPreview((prev) => ({
+                      ...prev,
+                      name: e.target.value,
+                    })),
                 }}
               />
             </Grid>
@@ -144,6 +164,11 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
                     value: 1,
                     message: "El valor mínimo es 1",
                   },
+                  onChange: (e) =>
+                    setParkingPointPreview((prev) => ({
+                      ...prev,
+                      spots: parseInt(e.target.value),
+                    })),
                 }}
               />
             </Grid>
@@ -170,13 +195,18 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
                 required
                 rules={{
                   required: "El campo es requerido",
+                  onChange: (e) =>
+                    setParkingPointPreview((prev) => ({
+                      ...prev,
+                      occupied: parseInt(e.target.value),
+                    })),
                 }}
               />
             </Grid>
             <Grid item xs={12}>
               <TextInput<ParkingPointModel.ParkingPointValues>
                 fullWidth
-                helperText="Escriba la ubicación en latitud y longitud"
+                helperText="Escriba la ubicación en longitud y latitud"
                 label="Ubicación"
                 name="location.coordinates"
                 defaultValue=""
@@ -194,6 +224,11 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
                       coordinatesArray[1].length >= 1
                     );
                   },
+                  onChange: (e) =>
+                    setParkingPointPreview((prev) => ({
+                      ...prev,
+                      location: { coordinates: e.target.value },
+                    })),
                 }}
                 InputProps={{
                   endAdornment: (

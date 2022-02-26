@@ -39,6 +39,7 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
             alt="Product"
             src={`/images/${parkingPoint.type.icon}`}
             variant="square"
+            sx={{ bgcolor: "red" }}
           />
         </Box>
         <Typography
@@ -49,7 +50,7 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
         >
           {parkingPoint.name}
         </Typography>
-        <Typography align="center" color="textPrimary" variant="body1">
+        <Typography align="center" color="InfoText" variant="body1">
           {parkingPoint.occupied} Espacios ocupados
         </Typography>
         <Typography align="center" color="textPrimary" variant="body1">

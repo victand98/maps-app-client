@@ -1,40 +1,48 @@
+import { MoreVert, Update } from "@mui/icons-material";
 import {
   Avatar,
+  Box,
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
-  Divider,
+  CardMedia,
+  Grid,
   IconButton,
   Typography,
 } from "@mui/material";
-import { red } from "@mui/material/colors";
-import { Box } from "@mui/system";
+import { lime } from "@mui/material/colors";
+import { formatDistance } from "date-fns";
 import React, { FC } from "react";
 import { IPlace } from "./IPlace";
-import { MoreVert } from "@mui/icons-material";
 
 export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
-  const { place } = props;
+  const { place, handleClose } = props;
 
   return (
-    <Card {...props}>
+    <Card>
       <CardHeader
         avatar={
           <Avatar
-            sx={{ bgcolor: red[500], color: "white" }}
-            aria-label="recipe"
+            sx={{ bgcolor: lime[500] }}
+            aria-label={place?.name}
             src={`/images/${place?.type.icon}`}
           ></Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+          <IconButton aria-label="configuración">
             <MoreVert />
           </IconButton>
         }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
+        title={place?.name}
+        subheader={place?.type.name}
+      />
+      <CardMedia
+        component="img"
+        height="194"
+        image="/images/Loja.jpg"
+        alt="Loja"
       />
       <CardContent>
         <Box
@@ -44,25 +52,67 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
             flexDirection: "column",
           }}
         >
-          <Avatar
-            src={`/images/${place?.type.icon}`}
-            sx={{
-              height: 64,
-              mb: 2,
-              width: 64,
-            }}
-          />
-          <Typography color="textPrimary" gutterBottom variant="h5">
+          <Typography
+            color="textPrimary"
+            gutterBottom
+            align="center"
+            variant="h5"
+          >
             {place?.name}
           </Typography>
-          <Typography color="textSecondary" variant="body2">
-            {`${place?.kind} ${place?.id}`}
-          </Typography>
-          <Typography color="textSecondary" variant="body2">
-            {place?.createdAt}
-          </Typography>
+          {place?.spots && place.occupied ? (
+            <>
+              <Typography color="InfoText" variant="body2">
+                {place.spots - place.occupied} espacios disponibles
+              </Typography>
+              <Typography color="textSecondary" variant="body2">
+                {place?.occupied} espacios ocupados
+              </Typography>
+            </>
+          ) : (
+            <Typography color="textSecondary" variant="body2">
+              {place?.type.description}
+            </Typography>
+          )}
         </Box>
       </CardContent>
+      <CardActions disableSpacing>
+        <Grid container spacing={2} sx={{ justifyContent: "space-between" }}>
+          <Grid
+            item
+            sx={{
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Update color="action" />
+            <Typography
+              color="textSecondary"
+              display="inline"
+              sx={{ pl: 1 }}
+              variant="body2"
+            >
+              {place?.updatedAt
+                ? formatDistance(new Date(place?.updatedAt), new Date(), {
+                    addSuffix: true,
+                  })
+                : null}
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            sx={{
+              alignItems: "center",
+              display: "flex",
+            }}
+          >
+            <Button onClick={handleClose} autoFocus>
+              Cerrar
+            </Button>
+          </Grid>
+        </Grid>
+      </CardActions>
     </Card>
   );
 };

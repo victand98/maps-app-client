@@ -12,8 +12,8 @@ import {
 import React, { FC } from "react";
 import { AiFillBell, AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
-import { FaUserCircle } from "react-icons/fa";
 import { INavbar } from "./Navbar";
+import { useAuthContext } from "@lib";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -22,6 +22,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 
 export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
   const { onSidebarOpen, ...rest } = props;
+  const { currentUser } = useAuthContext();
 
   return (
     <>
@@ -57,7 +58,7 @@ export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
               <AiOutlineMenu />
             </SvgIcon>
           </IconButton>
-          <Tooltip title="Search">
+          <Tooltip title="Buscar">
             <IconButton sx={{ ml: 1 }}>
               <SvgIcon fontSize="small">
                 <AiOutlineSearch />
@@ -65,14 +66,14 @@ export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
             </IconButton>
           </Tooltip>
           <Box sx={{ flexGrow: 1 }} />
-          <Tooltip title="Contacts">
+          <Tooltip title="Contactos">
             <IconButton sx={{ ml: 1 }}>
               <SvgIcon fontSize="small">
                 <FiUsers />
               </SvgIcon>
             </IconButton>
           </Tooltip>
-          <Tooltip title="Notifications">
+          <Tooltip title="Notificaciones">
             <IconButton sx={{ ml: 1 }}>
               <Badge badgeContent={4} color="primary" variant="dot">
                 <SvgIcon fontSize="small">
@@ -86,12 +87,11 @@ export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
               height: 40,
               width: 40,
               ml: 1,
+              bgcolor: "purple",
             }}
-            src="https://picsum.photos/100/100"
           >
-            <SvgIcon fontSize="medium">
-              <FaUserCircle />
-            </SvgIcon>
+            {currentUser?.firstName[0]}
+            {currentUser?.lastName[0]}
           </Avatar>
         </Toolbar>
       </DashboardNavbarRoot>
