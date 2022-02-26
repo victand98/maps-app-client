@@ -6,5 +6,6 @@ export * from "@components/Layout";
 export * from "@components/Link";
 export * from "@components/Navbar";
 export * from "@components/ParkingPoint";
+export * from "@components/Place";
 export * from "@components/Progress";
 export * from "@components/Sidebar";
