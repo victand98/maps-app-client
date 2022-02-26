@@ -1,6 +1,6 @@
 import Head from "next/head";
 
-export default () => (
+const Offline = () => (
   <>
     <Head>
       <title>Ciclovía App</title>
@@ -11,3 +11,5 @@ export default () => (
     </h2>
   </>
 );
+
+export default Offline;

@@ -40,14 +40,12 @@ export default function useSWRRequest<
      * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
      * function is actually only called by `useSWR` when it isn't.
      */
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     () => httpClient.request<Data>(request!),
     {
       ...config,
       fallbackData: fallbackData && {
         status: 200,
         statusText: "InitialData",
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         config: request!,
         headers: {},
         data: fallbackData,

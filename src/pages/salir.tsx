@@ -18,7 +18,7 @@ const Logout = () => {
 
   useEffect(() => {
     doRequest();
-  }, []);
+  }, [doRequest]);
 
   return <div>Saliendo...</div>;
 };

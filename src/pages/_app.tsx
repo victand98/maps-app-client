@@ -58,6 +58,7 @@ export default function MyApp({
             pauseOnFocusLoss
             draggable
             pauseOnHover
+            limit={2}
           />
         </ThemeProvider>
       </AuthContextProvider>

@@ -4,6 +4,7 @@ import Map from "./Map";
 import Marker from "./ChildElements/Marker";
 
 const MapPicker: FC<IMap.MapPickerProps> = (props) => {
+  const { onChangePosition } = props;
   const [position, setPosition] = React.useState({
     lat: -3.9945,
     lng: -79.2012,
@@ -16,11 +17,11 @@ const MapPicker: FC<IMap.MapPickerProps> = (props) => {
         const marker = markerRef.current;
         if (marker != null) {
           setPosition(marker.getLatLng());
-          props.onChangePosition(marker.getLatLng());
+          onChangePosition(marker.getLatLng());
         }
       },
     }),
-    []
+    [onChangePosition]
   );
 
   return (

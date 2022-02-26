@@ -8,13 +8,13 @@ const buildClient = ({ req }: NextPageContext) => {
     return axios.create({
       baseURL: SERVER_URI,
       headers: req?.headers as AxiosRequestHeaders,
+      withCredentials: true,
     });
   } else {
     // We are on the client
     return axios.create({
       baseURL: SERVER_URI,
-      withCredentials:
-        process.env.NODE_ENV === "development" ? true : undefined,
+      withCredentials: true,
     });
   }
 };

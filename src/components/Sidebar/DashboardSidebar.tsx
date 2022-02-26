@@ -13,12 +13,12 @@ import React, { FC, useEffect } from "react";
 import { Link, NavItem } from "..";
 import { ISidebar } from "./Sidebar";
 import { GiCycling } from "react-icons/gi";
-import { HiOutlineSelector } from "react-icons/hi";
 import { AiFillHome } from "react-icons/ai";
 import { MdOpenInNew } from "react-icons/md";
 import { FaParking } from "react-icons/fa";
 import { useAuthContext } from "@lib";
 import { Logout } from "@mui/icons-material";
+import Image from "next/image";
 
 const items: ISidebar.SidebarRoutes = [
   {
@@ -50,7 +50,7 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
     if (open) {
       onClose?.();
     }
-  }, [router.asPath]);
+  }, [router.asPath, onClose, open, router.isReady]);
 
   const content = (
     <>
@@ -149,7 +149,7 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
             }}
           >
             {/* TODO: Change image */}
-            <img alt="Loja" src="/images/Loja.jpg" />
+            <Image alt="Loja" src="/images/Loja.jpg" />
           </Box>
           <Link href="/" passHref withAnchor={false}>
             <Button

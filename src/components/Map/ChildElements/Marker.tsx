@@ -21,4 +21,6 @@ Marker.defaultProps = {
   },
 };
 
+Marker.displayName = "Marker";
+
 export default Marker;
