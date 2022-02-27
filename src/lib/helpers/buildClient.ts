@@ -8,9 +8,9 @@ const buildClient = ({ req }: NextPageContext) => {
     // We are on the server
     const instance = axios.create({
       baseURL: SERVER_URI_PRIVATE,
+      // @ts-ignore
+      headers: req?.headers,
     });
-    if (req?.headers.cookie !== undefined)
-      instance.defaults.headers.common = req?.headers as AxiosRequestHeaders;
     return instance;
   } else {
     // We are on the client
