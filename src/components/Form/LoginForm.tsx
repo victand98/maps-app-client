@@ -13,6 +13,7 @@ export const LoginForm = () => {
   const { doRequest } = useRequest<LoginResponse>({
     request: AuthService.login,
     onSuccess: (data) => {
+      console.log("data", data);
       const returnUrl = (router.query.returnUrl as string) || "/panel";
       router.push(returnUrl);
     },

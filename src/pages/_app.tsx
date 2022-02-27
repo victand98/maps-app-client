@@ -71,6 +71,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const {
     data: { currentUser },
   } = await client.get<CurrentUser>("/auth/current/user");
+  console.log("currentUser", currentUser);
 
   let pageProps = {};
   if (appContext.Component.getInitialProps)

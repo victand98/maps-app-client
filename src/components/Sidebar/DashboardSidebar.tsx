@@ -149,7 +149,13 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
             }}
           >
             {/* TODO: Change image */}
-            <Image alt="Loja" src="/images/Loja.jpg" />
+            <Image
+              alt="Loja"
+              src="/images/Loja.jpg"
+              width="100%"
+              height="100%"
+              priority
+            />
           </Box>
           <Link href="/" passHref withAnchor={false}>
             <Button

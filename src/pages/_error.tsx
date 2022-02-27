@@ -11,7 +11,7 @@ const Error: NextPage<{ statusCode?: number }> = (props) => {
 };
 
 Error.getInitialProps = ({ res, err }) => {
-  console.log("[ERROR]", err);
+  console.log("[ERROR]", err?.message);
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
   return { statusCode };
 };
