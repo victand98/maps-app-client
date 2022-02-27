@@ -6,12 +6,12 @@ const buildClient = ({ req }: NextPageContext) => {
   console.log("\nreq.headers\n", req?.headers);
   if (typeof window === "undefined") {
     // We are on the server
-    return axios.create({
+    const instance = axios.create({
       baseURL: SERVER_URI_PRIVATE,
-      headers: {
-        cookie: req?.headers.cookie!,
-      },
     });
+    if (req?.headers.cookie !== undefined)
+      instance.defaults.headers.common["cookie"] = req?.headers.cookie!;
+    return instance;
   } else {
     // We are on the client
     return axios.create({
