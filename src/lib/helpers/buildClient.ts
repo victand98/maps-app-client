@@ -11,6 +11,7 @@ const buildClient = ({ req }: NextPageContext) => {
       headers: {
         cookie: req?.headers.cookie || "",
       },
+      withCredentials: true,
     });
   } else {
     // We are on the client
