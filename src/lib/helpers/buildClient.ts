@@ -9,13 +9,15 @@ const buildClient = ({ req }: NextPageContext) => {
     return axios.create({
       baseURL: SERVER_URI_PRIVATE,
       headers: {
-        cookie: req?.headers.cookie || "",
+        cookie: req?.headers.cookie!,
+        "set-cookie": req?.headers["set-cookie"]?.toString()!,
       },
     });
   } else {
     // We are on the client
     return axios.create({
       baseURL: SERVER_URI,
+      withCredentials: true,
     });
   }
 };
