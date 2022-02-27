@@ -3,12 +3,11 @@ import { NextPageContext } from "next";
 import { SERVER_URI, SERVER_URI_PRIVATE } from ".";
 
 const buildClient = ({ req }: NextPageContext) => {
-  console.log("\nreq.headers\n", req?.headers);
+  console.log("\nREQ.HEADERS\n", req?.headers);
   if (typeof window === "undefined") {
     // We are on the server
     const instance = axios.create({
       baseURL: SERVER_URI_PRIVATE,
-      withCredentials: true,
     });
     if (req?.headers.cookie !== undefined)
       instance.defaults.headers.common = req?.headers as AxiosRequestHeaders;
