@@ -4,9 +4,7 @@ import { CustomErrorResponse } from "@types";
 
 const instance = axios.create({
   baseURL: SERVER_URI,
-  //withCredentials: true,
 });
-
 instance.defaults.withCredentials = true;
 
 const responseHandler = (response: AxiosResponse) => {

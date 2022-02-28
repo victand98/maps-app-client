@@ -10,10 +10,9 @@ const buildClient = ({ req }: NextPageContext) => {
       baseURL: SERVER_URI_PRIVATE,
     });
     instance.defaults.withCredentials = true;
-    instance.defaults.headers.common["cookie"] = req?.headers.cookie || "";
-    instance.defaults.headers.common["host"] = req?.headers.host || "";
-    instance.defaults.headers.common["content-type"] =
-      req?.headers["content-type"] || "";
+    instance.defaults.headers.common["content-type"] = "application/json";
+    if (req?.headers.cookie)
+      instance.defaults.headers.common["cookie"] = req?.headers.cookie;
 
     return instance;
   } else {
