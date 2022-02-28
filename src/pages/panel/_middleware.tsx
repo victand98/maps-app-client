@@ -2,6 +2,7 @@ import { NextURL } from "next/dist/server/web/next-url";
 import { NextRequest, NextResponse } from "next/server";
 
 export const middleware = async (req: NextRequest) => {
+  console.log("req.cookies", req.cookies);
   const token = req.cookies.session;
   const url: NextURL = req.nextUrl.clone();
 
