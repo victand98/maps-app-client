@@ -9,10 +9,8 @@ const buildClient = ({ req }: NextPageContext) => {
     // We are on the server
     const instance = axios.create({
       baseURL: SERVER_URI_PRIVATE,
-      withCredentials: true,
-      headers: {
-        head: rest as any,
-      },
+      // withCredentials: true,
+      headers: rest as any,
     });
     console.log("axios", instance.defaults.headers);
 
@@ -21,7 +19,7 @@ const buildClient = ({ req }: NextPageContext) => {
     // We are on the client
     return axios.create({
       baseURL: SERVER_URI,
-      withCredentials: true,
+      // withCredentials: true,
     });
   }
 };
