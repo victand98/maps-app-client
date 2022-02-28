@@ -15,8 +15,7 @@ const buildClient = ({ req }: NextPageContext) => {
       },
     });
     console.log("axios", instance.defaults.headers);
-    if (req?.headers.cookie !== undefined)
-      instance.defaults.headers.common.cookie = req?.headers.cookie;
+
     return instance;
   } else {
     // We are on the client
