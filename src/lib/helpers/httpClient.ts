@@ -39,4 +39,9 @@ instance.interceptors.response.use(
   (error) => errorHandler(error)
 );
 
+instance.interceptors.request.use((config) => {
+  console.log("config", config.headers);
+  return config;
+});
+
 export default instance;

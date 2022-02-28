@@ -14,7 +14,7 @@ export const LoginForm = () => {
     request: AuthService.login,
     onSuccess: (data) => {
       const returnUrl = (router.query.returnUrl as string) || "/panel";
-      // router.push(returnUrl);
+      router.push(returnUrl);
     },
     onError: (err) => {
       for (const error of err.errors) {
