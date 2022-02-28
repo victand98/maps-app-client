@@ -12,8 +12,6 @@ const buildClient = ({ req }: NextPageContext) => {
     });
 
     instance.defaults.headers.common["cookie"] = req?.headers.cookie || "";
-    instance.defaults.headers.common["set-cookie"] =
-      req?.headers!["set-cookie"]?.toString()!;
 
     return instance;
   } else {
