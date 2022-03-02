@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, Typography } from "@mui/material";
-import { AnyMxRecord } from "dns";
+import { Typography } from "@mui/material";
+import { Link } from "..";
 
 export const Copyright = (props: any) => {
   return (
@@ -11,10 +11,7 @@ export const Copyright = (props: any) => {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Ciclovía App
-      </Link>{" "}
-      {new Date().getFullYear()}
+      <Link href="/">Ciclovía App</Link> {new Date().getFullYear()}
       {"."}
     </Typography>
   );

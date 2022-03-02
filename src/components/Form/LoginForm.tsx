@@ -1,18 +1,22 @@
-import React from "react";
-import { Box } from "@mui/material";
-import { LoadingButton } from "@mui/lab";
-import { TextInput } from "..";
-import { useForm } from "react-hook-form";
-import { LoginFormValues, LoginResponse } from "@types";
 import { AuthService, useRequest } from "@lib";
-import { toast } from "react-toastify";
+import { LoadingButton } from "@mui/lab";
+import { Box } from "@mui/material";
+import { LoginFormValues, LoginResponse } from "@types";
+import { getCookies } from "cookies-next";
 import { useRouter } from "next/router";
+import React from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { TextInput } from "..";
 
 export const LoginForm = () => {
   const router = useRouter();
   const { doRequest } = useRequest<LoginResponse>({
     request: AuthService.login,
     onSuccess: (data) => {
+      const cookies = getCookies();
+      console.log("cookies", cookies);
+
       const returnUrl = (router.query.returnUrl as string) || "/panel";
       router.push(returnUrl);
     },

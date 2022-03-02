@@ -1,8 +1,12 @@
 import axios from "axios";
+import { getCookies } from "cookies-next";
 import { NextPageContext } from "next";
 import { httpClient, SERVER_URI_PRIVATE } from ".";
 
-const buildClient = ({ req }: NextPageContext) => {
+const buildClient = ({ req, res }: NextPageContext) => {
+  const cookiesSSR = getCookies({ req, res });
+  console.log("cookiesSSR", cookiesSSR);
+
   if (typeof window === "undefined") {
     // We are on the server
     const instance = axios.create();
@@ -14,11 +18,9 @@ const buildClient = ({ req }: NextPageContext) => {
       instance.defaults.headers.common["cookie"] = req?.headers.cookie;
     }
 
-    console.log("instance", instance);
     return instance;
   } else {
     // We are on the client
-    console.log("httpClient", httpClient);
     return httpClient;
   }
 };
