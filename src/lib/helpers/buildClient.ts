@@ -9,8 +9,11 @@ const buildClient = ({ req }: NextPageContext) => {
     const instance = axios.create();
     instance.defaults.baseURL = SERVER_URI_PRIVATE;
     instance.defaults.withCredentials = true;
-    // @ts-ignore
-    instance.defaults.headers = req?.headers;
+
+    if (req?.headers.cookie) {
+      console.log("\nCOOKIE\n", req?.headers.cookie);
+      instance.defaults.headers.common["cookie"] = req?.headers.cookie;
+    }
 
     return instance;
   } else {
