@@ -9,6 +9,7 @@ const buildClient = ({ req }: NextPageContext) => {
     const instance = axios.create();
     instance.defaults.baseURL = SERVER_URI_PRIVATE;
     instance.defaults.withCredentials = true;
+    instance.defaults.headers.common["Content-Type"] = "application/json";
 
     if (req?.headers.cookie) {
       console.log("\nCOOKIE\n", req?.headers.cookie);

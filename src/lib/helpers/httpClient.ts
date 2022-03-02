@@ -5,8 +5,6 @@ import { CustomErrorResponse } from "@types";
 const instance = axios.create();
 instance.defaults.baseURL = SERVER_URI;
 instance.defaults.withCredentials = true;
-instance.defaults.headers.common["sec-fetch-site"] = "cross-site";
-instance.defaults.headers.common["sec-fetch-mode"] = "cors";
 
 const responseHandler = (response: AxiosResponse) => {
   return response;
