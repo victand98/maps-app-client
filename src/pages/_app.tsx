@@ -12,6 +12,7 @@ import { RecoilRoot } from "recoil";
 
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/globals.css";
+import { SessionProvider } from "next-auth/react";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -31,58 +32,62 @@ export default function MyApp({
   const getLayout = Component.getLayout ?? ((page: ReactElement) => page);
 
   return (
-    <CacheProvider value={emotionCache}>
-      <Head>
-        <title>Ciclovia App</title>
-        <meta
-          name="viewport"
-          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
-        />
-      </Head>
-
-      <AuthContextProvider currentUser={currentUser}>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-
-          <RecoilRoot>
-            {getLayout(<Component currentUser={currentUser} {...pageProps} />)}
-          </RecoilRoot>
-
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            limit={2}
+    <SessionProvider>
+      <CacheProvider value={emotionCache}>
+        <Head>
+          <title>Ciclovia App</title>
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
           />
-        </ThemeProvider>
-      </AuthContextProvider>
-    </CacheProvider>
+        </Head>
+
+        <AuthContextProvider currentUser={currentUser}>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+
+            <RecoilRoot>
+              {getLayout(
+                <Component currentUser={currentUser} {...pageProps} />
+              )}
+            </RecoilRoot>
+
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              limit={2}
+            />
+          </ThemeProvider>
+        </AuthContextProvider>
+      </CacheProvider>
+    </SessionProvider>
   );
 }
 
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const client = buildClient(appContext.ctx);
-  const {
-    data: { currentUser },
-  } = await client.get<CurrentUser>("/auth/current/user");
-  console.log("currentUser", currentUser);
+// MyApp.getInitialProps = async (appContext: AppContext) => {
+//   const client = buildClient(appContext.ctx);
+//   const {
+//     data: { currentUser },
+//   } = await client.get<CurrentUser>("/auth/current/user");
+//   console.log("currentUser", currentUser);
 
-  let pageProps = {};
-  if (appContext.Component.getInitialProps)
-    pageProps = await appContext.Component.getInitialProps({
-      ...appContext.ctx,
-      client,
-      currentUser,
-    });
+//   let pageProps = {};
+//   if (appContext.Component.getInitialProps)
+//     pageProps = await appContext.Component.getInitialProps({
+//       ...appContext.ctx,
+//       client,
+//       currentUser,
+//     });
 
-  return {
-    pageProps,
-    currentUser,
-  };
-};
+//   return {
+//     pageProps,
+//     currentUser,
+//   };
+// };

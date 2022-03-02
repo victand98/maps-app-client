@@ -24,6 +24,7 @@
     "leaflet-defaulticon-compatibility": "^0.1.1",
     "leaflet.offline": "^2.1.0",
     "next": "latest",
+    "next-auth": "^4.2.1",
     "next-pwa": "^5.4.4",
     "object-hash": "^3.0.0",
     "react": "^17.0.2",

@@ -1,5 +1,7 @@
 import { DefaultLayout, LoginForm } from "@components";
 import { Avatar, Box, Typography } from "@mui/material";
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/react";
 import React, { ReactElement } from "react";
 import { AiFillLock } from "react-icons/ai";
 
@@ -25,5 +27,28 @@ const Login = () => {
 };
 
 Login.getLayout = (page: ReactElement) => <DefaultLayout>{page}</DefaultLayout>;
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  query,
+}) => {
+  const session = await getSession({ req });
+  console.log("SERVERSIDE\n", session);
+
+  const { p = "/panel" } = query;
+
+  if (session) {
+    return {
+      redirect: {
+        destination: p.toString(),
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
 
 export default Login;

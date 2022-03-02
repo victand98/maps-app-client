@@ -7,6 +7,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { TextInput } from "..";
+import { signIn } from "next-auth/react";
 
 export const LoginForm = () => {
   const router = useRouter();
@@ -28,8 +29,18 @@ export const LoginForm = () => {
     formState: { isSubmitting },
   } = useForm<LoginFormValues>();
 
-  const onSubmit = (data: LoginFormValues) => {
-    doRequest(data);
+  const onSubmit = async ({ email, password }: LoginFormValues) => {
+    // doRequest(data);
+
+    const res = await signIn<any>("credentials", {
+      email,
+      password,
+      callbackUrl: "/panel",
+      redirect: false,
+    });
+
+    if (res?.error) console.log("error", res.error);
+    if (res?.url) router.push(res.url);
   };
 
   return (
