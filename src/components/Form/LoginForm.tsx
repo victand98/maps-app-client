@@ -2,7 +2,6 @@ import { AuthService, useRequest } from "@lib";
 import { LoadingButton } from "@mui/lab";
 import { Box } from "@mui/material";
 import { LoginFormValues, LoginResponse } from "@types";
-import { getCookies } from "cookies-next";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -14,9 +13,6 @@ export const LoginForm = () => {
   const { doRequest } = useRequest<LoginResponse>({
     request: AuthService.login,
     onSuccess: (data) => {
-      const cookies = getCookies();
-      console.log("cookies", cookies);
-
       const returnUrl = (router.query.returnUrl as string) || "/panel";
       router.push(returnUrl);
     },
