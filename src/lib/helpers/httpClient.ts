@@ -2,13 +2,11 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { SERVER_URI } from "./constants";
 import { CustomErrorResponse } from "@types";
 
-const instance = axios.create({
-  baseURL: SERVER_URI,
-});
+const instance = axios.create();
+instance.defaults.baseURL = SERVER_URI;
 instance.defaults.withCredentials = true;
 
 const responseHandler = (response: AxiosResponse) => {
-  console.log("AXIOS RESPONSE", response);
   return response;
 };
 
@@ -40,7 +38,7 @@ instance.interceptors.response.use(
 );
 
 instance.interceptors.request.use((config) => {
-  console.log("config", config.headers);
+  console.log("config", config);
   return config;
 });
 

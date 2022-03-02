@@ -8,7 +8,9 @@ const Logout = () => {
   const router = useRouter();
   const { doRequest } = useRequest({
     request: AuthService.logout,
-    onSuccess: (data) => router.push("/ingresar"),
+    onSuccess: (data) => {
+      router.replace("/ingresar");
+    },
     onError: (err) => {
       for (const error of err.errors) {
         toast.error(error.message);
@@ -18,7 +20,7 @@ const Logout = () => {
 
   useEffect(() => {
     doRequest();
-  }, [doRequest]);
+  }, []);
 
   return <div>Saliendo...</div>;
 };
