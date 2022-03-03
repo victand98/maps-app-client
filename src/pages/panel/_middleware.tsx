@@ -7,7 +7,6 @@ export async function middleware(req: NextRequest | any, ev: NextFetchEvent) {
     req,
     secret: process.env.NEXTAUTH_SECRET,
   });
-  console.log("\n[SESSION MIDDLEWARE]\n", session);
   const url: NextURL = req.nextUrl.clone();
 
   if (!session) {

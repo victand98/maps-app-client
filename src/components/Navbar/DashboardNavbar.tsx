@@ -1,3 +1,4 @@
+import { Group, Menu, Notifications, Search } from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
@@ -5,14 +6,11 @@ import {
   Box,
   IconButton,
   styled,
-  SvgIcon,
   Toolbar,
   Tooltip,
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import React, { FC } from "react";
-import { AiFillBell, AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
-import { FiUsers } from "react-icons/fi";
 import { INavbar } from "./Navbar";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -54,31 +52,23 @@ export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
               },
             }}
           >
-            <SvgIcon fontSize="small">
-              <AiOutlineMenu />
-            </SvgIcon>
+            <Menu fontSize="small" />
           </IconButton>
           <Tooltip title="Buscar">
             <IconButton sx={{ ml: 1 }}>
-              <SvgIcon fontSize="small">
-                <AiOutlineSearch />
-              </SvgIcon>
+              <Search fontSize="small" />
             </IconButton>
           </Tooltip>
           <Box sx={{ flexGrow: 1 }} />
           <Tooltip title="Contactos">
             <IconButton sx={{ ml: 1 }}>
-              <SvgIcon fontSize="small">
-                <FiUsers />
-              </SvgIcon>
+              <Group fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Notificaciones">
             <IconButton sx={{ ml: 1 }}>
               <Badge badgeContent={4} color="primary" variant="dot">
-                <SvgIcon fontSize="small">
-                  <AiFillBell />
-                </SvgIcon>
+                <Notifications fontSize="small" />
               </Badge>
             </IconButton>
           </Tooltip>

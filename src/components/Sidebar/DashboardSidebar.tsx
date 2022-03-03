@@ -50,7 +50,8 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
     if (open) {
       onClose?.();
     }
-  }, [router.asPath, onClose, open, router.isReady]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.asPath]);
 
   const content = (
     <>
@@ -148,13 +149,13 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
               },
             }}
           >
-            {/* TODO: Change image */}
             <Image
               alt="Loja"
               src="/images/Loja.jpg"
-              width="100%"
-              height="100%"
               priority
+              layout="fixed"
+              width={950}
+              height={100}
             />
           </Box>
           <Link href="/" passHref withAnchor={false}>

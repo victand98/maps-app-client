@@ -4,7 +4,7 @@ import {
   ParkingPointListToolbar,
 } from "@components";
 import { useParkingPoints } from "@lib";
-import { Box, Container, Grid, Pagination } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { ParkingPointModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
