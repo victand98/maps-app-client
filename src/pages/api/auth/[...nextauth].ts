@@ -1,8 +1,12 @@
 import { AuthService } from "@lib";
-import NextAuth from "next-auth";
+import { NextApiRequest, NextApiResponse } from "next";
+import NextAuth, { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
-export default NextAuth({
+const nextAuthOptions = (
+  req: NextApiRequest,
+  res: NextApiResponse
+): NextAuthOptions => ({
   providers: [
     Credentials({
       name: "Ciclovía App",
@@ -18,61 +22,67 @@ export default NextAuth({
           placeholder: "**********",
         },
       },
-      async authorize(credentials, req) {
-        console.log("credentials", credentials);
+      async authorize(credentials) {
+        // console.log("***************Authorize***************");
+        // console.log("credentials", credentials);
+
         const payload = {
           email: credentials!.email,
           password: credentials!.password,
         };
 
         try {
-          const res = await AuthService.login(payload);
-          console.log("res", res.headers);
-          return res.data;
+          const response = await AuthService.login(payload);
+          const cookies = response.headers["set-cookie"];
+          if (cookies) res.setHeader("Set-Cookie", cookies);
+
+          return response.data;
         } catch (error) {
           return null;
         }
       },
     }),
   ],
-
-  session: {
-    strategy: "jwt",
-  },
+  secret: process.env.NEXTAUTH_SECRET,
 
   pages: {
     signIn: "/ingresar",
   },
 
-  secret: process.env.NEXTAUTH_SECRET,
-
   callbacks: {
     async jwt({ token, user, account }) {
-      console.log("\njwt callback\n");
-      console.log("token", token);
-      console.log("user", user);
-      console.log("account", account);
+      // console.log("***********jwt callback***********");
+      // console.log("token", token);
+      // console.log("user", user);
+      // console.log("account", account);
 
-      if (account) {
-        token.accessToken = account.access_token;
+      if (account && user) {
+        const { accessToken, ...userData } = user;
+        token.accessToken = accessToken;
 
         switch (account.type) {
           case "credentials":
-            token.user = user;
+            token.user = userData;
             break;
         }
       }
       return token;
     },
 
-    async session({ session, token }) {
-      console.log("\nsession callback\n");
-      console.log("session", session);
-      console.log("token", token);
+    async session({ session, token, user }) {
+      // console.log("***********session callback***********");
+      // console.log("session", session);
+      // console.log("token", token);
+      // console.log("user", user);
 
       session.accessToken = token.accessToken;
-      session.user = token.user as any;
+      session.user = token.user;
       return session;
     },
   },
 });
+
+const nextAuth = (req: NextApiRequest, res: NextApiResponse) =>
+  NextAuth(req, res, nextAuthOptions(req, res));
+
+export default nextAuth;

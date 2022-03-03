@@ -1,4 +1,3 @@
-import { AuthService, useRequest } from "@lib";
 import { LoadingButton } from "@mui/lab";
 import { Box } from "@mui/material";
 import { LoginFormValues, LoginResponse } from "@types";
@@ -11,18 +10,6 @@ import { signIn } from "next-auth/react";
 
 export const LoginForm = () => {
   const router = useRouter();
-  const { doRequest } = useRequest<LoginResponse>({
-    request: AuthService.login,
-    onSuccess: (data) => {
-      const returnUrl = (router.query.returnUrl as string) || "/panel";
-      router.push(returnUrl);
-    },
-    onError: (err) => {
-      for (const error of err.errors) {
-        toast.error(error.message);
-      }
-    },
-  });
   const {
     control,
     handleSubmit,
@@ -30,16 +17,14 @@ export const LoginForm = () => {
   } = useForm<LoginFormValues>();
 
   const onSubmit = async ({ email, password }: LoginFormValues) => {
-    // doRequest(data);
-
     const res = await signIn<any>("credentials", {
       email,
       password,
-      callbackUrl: "/panel",
+      callbackUrl: (router.query.returnUrl as string) || "/panel",
       redirect: false,
     });
 
-    if (res?.error) console.log("error", res.error);
+    if (res?.error) console.log("LOGIN ERROR", res.error);
     if (res?.url) router.push(res.url);
   };
 

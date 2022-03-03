@@ -2,9 +2,10 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { SERVER_URI } from "./constants";
 import { CustomErrorResponse } from "@types";
 
-const instance = axios.create();
-instance.defaults.baseURL = SERVER_URI;
-instance.defaults.withCredentials = true;
+const instance = axios.create({
+  baseURL: SERVER_URI,
+  withCredentials: true,
+});
 
 const responseHandler = (response: AxiosResponse) => {
   return response;

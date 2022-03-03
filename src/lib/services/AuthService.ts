@@ -1,9 +1,9 @@
-import { httpClient, SERVER_URI } from "@lib";
-import { LoginFormValues } from "@types";
+import { httpClient } from "@lib";
+import { LoginFormValues, LoginResponse } from "@types";
 
 const AuthService = {
   login: (data: LoginFormValues) =>
-    httpClient.post(`${SERVER_URI}/auth/signin`, data),
+    httpClient.post<LoginResponse>(`/auth/signin`, data),
   logout: () => httpClient.post("/auth/logout"),
 };
 

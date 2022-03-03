@@ -1,26 +1,23 @@
-import React, { useEffect } from "react";
+import { AuthService } from "@lib";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
-import { AuthService } from "../lib/services/AuthService";
-import { toast } from "react-toastify";
-import { useRequest } from "@lib";
+import React, { useCallback, useEffect } from "react";
 
 const Logout = () => {
   const router = useRouter();
-  const { doRequest } = useRequest({
-    request: AuthService.logout,
-    onSuccess: (data) => {
-      router.replace("/ingresar");
-    },
-    onError: (err) => {
-      for (const error of err.errors) {
-        toast.error(error.message);
-      }
-    },
-  });
+
+  const logout = useCallback(async () => {
+    await AuthService.logout();
+    const data = await signOut<any>({
+      callbackUrl: "/ingresar",
+      redirect: false,
+    });
+    if (data?.url) router.push(data.url);
+  }, [router]);
 
   useEffect(() => {
-    doRequest();
-  }, []);
+    logout();
+  }, [logout]);
 
   return <div>Saliendo...</div>;
 };

@@ -1,8 +1,7 @@
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import { AuthContextProvider, buildClient, createEmotionCache } from "@lib";
+import { buildClient, createEmotionCache } from "@lib";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "@styles/theme";
-import { CurrentUser } from "@types";
 import { NextPageWithLayout } from "next";
 import { AppContext, AppProps } from "next/app";
 import Head from "next/head";
@@ -12,11 +11,12 @@ import { RecoilRoot } from "recoil";
 
 import "react-toastify/dist/ReactToastify.css";
 import "../styles/globals.css";
-import { SessionProvider } from "next-auth/react";
+import { getSession, SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
-  currentUser: CurrentUser["currentUser"];
+  session: Session;
   emotionCache?: EmotionCache;
 };
 
@@ -26,7 +26,7 @@ const clientSideEmotionCache = createEmotionCache();
 export default function MyApp({
   Component,
   pageProps,
-  currentUser,
+  session,
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page: ReactElement) => page);
@@ -42,52 +42,45 @@ export default function MyApp({
           />
         </Head>
 
-        <AuthContextProvider currentUser={currentUser}>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
 
-            <RecoilRoot>
-              {getLayout(
-                <Component currentUser={currentUser} {...pageProps} />
-              )}
-            </RecoilRoot>
+          <RecoilRoot>
+            {getLayout(<Component session={session} {...pageProps} />)}
+          </RecoilRoot>
 
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              limit={2}
-            />
-          </ThemeProvider>
-        </AuthContextProvider>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            limit={2}
+          />
+        </ThemeProvider>
       </CacheProvider>
     </SessionProvider>
   );
 }
 
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-//   const client = buildClient(appContext.ctx);
-//   const {
-//     data: { currentUser },
-//   } = await client.get<CurrentUser>("/auth/current/user");
-//   console.log("currentUser", currentUser);
+MyApp.getInitialProps = async (appContext: AppContext) => {
+  const client = buildClient(appContext.ctx);
+  const session = await getSession(appContext.ctx);
+  console.log("[SESSION INITIALPROPS]\n", session);
 
-//   let pageProps = {};
-//   if (appContext.Component.getInitialProps)
-//     pageProps = await appContext.Component.getInitialProps({
-//       ...appContext.ctx,
-//       client,
-//       currentUser,
-//     });
+  let pageProps = {};
+  if (appContext.Component.getInitialProps)
+    pageProps = await appContext.Component.getInitialProps({
+      ...appContext.ctx,
+      client,
+      session,
+    });
 
-//   return {
-//     pageProps,
-//     currentUser,
-//   };
-// };
+  return {
+    pageProps,
+  };
+};

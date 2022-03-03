@@ -1,3 +1,4 @@
+import { Logout } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -8,17 +9,16 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useEffect } from "react";
+import { AiFillHome } from "react-icons/ai";
+import { FaParking } from "react-icons/fa";
+import { GiCycling } from "react-icons/gi";
+import { MdOpenInNew } from "react-icons/md";
 import { Link, NavItem } from "..";
 import { ISidebar } from "./Sidebar";
-import { GiCycling } from "react-icons/gi";
-import { AiFillHome } from "react-icons/ai";
-import { MdOpenInNew } from "react-icons/md";
-import { FaParking } from "react-icons/fa";
-import { useAuthContext } from "@lib";
-import { Logout } from "@mui/icons-material";
-import Image from "next/image";
 
 const items: ISidebar.SidebarRoutes = [
   {
@@ -35,7 +35,7 @@ const items: ISidebar.SidebarRoutes = [
 
 export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
   const { open, onClose } = props;
-  const { currentUser } = useAuthContext();
+  const { data } = useSession();
   const router = useRouter();
   const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
@@ -90,10 +90,10 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
             >
               <div>
                 <Typography color="inherit" variant="subtitle1">
-                  {currentUser?.firstName} {currentUser?.lastName}
+                  {data?.user?.firstName} {data?.user?.lastName}
                 </Typography>
                 <Typography color="neutral.400" variant="body2">
-                  {currentUser?.email}
+                  {data?.user?.email}
                 </Typography>
               </div>
               <SvgIcon

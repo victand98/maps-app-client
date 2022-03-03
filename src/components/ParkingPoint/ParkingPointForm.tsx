@@ -46,6 +46,7 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
   const { doRequest } = useRequest<ParkingPointModel.ParkingPointResponse>({
     request: ParkingPointService.save,
     onSuccess: (data) => {
+      toast.success("Lugar guardado con éxito");
       const returnUrl =
         (router.query.returnUrl as string) || "/panel/estacionamientos";
       router.push(returnUrl);

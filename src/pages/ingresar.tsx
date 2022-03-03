@@ -33,19 +33,15 @@ export const getServerSideProps: GetServerSideProps = async ({
   query,
 }) => {
   const session = await getSession({ req });
-  console.log("SERVERSIDE\n", session);
-
-  const { p = "/panel" } = query;
-
+  const { returnUrl = "/panel" } = query;
   if (session) {
     return {
       redirect: {
-        destination: p.toString(),
+        destination: returnUrl.toString(),
         permanent: false,
       },
     };
   }
-
   return {
     props: {},
   };

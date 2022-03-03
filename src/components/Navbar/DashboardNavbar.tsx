@@ -9,11 +9,11 @@ import {
   Toolbar,
   Tooltip,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 import React, { FC } from "react";
 import { AiFillBell, AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import { FiUsers } from "react-icons/fi";
 import { INavbar } from "./Navbar";
-import { useAuthContext } from "@lib";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -22,7 +22,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 
 export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
   const { onSidebarOpen, ...rest } = props;
-  const { currentUser } = useAuthContext();
+  const { data } = useSession();
 
   return (
     <>
@@ -90,8 +90,8 @@ export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
               bgcolor: "purple",
             }}
           >
-            {currentUser?.firstName[0]}
-            {currentUser?.lastName[0]}
+            {data?.user?.firstName[0]}
+            {data?.user?.lastName[0]}
           </Avatar>
         </Toolbar>
       </DashboardNavbarRoot>
