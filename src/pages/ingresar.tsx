@@ -1,12 +1,12 @@
 import { DefaultLayout, LoginForm } from "@components";
 import { Avatar, Box, Typography } from "@mui/material";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPageWithLayout } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import React, { ReactElement } from "react";
 import { AiFillLock } from "react-icons/ai";
 
-const Login = () => {
+const Login: NextPageWithLayout<{}> = () => {
   return (
     <>
       <Head>

@@ -1,4 +1,5 @@
 import { parkingPointPreviewState } from "@lib";
+import { KeyboardReturn } from "@mui/icons-material";
 import {
   Avatar,
   Box,
@@ -12,6 +13,7 @@ import {
 } from "@mui/material";
 import React, { FC } from "react";
 import { useRecoilState } from "recoil";
+import { Link } from "..";
 
 export const ParkingPointPreview: FC = (props) => {
   const [parkingPointPreview] = useRecoilState(parkingPointPreviewState);
@@ -58,9 +60,16 @@ export const ParkingPointPreview: FC = (props) => {
       </CardContent>
       <Divider />
       <CardActions>
-        <Button color="primary" fullWidth variant="text">
-          Vista Previa
-        </Button>
+        <Link href="/panel/estacionamientos" passHref withAnchor={false}>
+          <Button
+            color="primary"
+            fullWidth
+            variant="text"
+            startIcon={<KeyboardReturn />}
+          >
+            Regresar
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

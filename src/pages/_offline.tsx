@@ -1,9 +1,10 @@
 import { ErrorLayout, Link } from "@components";
 import { ArrowBack } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
+import { NextPageWithLayout } from "next";
 import React, { ReactElement } from "react";
 
-const Offline = () => (
+const Offline: NextPageWithLayout = () => (
   <Box
     sx={{
       alignItems: "center",

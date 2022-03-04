@@ -1,3 +1,5 @@
+import { MarkerDivIcon } from "@components/Icon";
+import Marker from "@components/Map/ChildElements/Marker";
 import { MoreVert, Update } from "@mui/icons-material";
 import {
   Avatar,
@@ -14,11 +16,28 @@ import {
 } from "@mui/material";
 import { lime } from "@mui/material/colors";
 import { formatDistance } from "date-fns";
-import React, { FC } from "react";
+import { LatLngExpression } from "leaflet";
+import dynamic from "next/dynamic";
+import React, { FC, useMemo } from "react";
 import { IPlace } from "./IPlace";
+
+const PlaceMinimap = dynamic(
+  () => import("@components/Map/ChildElements/PlaceMinimap"),
+  {
+    ssr: false,
+  }
+);
 
 export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
   const { place, handleClose } = props;
+
+  const position = useMemo<LatLngExpression>(
+    () => ({
+      lng: place.location.coordinates[0],
+      lat: place.location.coordinates[1],
+    }),
+    [place.location.coordinates]
+  );
 
   return (
     <Card>
@@ -26,8 +45,8 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
         avatar={
           <Avatar
             sx={{ bgcolor: lime[500] }}
-            aria-label={place?.name}
-            src={`/images/${place?.type.icon}`}
+            aria-label={place.name}
+            src={`/images/${place.type.icon}`}
           ></Avatar>
         }
         action={
@@ -35,15 +54,17 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
             <MoreVert />
           </IconButton>
         }
-        title={place?.name}
-        subheader={place?.type.name}
+        title={place.name}
+        subheader={place.type.name}
       />
-      <CardMedia
-        component="img"
-        height="194"
-        image="/images/Loja.jpg"
-        alt="Loja"
-      />
+      <CardMedia sx={{ height: "250px" }}>
+        <PlaceMinimap
+          center={position}
+          icon={place.type.icon}
+          name={place.name}
+          position={position}
+        />
+      </CardMedia>
       <CardContent>
         <Box
           sx={{
@@ -58,20 +79,20 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
             align="center"
             variant="h5"
           >
-            {place?.name}
+            {place.name}
           </Typography>
-          {place?.spots && place.occupied ? (
+          {place.spots && place.occupied ? (
             <>
               <Typography color="InfoText" variant="body2">
                 {place.spots - place.occupied} espacios disponibles
               </Typography>
               <Typography color="textSecondary" variant="body2">
-                {place?.occupied} espacios ocupados
+                {place.occupied} espacios ocupados
               </Typography>
             </>
           ) : (
             <Typography color="textSecondary" variant="body2">
-              {place?.type.description}
+              {place.type.description}
             </Typography>
           )}
         </Box>
@@ -92,8 +113,8 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
               sx={{ pl: 1 }}
               variant="body2"
             >
-              {place?.updatedAt
-                ? formatDistance(new Date(place?.updatedAt), new Date(), {
+              {place.updatedAt
+                ? formatDistance(new Date(place.updatedAt), new Date(), {
                     addSuffix: true,
                   })
                 : null}

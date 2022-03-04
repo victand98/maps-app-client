@@ -1,7 +1,7 @@
 import { Box, Container } from "@mui/material";
-import React, { FC } from "react";
+import React, { FC, ReactElement } from "react";
 
-export const ErrorLayout: FC = (props) => {
+export const ErrorLayout: FC = (props): ReactElement => {
   return (
     <Box
       component="main"

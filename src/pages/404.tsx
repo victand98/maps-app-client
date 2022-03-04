@@ -1,10 +1,11 @@
 import { Link, ErrorLayout } from "@components";
 import { ArrowBack } from "@mui/icons-material";
 import { Box, Button, Typography } from "@mui/material";
+import { NextPageWithLayout } from "next";
 import Head from "next/head";
 import React, { ReactElement } from "react";
 
-const NotFound = () => {
+const NotFound: NextPageWithLayout = () => {
   return (
     <>
       <Head>

@@ -3,7 +3,6 @@ import "next";
 import { NextPage } from "next";
 import { Session } from "next-auth";
 import { ReactElement, ReactNode } from "react";
-import { CurrentUser } from "./Login";
 
 declare module "next" {
   export interface NextPageContext {

@@ -2,11 +2,12 @@ import { DefaultLayout } from "@components";
 import { AuthService } from "@lib";
 import { MeetingRoom } from "@mui/icons-material";
 import { Avatar, Box, Typography } from "@mui/material";
+import { NextPageWithLayout } from "next";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { ReactElement, useCallback, useEffect } from "react";
 
-const Logout = () => {
+const Logout: NextPageWithLayout = () => {
   const router = useRouter();
 
   const logout = useCallback(async () => {

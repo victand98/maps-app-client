@@ -31,6 +31,7 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+    setCurrentPlace(undefined);
   };
 
   return (
@@ -44,8 +45,8 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
 
           layer.on({
             click: (e) => {
-              setOpen(true);
               setCurrentPlace(feature.properties);
+              setOpen(true);
             },
           });
         }}
@@ -64,7 +65,9 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
         maxWidth="xs"
         fullWidth
       >
-        <PlaceInfo place={currentPlace} handleClose={handleClose} />
+        {currentPlace ? (
+          <PlaceInfo place={currentPlace} handleClose={handleClose} />
+        ) : null}
       </Dialog>
     </Fragment>
   );

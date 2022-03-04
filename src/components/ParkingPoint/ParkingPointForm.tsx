@@ -245,7 +245,7 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
               />
 
               <Collapse in={showMap} timeout="auto" unmountOnExit>
-                <Grid item xs={12} sx={{ height: "350px" }}>
+                <Grid item xs={12} sx={{ height: "550px" }}>
                   <MapPicker onChangePosition={onChangePosition} />
                 </Grid>
               </Collapse>

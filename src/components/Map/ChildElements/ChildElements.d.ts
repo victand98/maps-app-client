@@ -1,4 +1,5 @@
 import { PlaceModel } from "@types";
+import { LatLngExpression } from "leaflet";
 import { MarkerProps } from "react-leaflet";
 
 declare namespace ChildElements {
@@ -6,6 +7,13 @@ declare namespace ChildElements {
 
   export interface PlaceDataProps {
     data: PlaceModel.PlaceResponse[];
+  }
+
+  export interface PlaceMinimapProps {
+    name: string;
+    position: LatLngExpression;
+    center: LatLngExpression;
+    icon: string;
   }
 }
 

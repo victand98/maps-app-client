@@ -1,4 +1,4 @@
-import { Logout } from "@mui/icons-material";
+import { Dashboard, Logout, PushPin, Room } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -13,8 +13,6 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useEffect } from "react";
-import { AiFillHome } from "react-icons/ai";
-import { FaParking } from "react-icons/fa";
 import { GiCycling } from "react-icons/gi";
 import { MdOpenInNew } from "react-icons/md";
 import { Link, NavItem } from "..";
@@ -23,13 +21,23 @@ import { ISidebar } from "./Sidebar";
 const items: ISidebar.SidebarRoutes = [
   {
     href: "/panel",
-    icon: <AiFillHome fontSize="small" />,
+    icon: <Dashboard fontSize="small" />,
     title: "Panel",
   },
   {
     href: "/panel/estacionamientos",
-    icon: <FaParking fontSize="small" />,
+    icon: <Room fontSize="small" />,
+    title: "Lugares",
+  },
+  {
+    href: "/panel/estacionamientos",
+    icon: <Room fontSize="small" />,
     title: "Estacionamientos",
+  },
+  {
+    href: "/panel/tipolugares",
+    icon: <PushPin fontSize="small" />,
+    title: "Tipo de Lugares",
   },
 ];
 
