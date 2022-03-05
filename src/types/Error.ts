@@ -1,6 +1,8 @@
-export interface CustomErrorResponse {
+import { FieldPath } from "react-hook-form";
+
+export interface CustomErrorResponse<T = undefined> {
   errors: {
     message: string;
-    field?: string;
+    field?: FieldPath<T>;
   }[];
 }

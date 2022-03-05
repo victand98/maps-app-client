@@ -1,4 +1,4 @@
-import { PlaceTypeService, useRequest } from "@lib";
+import { handleFormError, PlaceTypeService, useRequest } from "@lib";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -22,7 +22,10 @@ export const PlaceTypeForm: FC<IPlaceType.PlaceTypeFormProps> = (props) => {
   const { iconOptions } = props;
   const router = useRouter();
 
-  const { doRequest } = useRequest<PlaceTypeModel.PlaceTypeResponse>({
+  const { doRequest } = useRequest<
+    PlaceTypeModel.PlaceTypeResponse,
+    PlaceTypeModel.PlaceTypeValues
+  >({
     request: PlaceTypeService.save,
     onSuccess: (data) => {
       toast.success("Tipo de lugar guardado con éxito");
@@ -31,9 +34,7 @@ export const PlaceTypeForm: FC<IPlaceType.PlaceTypeFormProps> = (props) => {
       router.push(returnUrl);
     },
     onError: (err) => {
-      for (const error of err.errors) {
-        toast.error(error.message);
-      }
+      handleFormError(err, setError);
     },
   });
 
@@ -43,6 +44,7 @@ export const PlaceTypeForm: FC<IPlaceType.PlaceTypeFormProps> = (props) => {
     formState: { isSubmitting, errors },
     setValue,
     register,
+    setError,
   } = useForm<PlaceTypeModel.PlaceTypeValues>();
 
   React.useEffect(() => {
