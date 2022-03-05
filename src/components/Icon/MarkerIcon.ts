@@ -10,8 +10,8 @@ export class MarkerDivIcon extends L.DivIcon {
     shadowAnchor: [13, 28],
   };
 
-  constructor(color: string, iconUrl: string) {
+  constructor(color: string, icon: string) {
     super();
-    this.options.html = `<div style='background-color:${color};' class='marker-pin'></div><img src="/images/${iconUrl}" alt="${iconUrl}" />`;
+    this.options.html = `<div style='background-color:${color};' class='marker-pin'></div><span class="material-icons">${icon}</span>`;
   }
 }

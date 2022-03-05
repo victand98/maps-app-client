@@ -14,6 +14,7 @@ declare namespace ChildElements {
     position: LatLngExpression;
     center: LatLngExpression;
     icon: string;
+    color: string;
   }
 }
 

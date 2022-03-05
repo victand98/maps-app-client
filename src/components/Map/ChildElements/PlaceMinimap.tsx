@@ -5,10 +5,10 @@ import { ChildElements } from "./ChildElements";
 import Marker from "./Marker";
 
 const PlaceMinimap: FC<ChildElements.PlaceMinimapProps> = (props) => {
-  const { name, position, center, icon } = props;
+  const { name, position, center, icon, color } = props;
   return (
     <Minimap center={center}>
-      <Marker position={position} icon={new MarkerDivIcon("#26c30b", icon)}>
+      <Marker position={position} icon={new MarkerDivIcon(color, icon)}>
         {name}
       </Marker>
     </Minimap>

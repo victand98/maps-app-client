@@ -29,7 +29,7 @@ export const PlaceTypeListToolbar = (props: BoxProps) => {
           Tipos de lugar
         </Typography>
         <Box sx={{ m: 1 }}>
-          <Link href="/panel/tipolugares/nuevo" passHref withAnchor={false}>
+          <Link href="/panel/tiposlugar/nuevo" passHref withAnchor={false}>
             <Button color="primary" variant="contained">
               Añadir Nuevo
             </Button>

@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardMedia,
   Grid,
+  Icon,
   IconButton,
   Typography,
 } from "@mui/material";
@@ -43,11 +44,9 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
     <Card>
       <CardHeader
         avatar={
-          <Avatar
-            sx={{ bgcolor: lime[500] }}
-            aria-label={place.name}
-            src={`/images/${place.type.icon}`}
-          ></Avatar>
+          <Avatar sx={{ bgcolor: place.type.color }} aria-label={place.name}>
+            <Icon>{place.type.icon}</Icon>
+          </Avatar>
         }
         action={
           <IconButton aria-label="configuración">
@@ -63,6 +62,7 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
           icon={place.type.icon}
           name={place.name}
           position={position}
+          color={place.type.color}
         />
       </CardMedia>
       <CardContent>

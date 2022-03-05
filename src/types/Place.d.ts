@@ -21,6 +21,7 @@ declare namespace PlaceModel {
     updatedAt: string;
     description: string;
     icon: string;
+    color: string;
     id: string;
   }
 }

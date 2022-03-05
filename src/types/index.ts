@@ -4,6 +4,11 @@
 export * from "./pages/Home";
 
 /**
+ * API types
+ */
+export * from "./api/Icons";
+
+/**
  * Models types
  */
 export * from "./Error";

@@ -1,6 +1,11 @@
-import { TextField, TextFieldProps } from "@mui/material";
-import React, { FC } from "react";
-import { Control, UseControllerProps } from "react-hook-form";
+import {
+  AutocompleteProps,
+  AutocompleteRenderInputParams,
+  AutocompleteRenderOptionState,
+  TextFieldProps,
+} from "@mui/material";
+import React from "react";
+import { UseControllerProps } from "react-hook-form";
 import { NumberFormatProps } from "react-number-format";
 
 declare namespace IInput {
@@ -11,6 +16,13 @@ declare namespace IInput {
     UseControllerProps<TFormValues> & {
       [key: string]: any;
     };
+
+  export interface AutocompleteVirtualizedProps<
+    T,
+    Multiple extends boolean | undefined,
+    DisableClearable extends boolean | undefined,
+    FreeSolo extends boolean | undefined
+  > extends AutocompleteProps<T, Multiple, DisableClearable, FreeSolo> {}
 }
 
 export { IInput };

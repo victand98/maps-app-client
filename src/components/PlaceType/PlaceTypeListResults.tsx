@@ -1,4 +1,3 @@
-import { getInitials } from "@lib";
 import { ToggleOff, ToggleOn } from "@mui/icons-material";
 import {
   Avatar,
@@ -17,6 +16,7 @@ import {
 import { format } from "date-fns";
 import React, { FC, useState } from "react";
 import { IPlaceType } from "./IPlaceType";
+import Paper from "@mui/material/Paper";
 
 export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
   props
@@ -43,7 +43,7 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
 
   return (
     <Card>
-      <Box sx={{ minWidth: 1050 }}>
+      <Box sx={{ minWidth: 375 }} className="container">
         <Table>
           <TableHead>
             <TableRow>
@@ -103,21 +103,21 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
                     />
                   )}
                 </TableCell>
-                <TableCell>
-                  <Typography noWrap>{placeType.description}</Typography>
+                <TableCell style={{ maxWidth: 50 }}>
+                  <Typography>{placeType.description}</Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="caption" display="block">
                     Creado el
                   </Typography>
                   <Typography variant="subtitle2" display="block" gutterBottom>
-                    {format(new Date(placeType.createdAt), "dd/MM/yyyy")}
+                    {format(new Date(placeType.createdAt), "PPpp")}
                   </Typography>
                   <Typography variant="caption" display="block">
                     Última actualización
                   </Typography>
                   <Typography variant="subtitle2" display="block">
-                    {format(new Date(placeType.updatedAt), "dd/MM/yyyy")}
+                    {format(new Date(placeType.updatedAt), "PPpp")}
                   </Typography>
                 </TableCell>
               </TableRow>

@@ -35,9 +35,9 @@ const items: ISidebar.SidebarRoutes = [
     title: "Estacionamientos",
   },
   {
-    href: "/panel/tipolugares",
+    href: "/panel/tiposlugar",
     icon: <PushPin fontSize="small" />,
-    title: "Tipo de Lugares",
+    title: "Tipos de Lugar",
   },
 ];
 

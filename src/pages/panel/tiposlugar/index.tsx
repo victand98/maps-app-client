@@ -18,7 +18,7 @@ const PlaceTypes: NextPageWithLayout<PlaceTypeModel.IPagePlaceTypesProps> = (
   return (
     <>
       <Head>
-        <title>Tipos de lugares | Ciclovía App</title>
+        <title>Tipos de lugar | Ciclovía App</title>
       </Head>
 
       <Box

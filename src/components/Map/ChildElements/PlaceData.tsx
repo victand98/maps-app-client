@@ -52,7 +52,10 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
         }}
         pointToLayer={(feature, latlng) => {
           return L.marker(latlng, {
-            icon: new MarkerDivIcon("#26c30b", feature.properties.type.icon),
+            icon: new MarkerDivIcon(
+              feature.properties.type.color,
+              feature.properties.type.icon
+            ),
           });
         }}
       />
