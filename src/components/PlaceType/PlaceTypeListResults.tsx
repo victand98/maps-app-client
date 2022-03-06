@@ -1,3 +1,4 @@
+import { PlaceTypeService, toastErrors, usePlaceTypes, useRequest } from "@lib";
 import { ToggleOff, ToggleOn } from "@mui/icons-material";
 import {
   Avatar,
@@ -13,17 +14,33 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
+import { PlaceTypeModel } from "@types";
 import { format } from "date-fns";
 import React, { FC, useState } from "react";
+import { toast } from "react-toastify";
+import { PlaceTypeEditForm } from ".";
 import { IPlaceType } from "./IPlaceType";
-import Paper from "@mui/material/Paper";
 
 export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
   props
 ) => {
-  const { placeTypes } = props;
+  const { placeTypes, iconOptions } = props;
+  const { mutate } = usePlaceTypes();
+  const [open, setOpen] = useState(false);
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(0);
+  const [currentPlaceType, setCurrentPlaceType] =
+    useState<PlaceTypeModel.PlaceTypeResponse>();
+  const { doRequest } = useRequest<PlaceTypeModel.PlaceTypeResponse>({
+    request: PlaceTypeService.update,
+    onSuccess: (data) => {
+      toast.success("Estado actualizado");
+      mutate();
+    },
+    onError: (error) => {
+      toastErrors(error);
+    },
+  });
 
   const handleLimitChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -39,6 +56,16 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
     setPage(newPage);
   };
 
+  const toggleStatus = (currentStatus: boolean, id: string) => {
+    doRequest({ status: !currentStatus }, id);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setCurrentPlaceType(undefined);
+    mutate();
+  };
+
   if (!placeTypes) return null;
 
   return (
@@ -47,17 +74,6 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
-                {/* <Checkbox
-                  checked={selectedCustomerIds.length === customers.length}
-                  color="primary"
-                  indeterminate={
-                    selectedCustomerIds.length > 0 &&
-                    selectedCustomerIds.length < customers.length
-                  }
-                  onChange={handleSelectAll}
-                /> */}
-              </TableCell>
               <TableCell>Nombre</TableCell>
               <TableCell>Estado</TableCell>
               <TableCell>Descripción</TableCell>
@@ -67,16 +83,16 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
 
           <TableBody>
             {placeTypes.slice(0, limit).map((placeType) => (
-              <TableRow hover key={placeType.id}>
-                <TableCell padding="checkbox">
-                  {/* <Checkbox
-                    checked={selectedCustomerIds.indexOf(placeType.id) !== -1}
-                    onChange={(event) => handleSelectOne(event, placeType.id)}
-                    value="true"
-                  /> */}
-                </TableCell>
-
-                <TableCell>
+              <TableRow
+                hover
+                key={placeType.id}
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  setOpen(true);
+                  setCurrentPlaceType(placeType);
+                }}
+              >
+                <TableCell padding="normal">
                   <Box
                     sx={{
                       alignItems: "center",
@@ -94,23 +110,35 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
 
                 <TableCell>
                   {placeType.status ? (
-                    <Chip icon={<ToggleOn />} color="success" label="Activo" />
+                    <Chip
+                      icon={<ToggleOn />}
+                      color="success"
+                      label="Activo"
+                      onClick={() =>
+                        toggleStatus(placeType.status, placeType.id)
+                      }
+                    />
                   ) : (
                     <Chip
                       icon={<ToggleOff />}
                       color="default"
                       label="Inactivo"
+                      onClick={() =>
+                        toggleStatus(placeType.status, placeType.id)
+                      }
                     />
                   )}
                 </TableCell>
-                <TableCell style={{ maxWidth: 50 }}>
+
+                <TableCell>
                   <Typography>{placeType.description}</Typography>
                 </TableCell>
+
                 <TableCell>
                   <Typography variant="caption" display="block">
                     Creado el
                   </Typography>
-                  <Typography variant="subtitle2" display="block" gutterBottom>
+                  <Typography variant="subtitle2" gutterBottom>
                     {format(new Date(placeType.createdAt), "PPpp")}
                   </Typography>
                   <Typography variant="caption" display="block">
@@ -135,6 +163,15 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
         rowsPerPage={limit}
         rowsPerPageOptions={[5, 10, 25]}
       />
+
+      {currentPlaceType && (
+        <PlaceTypeEditForm
+          currentPlaceType={currentPlaceType}
+          iconOptions={iconOptions}
+          open={open}
+          onClose={handleClose}
+        />
+      )}
     </Card>
   );
 };

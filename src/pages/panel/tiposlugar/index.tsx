@@ -3,7 +3,7 @@ import {
   PlaceTypeListResults,
   PlaceTypeListToolbar,
 } from "@components";
-import { usePlaceTypes } from "@lib";
+import { getIconOptions, usePlaceTypes } from "@lib";
 import { Box, Container } from "@mui/material";
 import { PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -13,7 +13,7 @@ import React, { ReactElement } from "react";
 const PlaceTypes: NextPageWithLayout<PlaceTypeModel.IPagePlaceTypesProps> = (
   props
 ) => {
-  const { data: placeTypes } = usePlaceTypes(props.placeTypes);
+  const { data: placeTypes, mutate } = usePlaceTypes(props.placeTypes);
 
   return (
     <>
@@ -31,7 +31,10 @@ const PlaceTypes: NextPageWithLayout<PlaceTypeModel.IPagePlaceTypesProps> = (
         <Container maxWidth={false}>
           <PlaceTypeListToolbar />
           <Box sx={{ mt: 3 }}>
-            <PlaceTypeListResults placeTypes={placeTypes} />
+            <PlaceTypeListResults
+              placeTypes={placeTypes}
+              iconOptions={props.iconOptions}
+            />
           </Box>
         </Container>
       </Box>
@@ -44,11 +47,12 @@ PlaceTypes.getLayout = (page: ReactElement) => (
 );
 
 PlaceTypes.getInitialProps = async (context) => {
+  const iconOptions = getIconOptions();
   const { data: placeTypes } = await context.client.get<
     PlaceTypeModel.PlaceTypeResponse[]
   >("/placetype");
 
-  return { placeTypes };
+  return { placeTypes, iconOptions };
 };
 
 export default PlaceTypes;

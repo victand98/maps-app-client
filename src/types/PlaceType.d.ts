@@ -6,6 +6,7 @@ declare namespace PlaceTypeModel {
     description: string;
     icon: string;
     color: string;
+    status?: boolean;
   };
 
   export interface PlaceTypeResponse {
@@ -22,6 +23,7 @@ declare namespace PlaceTypeModel {
 
   export interface IPagePlaceTypesProps {
     placeTypes?: PlaceTypeResponse[];
+    iconOptions: IconsModel.IconsResponse[];
   }
 
   export interface IPageNewPlaceTypeProps {

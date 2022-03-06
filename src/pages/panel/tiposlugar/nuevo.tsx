@@ -1,10 +1,9 @@
 import { DashboardLayout, PlaceTypeForm, PlaceTypeHelper } from "@components";
+import { getIconOptions } from "@lib";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { PlaceTypeModel } from "@types";
-import fs from "fs";
 import { GetServerSideProps, NextPageWithLayout } from "next";
 import Head from "next/head";
-import path from "path";
 import React, { ReactElement } from "react";
 
 const NewPlaceType: NextPageWithLayout<
@@ -49,20 +48,7 @@ NewPlaceType.getLayout = (page: ReactElement) => (
 );
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const iconsPath = path.join(process.cwd(), "src", "lib");
-  const fileContent = fs.readFileSync(
-    path.join(iconsPath, "codepoints.txt"),
-    "utf8"
-  );
-  const data = fileContent.split("\n");
-  const iconOptions = data.map((nameAndCode) => {
-    const parts = nameAndCode.split(" ");
-    return {
-      name: parts[0],
-      code: parts[1],
-    };
-  });
-
+  const iconOptions = getIconOptions();
   return { props: { iconOptions } };
 };
 

@@ -30,3 +30,9 @@ export const handleFormError = <T = any>(
       );
   }
 };
+
+export const toastErrors = <T = any>(err: CustomErrorResponse<T>) => {
+  for (const error of err.errors) {
+    toast.error(error.message);
+  }
+};
