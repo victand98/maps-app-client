@@ -1,8 +1,13 @@
 import axios from "axios";
-import { NextPageContext } from "next";
+import { GetServerSidePropsContext, NextPageContext, PreviewData } from "next";
+import { ParsedUrlQuery } from "querystring";
 import { httpClient, SERVER_URI_PRIVATE } from ".";
 
-const buildClient = ({ req }: NextPageContext) => {
+const buildClient = ({
+  req,
+}:
+  | NextPageContext
+  | GetServerSidePropsContext<ParsedUrlQuery, PreviewData>) => {
   if (typeof window === "undefined") {
     // We are on the server
     const instance = axios.create();

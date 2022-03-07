@@ -1,17 +1,19 @@
 import { PlaceTypeService, toastErrors, usePlaceTypes, useRequest } from "@lib";
-import { ToggleOff, ToggleOn } from "@mui/icons-material";
+import { Edit, ToggleOff, ToggleOn, Update } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Card,
   Chip,
   Icon,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TablePagination,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { PlaceTypeModel } from "@types";
@@ -74,6 +76,7 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell padding="normal"></TableCell>
               <TableCell>Nombre</TableCell>
               <TableCell>Estado</TableCell>
               <TableCell>Descripción</TableCell>
@@ -83,15 +86,21 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
 
           <TableBody>
             {placeTypes.slice(0, limit).map((placeType) => (
-              <TableRow
-                hover
-                key={placeType.id}
-                sx={{ cursor: "pointer" }}
-                onClick={() => {
-                  setOpen(true);
-                  setCurrentPlaceType(placeType);
-                }}
-              >
+              <TableRow hover key={placeType.id}>
+                <TableCell padding="normal">
+                  <Tooltip title="Editar">
+                    <IconButton
+                      color="primary"
+                      aria-label="editar"
+                      onClick={() => {
+                        setOpen(true);
+                        setCurrentPlaceType(placeType);
+                      }}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
                 <TableCell padding="normal">
                   <Box
                     sx={{

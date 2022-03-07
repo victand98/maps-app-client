@@ -3,10 +3,10 @@ import {
   PlaceTypeListResults,
   PlaceTypeListToolbar,
 } from "@components";
-import { getIconOptions, usePlaceTypes } from "@lib";
+import { buildClient, getIconOptions, usePlaceTypes } from "@lib";
 import { Box, Container } from "@mui/material";
 import { PlaceTypeModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSideProps, NextPageWithLayout } from "next";
 import Head from "next/head";
 import React, { ReactElement } from "react";
 
@@ -33,7 +33,7 @@ const PlaceTypes: NextPageWithLayout<PlaceTypeModel.IPagePlaceTypesProps> = (
           <Box sx={{ mt: 3 }}>
             <PlaceTypeListResults
               placeTypes={placeTypes}
-              iconOptions={props.iconOptions}
+              iconOptions={props.iconOptions!}
             />
           </Box>
         </Container>
@@ -46,13 +46,14 @@ PlaceTypes.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
 
-PlaceTypes.getInitialProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   const iconOptions = getIconOptions();
-  const { data: placeTypes } = await context.client.get<
+  const client = buildClient(context);
+  const { data: placeTypes } = await client.get<
     PlaceTypeModel.PlaceTypeResponse[]
   >("/placetype");
 
-  return { placeTypes, iconOptions };
+  return { props: { iconOptions, placeTypes } };
 };
 
 export default PlaceTypes;

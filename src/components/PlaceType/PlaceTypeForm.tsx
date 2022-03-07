@@ -282,6 +282,13 @@ export const PlaceTypeEditForm: FC<IPlaceType.PlaceTypeEditFormProps> = (
                   );
                 }}
                 options={iconOptions}
+                defaultValue={{
+                  name: currentPlaceType.icon,
+                  code: "",
+                }}
+                isOptionEqualToValue={(option, value) =>
+                  option.name === value.name
+                }
                 getOptionLabel={(option) => option.name}
                 groupBy={(option: IconsModel.IconsResponse) =>
                   option.name[0].toUpperCase()

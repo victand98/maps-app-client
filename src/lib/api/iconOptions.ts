@@ -7,7 +7,11 @@ export const getIconOptions = () => {
     path.join(iconsPath, "codepoints.txt"),
     "utf8"
   );
-  const data = fileContent.split("\n");
+  const data = fileContent
+    .split("\n")
+    .sort((a: string, b: string) =>
+      a.toUpperCase().localeCompare(b.toUpperCase())
+    );
   const iconOptions = data.map((nameAndCode) => {
     const parts = nameAndCode.split(" ");
     return {

@@ -23,7 +23,7 @@ declare namespace PlaceTypeModel {
 
   export interface IPagePlaceTypesProps {
     placeTypes?: PlaceTypeResponse[];
-    iconOptions: IconsModel.IconsResponse[];
+    iconOptions?: IconsModel.IconsResponse[];
   }
 
   export interface IPageNewPlaceTypeProps {
