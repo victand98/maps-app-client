@@ -68,15 +68,13 @@ export default function MyApp({
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
-  const client = buildClient(appContext.ctx);
-  const session = await getSession(appContext.ctx);
+  const client = await buildClient(appContext.ctx);
 
   let pageProps = {};
   if (appContext.Component.getInitialProps)
     pageProps = await appContext.Component.getInitialProps({
       ...appContext.ctx,
       client,
-      session,
     });
 
   return {

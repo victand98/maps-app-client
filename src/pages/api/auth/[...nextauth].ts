@@ -33,9 +33,6 @@ const nextAuthOptions = (
 
         try {
           const response = await AuthService.login(payload);
-          const cookies = response.headers["set-cookie"];
-          if (cookies) res.setHeader("Set-Cookie", cookies);
-
           return response.data;
         } catch (error) {
           return null;
@@ -43,6 +40,7 @@ const nextAuthOptions = (
       },
     }),
   ],
+
   secret: process.env.NEXTAUTH_SECRET,
 
   pages: {

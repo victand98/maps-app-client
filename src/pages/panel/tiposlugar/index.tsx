@@ -48,7 +48,7 @@ PlaceTypes.getLayout = (page: ReactElement) => (
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const iconOptions = getIconOptions();
-  const client = buildClient(context);
+  const client = await buildClient(context);
   const { data: placeTypes } = await client.get<
     PlaceTypeModel.PlaceTypeResponse[]
   >("/placetype");

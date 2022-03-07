@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { SERVER_URI } from "./constants";
 import { CustomErrorResponse } from "@types";
+import { getSession } from "next-auth/react";
 
 const instance = axios.create({
   baseURL: SERVER_URI,
@@ -37,5 +38,12 @@ instance.interceptors.response.use(
   (response) => responseHandler(response),
   (error) => errorHandler(error)
 );
+
+instance.interceptors.request.use(async (config) => {
+  const session = await getSession();
+  if (session) config.headers!.Authorization = `Bearer ${session.accessToken}`;
+
+  return config;
+});
 
 export default instance;
