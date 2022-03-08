@@ -29,11 +29,7 @@ export const ParkingPointListToolbar = (props: BoxProps) => {
           Puntos de Estacionamiento
         </Typography>
         <Box sx={{ m: 1 }}>
-          <Link
-            href="/panel/estacionamientos/nuevo"
-            passHref
-            withAnchor={false}
-          >
+          <Link href="/panel/lugares/nuevo" passHref withAnchor={false}>
             <Button color="primary" variant="contained">
               Añadir Nuevo
             </Button>

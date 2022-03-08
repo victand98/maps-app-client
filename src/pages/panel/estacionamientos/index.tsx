@@ -3,17 +3,18 @@ import {
   ParkingPointCard,
   ParkingPointListToolbar,
 } from "@components";
-import { useParkingPoints } from "@lib";
+import { useParkingPoints, usePlaceTypes } from "@lib";
 import { Box, Container, Grid } from "@mui/material";
-import { ParkingPointModel } from "@types";
+import { ParkingPointModel, PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
 import React, { ReactElement } from "react";
 
 const ParkingPoints: NextPageWithLayout<
-  ParkingPointModel.IPageParkingPointsProps
+  ParkingPointModel.ParkingPointsPageProps
 > = (props) => {
   const { data: parkingPoints } = useParkingPoints(props.parkingPoints);
+  const { data: placeTypes } = usePlaceTypes(props.placeTypes);
 
   return (
     <>
@@ -34,7 +35,10 @@ const ParkingPoints: NextPageWithLayout<
             <Grid container spacing={3}>
               {parkingPoints?.map((parkingPoint) => (
                 <Grid item key={parkingPoint.id} lg={4} md={6} xs={12}>
-                  <ParkingPointCard parkingPoint={parkingPoint} />
+                  <ParkingPointCard
+                    parkingPoint={parkingPoint}
+                    placeTypes={placeTypes!}
+                  />
                 </Grid>
               ))}
             </Grid>
@@ -59,11 +63,14 @@ ParkingPoints.getLayout = (page: ReactElement) => (
 );
 
 ParkingPoints.getInitialProps = async (context) => {
-  const { data: parkingPoints } = await context.client.get<
-    ParkingPointModel.ParkingPointResponse[]
-  >("/parkingpoint");
+  const [parkingPoints, placeTypes] = await Promise.all([
+    context.client.get<ParkingPointModel.ParkingPointResponse[]>(
+      "/parkingpoint"
+    ),
+    context.client.get<PlaceTypeModel.PlaceTypeResponse[]>("/placetype"),
+  ]);
 
-  return { parkingPoints };
+  return { parkingPoints: parkingPoints.data, placeTypes: placeTypes.data };
 };
 
 export default ParkingPoints;

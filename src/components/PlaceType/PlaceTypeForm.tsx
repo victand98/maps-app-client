@@ -1,4 +1,9 @@
-import { handleFormError, PlaceTypeService, useRequest } from "@lib";
+import {
+  handleFormError,
+  PlaceTypes,
+  PlaceTypeService,
+  useRequest,
+} from "@lib";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -256,6 +261,11 @@ export const PlaceTypeEditForm: FC<IPlaceType.PlaceTypeEditFormProps> = (
                 fullWidth
                 helperText="Especifique el nombre del tipo de lugar"
                 defaultValue={currentPlaceType.name}
+                InputProps={{
+                  readOnly: Object.values(PlaceTypes).includes(
+                    currentPlaceType.name as PlaceTypes
+                  ),
+                }}
                 label="Nombre"
                 name="name"
                 placeholder="Parque, Estacionamiento, ..."

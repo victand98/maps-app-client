@@ -15,6 +15,7 @@ declare namespace IInput {
   export type INumberFormatProps<TFormValues> = NumberFormatProps &
     UseControllerProps<TFormValues> & {
       [key: string]: any;
+      withHelpers?: boolean;
     };
 
   export interface AutocompleteVirtualizedProps<

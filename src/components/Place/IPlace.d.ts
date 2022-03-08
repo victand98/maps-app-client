@@ -1,4 +1,4 @@
-import { PlaceModel, PlaceTypeModel } from "@types";
+import { ParkingPointModel, PlaceModel, PlaceTypeModel } from "@types";
 
 declare namespace IPlace {
   export interface PlaceInfoProps {
@@ -19,7 +19,9 @@ declare namespace IPlace {
     placeTypes: PlaceTypeModel.PlaceTypeResponse[];
     open: boolean;
     onClose: () => void;
-    currentPlace: PlaceModel.PlaceResponse;
+    currentPlace:
+      | PlaceModel.PlaceResponse
+      | ParkingPointModel.ParkingPointResponse;
   }
 }
 

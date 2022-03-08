@@ -5,49 +5,39 @@ declare namespace ParkingPointModel {
     spots: number;
     occupied: number;
     name: string;
-    location: {
-      type: string;
-      coordinates: number[];
-      id: string;
-    };
+    formattedAddress?: string;
+    location: { type: string; coordinates: number[]; id: string };
     type: Type;
     kind: string;
     createdAt: string;
     updatedAt: string;
     __v: number;
+    status: boolean;
     id: string;
   }
 
   interface Type {
     name: string;
     __v: number;
+    color: string;
     createdAt: string;
-    updatedAt: string;
-    description: string;
+    description?: string;
     icon: string;
+    status: boolean;
+    updatedAt: string;
     id: string;
   }
 
   export type ParkingPointValues = {
     spots: number;
     occupied: number;
-    name: string;
-    location: Location;
-    type: string;
   };
-
-  interface Location {
-    coordinates: string;
-  }
 
   /**
    * Page Types
    */
-  export interface IPageParkingPointsProps {
+  export interface ParkingPointsPageProps {
     parkingPoints?: ParkingPointResponse[];
-  }
-
-  export interface IPageNewParkingPointProps {
     placeTypes: PlaceTypeModel.PlaceTypeResponse[];
   }
 }
