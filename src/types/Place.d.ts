@@ -1,6 +1,20 @@
 import { Point } from "geojson";
+import { PlaceTypeModel } from "./PlaceType";
 
 declare namespace PlaceModel {
+  export type PlaceValues = {
+    spots?: number;
+    occupied?: number;
+    formattedAddress?: string;
+    name: string;
+    location: Location;
+    type: string;
+    status?: boolean;
+  };
+  interface Location {
+    coordinates: string;
+  }
+
   export interface PlaceResponse {
     name: string;
     location: Point;
@@ -12,9 +26,11 @@ declare namespace PlaceModel {
     spots?: number;
     occupied?: number;
     kind?: string;
+    formattedAddress?: string;
+    status: boolean;
   }
 
-  export interface Type {
+  interface Type {
     name: string;
     __v: number;
     createdAt: string;
@@ -23,6 +39,15 @@ declare namespace PlaceModel {
     icon: string;
     color: string;
     id: string;
+  }
+
+  export interface PlacesPageProps {
+    places: PlaceResponse[];
+    placeTypes: PlaceTypeModel.PlaceTypeResponse[];
+  }
+
+  export interface NewPlacePageProps {
+    placeTypes: PlaceTypeModel.PlaceTypeResponse[];
   }
 }
 

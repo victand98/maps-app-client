@@ -1,4 +1,10 @@
-import { Dashboard, Logout, PushPin, Room } from "@mui/icons-material";
+import {
+  Dashboard,
+  LocalParking,
+  Logout,
+  PushPin,
+  Room,
+} from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -25,13 +31,13 @@ const items: ISidebar.SidebarRoutes = [
     title: "Panel",
   },
   {
-    href: "/panel/estacionamientos",
+    href: "/panel/lugares",
     icon: <Room fontSize="small" />,
     title: "Lugares",
   },
   {
     href: "/panel/estacionamientos",
-    icon: <Room fontSize="small" />,
+    icon: <LocalParking fontSize="small" />,
     title: "Estacionamientos",
   },
   {

@@ -1,4 +1,3 @@
-import { ModalProps } from "@mui/material";
 import { IconsModel, PlaceTypeModel } from "@types";
 
 declare namespace IPlaceType {

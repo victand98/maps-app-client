@@ -1,15 +1,16 @@
 import { LoadingButton } from "@mui/lab";
 import { Box } from "@mui/material";
-import { LoginFormValues, LoginResponse } from "@types";
+import { LoginFormValues } from "@types";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { TextInput } from "..";
-import { signIn } from "next-auth/react";
 
 export const LoginForm = () => {
   const router = useRouter();
+
   const {
     control,
     handleSubmit,
@@ -24,7 +25,13 @@ export const LoginForm = () => {
       redirect: false,
     });
 
-    if (res?.error) console.log("LOGIN ERROR", res.error);
+    if (res?.error) {
+      res.error === "CredentialsSignin"
+        ? toast.error("Las credenciales de acceso no son válidas")
+        : toast.error(
+            "Ha ocurrido un error inesperado, por favor vuelva a intentarlo"
+          );
+    }
     if (res?.url) router.push(res.url);
   };
 

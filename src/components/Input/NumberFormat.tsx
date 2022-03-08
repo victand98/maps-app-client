@@ -6,15 +6,16 @@ import { IInput } from "./Input";
 export const NumberFormat = <TFormValues extends Record<string, unknown>>(
   props: IInput.INumberFormatProps<TFormValues>
 ) => {
+  const { shouldUnregister, ...rest } = props;
   const {
     field: { value, ...field },
     fieldState: { invalid, error },
-  } = useController(props);
+  } = useController({ shouldUnregister, ...rest });
 
   return (
     <ReactNumberFormat<{ [key: string]: any }>
       {...field}
-      {...props}
+      {...rest}
       error={invalid}
       helperText={error?.message || props.helperText}
     />

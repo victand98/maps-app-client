@@ -45,6 +45,7 @@ const nextAuthOptions = (
 
   pages: {
     signIn: "/ingresar",
+    error: "/ingresar",
   },
 
   callbacks: {
