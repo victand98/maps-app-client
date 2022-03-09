@@ -67,6 +67,7 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
         aria-describedby="alert-dialog-description"
         maxWidth="xs"
         fullWidth
+        scroll="body"
       >
         {currentPlace ? (
           <PlaceInfo place={currentPlace} handleClose={handleClose} />

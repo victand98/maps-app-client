@@ -31,7 +31,7 @@ import { PlaceModel } from "@types";
 import { LatLng } from "leaflet";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import React, { FC, Fragment, useEffect } from "react";
+import React, { FC, Fragment, useEffect, useRef } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -69,7 +69,9 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
 
   const spots = useWatch({ control, name: "spots", defaultValue: 1 });
 
-  const handleChooseOnMap = () => setShowMap(!showMap);
+  const handleChooseOnMap = () => {
+    setShowMap(!showMap);
+  };
 
   const onChangePosition = (position: LatLng) => {
     setValue("location.coordinates", `${position.lng},${position.lat}`, {

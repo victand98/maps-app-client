@@ -17,5 +17,7 @@ export const placePreviewState = atom<PlacePreviewStateAtom>({
       coordinates: "",
     },
     name: "",
+    occupied: 0,
+    spots: 1,
   },
 });
