@@ -1,21 +1,15 @@
-import {
-  ParkingPointForm,
-  ParkingPointPreview,
-  DashboardLayout,
-} from "@components";
+import { PlaceForm, PlacePreview, DashboardLayout } from "@components";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { ParkingPointModel, PlaceTypeModel } from "@types";
+import { PlaceModel, PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
 import React, { ReactElement } from "react";
 
-const NewParkingPoint: NextPageWithLayout<
-  ParkingPointModel.IPageNewParkingPointProps
-> = (props) => {
+const NewPlace: NextPageWithLayout<PlaceModel.NewPlacePageProps> = (props) => {
   return (
     <>
       <Head>
-        <title>Nuevo punto de estacionamiento | Ciclovía App</title>
+        <title>Nuevo lugar | Ciclovía App</title>
       </Head>
 
       <Box
@@ -27,15 +21,15 @@ const NewParkingPoint: NextPageWithLayout<
       >
         <Container maxWidth="lg">
           <Typography sx={{ mb: 3 }} variant="h4">
-            Nuevo punto de estacionamiento
+            Nuevo Lugar
           </Typography>
           <Grid container spacing={3}>
             <Grid item lg={4} md={6} xs={12}>
-              <ParkingPointPreview />
+              <PlacePreview />
             </Grid>
 
             <Grid item lg={8} md={6} xs={12}>
-              <ParkingPointForm placeTypes={props.placeTypes} />
+              <PlaceForm placeTypes={props.placeTypes} />
             </Grid>
           </Grid>
         </Container>
@@ -44,11 +38,11 @@ const NewParkingPoint: NextPageWithLayout<
   );
 };
 
-NewParkingPoint.getLayout = (page: ReactElement) => (
+NewPlace.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
 
-NewParkingPoint.getInitialProps = async (context) => {
+NewPlace.getInitialProps = async (context) => {
   const { data: placeTypes } = await context.client.get<
     PlaceTypeModel.PlaceTypeResponse[]
   >("/placetype");
@@ -56,4 +50,4 @@ NewParkingPoint.getInitialProps = async (context) => {
   return { placeTypes };
 };
 
-export default NewParkingPoint;
+export default NewPlace;

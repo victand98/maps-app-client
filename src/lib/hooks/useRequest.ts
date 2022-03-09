@@ -1,29 +1,33 @@
+import { CustomErrorResponse } from "@types";
 import { AxiosResponse } from "axios";
 import { useState } from "react";
-import { CustomErrorResponse } from "@types";
 
-interface Props<T> {
-  request: (data: any) => Promise<AxiosResponse<T>>;
+interface Props<T, E> {
+  request: (data: any, id: any) => Promise<AxiosResponse<T>>;
   onSuccess?: (data: T) => void;
-  onError?: (err: CustomErrorResponse) => void;
+  onError?: (err: CustomErrorResponse<E>) => void;
 }
 
-export const useRequest = <T>(props: Props<T>) => {
-  const [error, setError] = useState<CustomErrorResponse>();
+export const useRequest = <T, E = any>(props: Props<T, E>) => {
+  const [error, setError] = useState<CustomErrorResponse<E>>();
   const [response, setResponse] = useState<AxiosResponse<T>>();
+  const [loading, setLoading] = useState(false);
 
-  const doRequest = async (data?: any) => {
+  const doRequest = async (data?: E, id?: string) => {
     try {
+      setLoading(true);
       setError(undefined);
       setResponse(undefined);
-      const resp = await props.request(data);
+      const resp = await props.request(data, id);
+      setLoading(false);
       setResponse(resp);
       if (props.onSuccess) props.onSuccess(resp.data);
     } catch (err) {
-      setError(err as CustomErrorResponse);
-      if (props.onError) props.onError(err as CustomErrorResponse);
+      setLoading(false);
+      setError(err as CustomErrorResponse<E>);
+      if (props.onError) props.onError(err as CustomErrorResponse<E>);
     }
   };
 
-  return { doRequest, error, response };
+  return { doRequest, error, response, loading };
 };

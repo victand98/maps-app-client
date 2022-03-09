@@ -5,17 +5,17 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  makeStyles,
 } from "@mui/material";
 import L from "leaflet";
 import "leaflet.offline";
 import React, { FC, useEffect, useState } from "react";
+import { MapContainerProps } from "react-leaflet";
 import { toast } from "react-toastify";
 import { LinearProgressWithLabel } from "..";
 import Map from "./Map";
 
-const MapOffline: FC = (props) => {
-  const { children } = props;
+const MapOffline: FC<MapContainerProps> = (props) => {
+  const { children, ...rest } = props;
   const [map, setMap] = useState<L.Map>();
   const [open, setOpen] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -90,7 +90,7 @@ const MapOffline: FC = (props) => {
   };
 
   return (
-    <Map minZoom={13} maxZoom={17} whenCreated={setMap}>
+    <Map minZoom={13} maxZoom={17} {...rest} whenCreated={setMap}>
       {children}
       <Dialog
         open={open}

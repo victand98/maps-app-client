@@ -37,13 +37,12 @@ a {
   border-radius: 50%;
 }
 
-.custom-div-icon img {
+.custom-div-icon span {
   position: absolute;
-  width: 18px;
   font-size: 22px;
   left: 0;
   right: 0;
-  margin: 12px auto;
+  margin: 11px auto;
   text-align: center;
 }
 
@@ -51,4 +50,13 @@ a {
   margin: 0 auto;
   height: 100%;
   width: 22px;
+}
+
+.container {
+  overflow-x: auto;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 50px;
+  padding: 10px;
+  margin: 10px;
 }

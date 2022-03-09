@@ -12,6 +12,7 @@ export interface LoginResponse {
   status: boolean;
   updatedAt: string;
   id: string;
+  accessToken?: string;
 }
 
 export interface CurrentUser {

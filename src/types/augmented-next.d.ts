@@ -1,13 +1,13 @@
 import { AxiosInstance } from "axios";
 import "next";
 import { NextPage } from "next";
+import { Session } from "next-auth";
 import { ReactElement, ReactNode } from "react";
-import { CurrentUser } from "./Login";
 
 declare module "next" {
   export interface NextPageContext {
     client: AxiosInstance;
-    currentUser?: CurrentUser["currentUser"];
+    session: Session | null;
   }
 
   export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {

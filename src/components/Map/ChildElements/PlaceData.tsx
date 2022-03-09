@@ -31,6 +31,7 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+    setCurrentPlace(undefined);
   };
 
   return (
@@ -44,14 +45,17 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
 
           layer.on({
             click: (e) => {
-              setOpen(true);
               setCurrentPlace(feature.properties);
+              setOpen(true);
             },
           });
         }}
         pointToLayer={(feature, latlng) => {
           return L.marker(latlng, {
-            icon: new MarkerDivIcon("#26c30b", feature.properties.type.icon),
+            icon: new MarkerDivIcon(
+              feature.properties.type.color,
+              feature.properties.type.icon
+            ),
           });
         }}
       />
@@ -63,8 +67,11 @@ export const PlaceData: FC<ChildElements.PlaceDataProps> = (props) => {
         aria-describedby="alert-dialog-description"
         maxWidth="xs"
         fullWidth
+        scroll="body"
       >
-        <PlaceInfo place={currentPlace} handleClose={handleClose} />
+        {currentPlace ? (
+          <PlaceInfo place={currentPlace} handleClose={handleClose} />
+        ) : null}
       </Dialog>
     </Fragment>
   );

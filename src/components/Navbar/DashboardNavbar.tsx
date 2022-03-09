@@ -1,3 +1,4 @@
+import { Group, Menu, Notifications, Search } from "@mui/icons-material";
 import {
   AppBar,
   Avatar,
@@ -5,15 +6,12 @@ import {
   Box,
   IconButton,
   styled,
-  SvgIcon,
   Toolbar,
   Tooltip,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
 import React, { FC } from "react";
-import { AiFillBell, AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
-import { FiUsers } from "react-icons/fi";
 import { INavbar } from "./Navbar";
-import { useAuthContext } from "@lib";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -22,7 +20,7 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
 
 export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
   const { onSidebarOpen, ...rest } = props;
-  const { currentUser } = useAuthContext();
+  const { data } = useSession();
 
   return (
     <>
@@ -54,31 +52,23 @@ export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
               },
             }}
           >
-            <SvgIcon fontSize="small">
-              <AiOutlineMenu />
-            </SvgIcon>
+            <Menu fontSize="small" />
           </IconButton>
           <Tooltip title="Buscar">
             <IconButton sx={{ ml: 1 }}>
-              <SvgIcon fontSize="small">
-                <AiOutlineSearch />
-              </SvgIcon>
+              <Search fontSize="small" />
             </IconButton>
           </Tooltip>
           <Box sx={{ flexGrow: 1 }} />
           <Tooltip title="Contactos">
             <IconButton sx={{ ml: 1 }}>
-              <SvgIcon fontSize="small">
-                <FiUsers />
-              </SvgIcon>
+              <Group fontSize="small" />
             </IconButton>
           </Tooltip>
           <Tooltip title="Notificaciones">
             <IconButton sx={{ ml: 1 }}>
               <Badge badgeContent={4} color="primary" variant="dot">
-                <SvgIcon fontSize="small">
-                  <AiFillBell />
-                </SvgIcon>
+                <Notifications fontSize="small" />
               </Badge>
             </IconButton>
           </Tooltip>
@@ -90,8 +80,8 @@ export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
               bgcolor: "purple",
             }}
           >
-            {currentUser?.firstName[0]}
-            {currentUser?.lastName[0]}
+            {data?.user?.firstName[0]}
+            {data?.user?.lastName[0]}
           </Avatar>
         </Toolbar>
       </DashboardNavbarRoot>

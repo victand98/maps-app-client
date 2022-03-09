@@ -1,22 +1,24 @@
 import axios from "axios";
-import { getCookies } from "cookies-next";
-import { NextPageContext } from "next";
+import { GetServerSidePropsContext, NextPageContext, PreviewData } from "next";
+import { getSession } from "next-auth/react";
+import { ParsedUrlQuery } from "querystring";
 import { httpClient, SERVER_URI_PRIVATE } from ".";
 
-const buildClient = ({ req, res }: NextPageContext) => {
-  const cookiesSSR = getCookies({ req, res });
-  console.log("cookiesSSR", cookiesSSR);
-
+const buildClient = async (
+  ctx: NextPageContext | GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
+) => {
   if (typeof window === "undefined") {
     // We are on the server
+    const session = await getSession(ctx);
     const instance = axios.create();
     instance.defaults.baseURL = SERVER_URI_PRIVATE;
     instance.defaults.withCredentials = true;
-
-    if (req?.headers.cookie) {
-      console.log("\nCOOKIE\n", req?.headers.cookie);
-      instance.defaults.headers.common["cookie"] = req?.headers.cookie;
-    }
+    if (ctx.req?.headers.cookie)
+      instance.defaults.headers.common["cookie"] = ctx.req.headers.cookie;
+    if (session)
+      instance.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${session.accessToken}`;
 
     return instance;
   } else {

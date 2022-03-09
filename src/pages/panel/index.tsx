@@ -2,7 +2,7 @@ import { DashboardLayout } from "@components";
 import React, { ReactElement } from "react";
 
 const Home = () => {
-  return <div></div>;
+  return <div>Principal</div>;
 };
 
 Home.getLayout = (page: ReactElement) => (

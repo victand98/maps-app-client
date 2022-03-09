@@ -1,4 +1,11 @@
 import {
+  Dashboard,
+  LocalParking,
+  Logout,
+  PushPin,
+  Room,
+} from "@mui/icons-material";
+import {
   Box,
   Button,
   Divider,
@@ -8,34 +15,41 @@ import {
   Typography,
   useMediaQuery,
 } from "@mui/material";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { FC, useEffect } from "react";
+import { GiCycling } from "react-icons/gi";
+import { MdOpenInNew } from "react-icons/md";
 import { Link, NavItem } from "..";
 import { ISidebar } from "./Sidebar";
-import { GiCycling } from "react-icons/gi";
-import { AiFillHome } from "react-icons/ai";
-import { MdOpenInNew } from "react-icons/md";
-import { FaParking } from "react-icons/fa";
-import { useAuthContext } from "@lib";
-import { Logout } from "@mui/icons-material";
-import Image from "next/image";
 
 const items: ISidebar.SidebarRoutes = [
   {
     href: "/panel",
-    icon: <AiFillHome fontSize="small" />,
+    icon: <Dashboard fontSize="small" />,
     title: "Panel",
   },
   {
+    href: "/panel/lugares",
+    icon: <Room fontSize="small" />,
+    title: "Lugares",
+  },
+  {
     href: "/panel/estacionamientos",
-    icon: <FaParking fontSize="small" />,
+    icon: <LocalParking fontSize="small" />,
     title: "Estacionamientos",
+  },
+  {
+    href: "/panel/tiposlugar",
+    icon: <PushPin fontSize="small" />,
+    title: "Tipos de Lugar",
   },
 ];
 
 export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
   const { open, onClose } = props;
-  const { currentUser } = useAuthContext();
+  const { data } = useSession();
   const router = useRouter();
   const lgUp = useMediaQuery<Theme>((theme) => theme.breakpoints.up("lg"), {
     defaultMatches: true,
@@ -50,7 +64,8 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
     if (open) {
       onClose?.();
     }
-  }, [router.asPath, onClose, open, router.isReady]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [router.asPath]);
 
   const content = (
     <>
@@ -90,10 +105,10 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
             >
               <div>
                 <Typography color="inherit" variant="subtitle1">
-                  {currentUser?.firstName} {currentUser?.lastName}
+                  {data?.user?.firstName} {data?.user?.lastName}
                 </Typography>
                 <Typography color="neutral.400" variant="body2">
-                  {currentUser?.email}
+                  {data?.user?.email}
                 </Typography>
               </div>
               <SvgIcon
@@ -148,13 +163,13 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
               },
             }}
           >
-            {/* TODO: Change image */}
             <Image
               alt="Loja"
               src="/images/Loja.jpg"
-              width="100%"
-              height="100%"
               priority
+              layout="fixed"
+              width={950}
+              height={100}
             />
           </Box>
           <Link href="/" passHref withAnchor={false}>

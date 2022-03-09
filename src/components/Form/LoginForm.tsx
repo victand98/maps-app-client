@@ -1,7 +1,7 @@
-import { AuthService, useRequest } from "@lib";
 import { LoadingButton } from "@mui/lab";
 import { Box } from "@mui/material";
-import { LoginFormValues, LoginResponse } from "@types";
+import { LoginFormValues } from "@types";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -10,26 +10,29 @@ import { TextInput } from "..";
 
 export const LoginForm = () => {
   const router = useRouter();
-  const { doRequest } = useRequest<LoginResponse>({
-    request: AuthService.login,
-    onSuccess: (data) => {
-      const returnUrl = (router.query.returnUrl as string) || "/panel";
-      router.push(returnUrl);
-    },
-    onError: (err) => {
-      for (const error of err.errors) {
-        toast.error(error.message);
-      }
-    },
-  });
+
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<LoginFormValues>();
 
-  const onSubmit = (data: LoginFormValues) => {
-    doRequest(data);
+  const onSubmit = async ({ email, password }: LoginFormValues) => {
+    const res = await signIn<any>("credentials", {
+      email,
+      password,
+      callbackUrl: (router.query.returnUrl as string) || "/panel",
+      redirect: false,
+    });
+
+    if (res?.error) {
+      res.error === "CredentialsSignin"
+        ? toast.error("Las credenciales de acceso no son válidas")
+        : toast.error(
+            "Ha ocurrido un error inesperado, por favor vuelva a intentarlo"
+          );
+    }
+    if (res?.url) router.push(res.url);
   };
 
   return (
