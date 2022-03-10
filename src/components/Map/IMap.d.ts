@@ -1,7 +1,6 @@
-import React from "react";
-import { MarkerProps } from "react-leaflet";
+import { BikewayModel, PlaceModel } from "@types";
+import { LineString } from "geojson";
 import { LatLng } from "leaflet";
-import { PlaceModel } from "@types";
 
 declare namespace IMap {
   export interface IMapProps {}
@@ -12,6 +11,11 @@ declare namespace IMap {
 
   export interface MapViewerProps {
     places: PlaceModel.PlaceResponse[];
+    bikeways: BikewayModel.BikewayResponse[];
+  }
+
+  export interface MapBikewayDrawerProps {
+    geometry?: LineString;
   }
 }
 

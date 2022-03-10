@@ -1,6 +1,6 @@
 import { IndexLayout } from "@components/Layout";
 import { Box } from "@mui/material";
-import { HomePage, PlaceModel } from "@types";
+import { BikewayModel, HomePage, PlaceModel } from "@types";
 import { NextPageWithLayout } from "next";
 import dynamic from "next/dynamic";
 import React, { ReactElement } from "react";
@@ -19,7 +19,7 @@ const Home: NextPageWithLayout<HomePage.HomePageProps> = (props) => {
         height: "100%",
       }}
     >
-      <MapViewer places={props.places} />
+      <MapViewer places={props.places} bikeways={props.bikeways} />
     </Box>
   );
 };
@@ -27,11 +27,12 @@ const Home: NextPageWithLayout<HomePage.HomePageProps> = (props) => {
 Home.getLayout = (page: ReactElement) => <IndexLayout>{page}</IndexLayout>;
 
 Home.getInitialProps = async (context) => {
-  const [places] = await Promise.all([
+  const [places, bikeways] = await Promise.all([
     context.client.get<PlaceModel.PlaceResponse[]>("/place"),
+    context.client.get<BikewayModel.BikewayResponse[]>("/bikeway"),
   ]);
 
-  return { places: places.data };
+  return { places: places.data, bikeways: bikeways.data };
 };
 
 export default Home;

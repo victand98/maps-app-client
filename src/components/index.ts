@@ -1,3 +1,4 @@
+export * from "@components/Bikeway";
 export * from "@components/Copyright";
 export * from "@components/Form";
 export * from "@components/Input";

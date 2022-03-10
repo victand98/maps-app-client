@@ -39,7 +39,7 @@ export const PlaceListResults: FC<IPlace.IPlaceListResultsProps> = (props) => {
   });
   const [currentPlace, setCurrentPlace] = useState<PlaceModel.PlaceResponse>();
 
-  const { doRequest } = useRequest<PlaceModel.PlaceResponse>({
+  const { doRequest, loading } = useRequest<PlaceModel.PlaceResponse>({
     request: PlaceService.update,
     onSuccess: (data) => {
       toast.success("Estado actualizado");
@@ -123,6 +123,7 @@ export const PlaceListResults: FC<IPlace.IPlaceListResultsProps> = (props) => {
                       color="success"
                       label="Activo"
                       onClick={() => toggleStatus(place.status, place.id)}
+                      disabled={loading}
                     />
                   ) : (
                     <Chip
@@ -130,6 +131,7 @@ export const PlaceListResults: FC<IPlace.IPlaceListResultsProps> = (props) => {
                       color="default"
                       label="Inactivo"
                       onClick={() => toggleStatus(place.status, place.id)}
+                      disabled={loading}
                     />
                   )}
                 </TableCell>

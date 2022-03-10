@@ -4,6 +4,7 @@ import {
   Logout,
   PushPin,
   Room,
+  Signpost,
 } from "@mui/icons-material";
 import {
   Box,
@@ -29,6 +30,11 @@ const items: ISidebar.SidebarRoutes = [
     href: "/panel",
     icon: <Dashboard fontSize="small" />,
     title: "Panel",
+  },
+  {
+    href: "/panel/ciclovias",
+    icon: <Signpost fontSize="small" />,
+    title: "Ciclovías",
   },
   {
     href: "/panel/lugares",

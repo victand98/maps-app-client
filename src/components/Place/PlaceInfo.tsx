@@ -60,7 +60,6 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
         }
         title={place.name}
         subheader={place.type.name}
-        about="sdsadasdasd"
       />
       <CardMedia sx={{ height: "250px" }}>
         <PlaceMinimap
@@ -88,11 +87,14 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
             sx={{
               display: "flex",
               justifyContent: "center",
+              gap: "2px",
             }}
           >
             <Place color="disabled" fontSize="small" />
             <Typography color="textSecondary" variant="body2" gutterBottom>
-              {place.formattedAddress || place.type.description}
+              {place.formattedAddress ||
+                place.type.description ||
+                "Sin información"}
             </Typography>
           </Box>
 
