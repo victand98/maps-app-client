@@ -1,3 +1,4 @@
+export * from "./bikeway";
 export * from "./iconOptions";
 export * from "./parkingPoint";
 export * from "./place";

@@ -11,6 +11,7 @@ export * from "./api/Icons";
 /**
  * Models types
  */
+export * from "./Bikeway";
 export * from "./Error";
 export * from "./Login";
 export * from "./ParkingPoint";

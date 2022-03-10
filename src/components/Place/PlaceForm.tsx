@@ -31,7 +31,7 @@ import { PlaceModel } from "@types";
 import { LatLng } from "leaflet";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import React, { FC, Fragment, useEffect, useRef } from "react";
+import React, { FC, Fragment, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -48,7 +48,7 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
   const [placePreview, setPlacePreview] = useRecoilState(placePreviewState);
   const resetPlacePreviewState = useResetRecoilState(placePreviewState);
   const [showMap, setShowMap] = React.useState(false);
-  const { doRequest } = useRequest<PlaceModel.PlaceResponse>({
+  const { doRequest, loading } = useRequest<PlaceModel.PlaceResponse>({
     request: PlaceService.save,
     onSuccess: (data) => {
       toast.success("Lugar guardado con éxito");
@@ -59,13 +59,8 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
       handleFormError(err, setError);
     },
   });
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-    setValue,
-    setError,
-  } = useForm<PlaceModel.PlaceValues>();
+  const { control, handleSubmit, setValue, setError } =
+    useForm<PlaceModel.PlaceValues>();
 
   const spots = useWatch({ control, name: "spots", defaultValue: 1 });
 
@@ -315,7 +310,7 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
           }}
         >
           <LoadingButton
-            loading={isSubmitting}
+            loading={loading}
             type="submit"
             color="primary"
             variant="contained"
