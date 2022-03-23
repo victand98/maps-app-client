@@ -1,5 +1,6 @@
 import {
   Dashboard,
+  Group,
   LocalParking,
   Logout,
   PushPin,
@@ -50,6 +51,11 @@ const items: ISidebar.SidebarRoutes = [
     href: "/panel/tiposlugar",
     icon: <PushPin fontSize="small" />,
     title: "Tipos de Lugar",
+  },
+  {
+    href: "/panel/usuarios",
+    icon: <Group fontSize="small" />,
+    title: "Usuarios",
   },
 ];
 

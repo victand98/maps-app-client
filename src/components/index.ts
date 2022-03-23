@@ -11,3 +11,4 @@ export * from "@components/Place";
 export * from "@components/PlaceType";
 export * from "@components/Progress";
 export * from "@components/Sidebar";
+export * from "@components/User";

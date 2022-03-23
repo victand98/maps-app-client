@@ -17,3 +17,4 @@ export * from "./Login";
 export * from "./ParkingPoint";
 export * from "./Place";
 export * from "./PlaceType";
+export * from "./User";

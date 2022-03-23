@@ -326,7 +326,7 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
 export const PlaceEditForm: FC<IPlace.PlaceEditFormProps> = (props) => {
   const { placeTypes, open, onClose, currentPlace } = props;
   const [showMap, setShowMap] = React.useState(false);
-  const { doRequest } = useRequest<PlaceModel.PlaceResponse>({
+  const { doRequest, loading } = useRequest<PlaceModel.PlaceResponse>({
     request: PlaceService.update,
     onSuccess: (data) => {
       toast.success("Lugar modificado con éxito");
@@ -337,15 +337,10 @@ export const PlaceEditForm: FC<IPlace.PlaceEditFormProps> = (props) => {
     },
   });
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-    setValue,
-    setError,
-  } = useForm<PlaceModel.PlaceValues>({
-    defaultValues: {},
-  });
+  const { control, handleSubmit, setValue, setError } =
+    useForm<PlaceModel.PlaceValues>({
+      defaultValues: {},
+    });
 
   const spots = useWatch({
     control,
@@ -559,7 +554,7 @@ export const PlaceEditForm: FC<IPlace.PlaceEditFormProps> = (props) => {
         <DialogActions>
           <Button onClick={onClose}>Cancelar</Button>
           <LoadingButton
-            loading={isSubmitting}
+            loading={loading}
             type="submit"
             color="primary"
             variant="contained"
