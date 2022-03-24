@@ -1,6 +1,6 @@
+export * from "@components/Auth";
 export * from "@components/Bikeway";
 export * from "@components/Copyright";
-export * from "@components/Form";
 export * from "@components/Input";
 export * from "@components/Label";
 export * from "@components/Layout";

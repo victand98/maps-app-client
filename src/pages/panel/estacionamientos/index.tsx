@@ -3,7 +3,7 @@ import {
   ParkingPointCard,
   ParkingPointListToolbar,
 } from "@components";
-import { useParkingPoints, usePlaceTypes } from "@lib";
+import { Roles, useParkingPoints, usePlaceTypes } from "@lib";
 import { Box, Container, Grid } from "@mui/material";
 import { ParkingPointModel, PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -71,6 +71,10 @@ ParkingPoints.getInitialProps = async (context) => {
   ]);
 
   return { parkingPoints: parkingPoints.data, placeTypes: placeTypes.data };
+};
+
+ParkingPoints.auth = {
+  roles: [Roles.admin],
 };
 
 export default ParkingPoints;

@@ -1,5 +1,5 @@
 import { DashboardLayout, UserListResults, UserListToolbar } from "@components";
-import { useUsers } from "@lib";
+import { Roles, useUsers } from "@lib";
 import { Box, Container } from "@mui/material";
 import { UserModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -36,6 +36,10 @@ const Users: NextPageWithLayout<UserModel.UsersPageProps> = (props) => {
 Users.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+Users.auth = {
+  roles: [Roles.admin],
+};
 
 Users.getInitialProps = async (context) => {
   const users = await context.client.get<UserModel.UserResponse[]>("/user");

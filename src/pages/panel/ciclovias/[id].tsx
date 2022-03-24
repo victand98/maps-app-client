@@ -1,4 +1,5 @@
 import { BikewayEditForm, DashboardLayout } from "@components";
+import { Roles } from "@lib";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { BikewayModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -57,6 +58,10 @@ Bikeway.getInitialProps = async (ctx) => {
     `/bikeway/${id}`
   );
   return { bikeway: bikeway.data };
+};
+
+Bikeway.auth = {
+  roles: [Roles.admin],
 };
 
 export default Bikeway;

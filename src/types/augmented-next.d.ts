@@ -1,3 +1,4 @@
+import { Roles } from "@lib";
 import { AxiosInstance } from "axios";
 import "next";
 import { NextPage } from "next";
@@ -12,5 +13,8 @@ declare module "next" {
 
   export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
     getLayout?: (page: ReactElement) => ReactNode;
+    auth?: {
+      roles: Roles[];
+    };
   };
 }

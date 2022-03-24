@@ -1,16 +1,16 @@
-import { DefaultLayout, Link, LoginForm } from "@components";
-import { Avatar, Box, Typography, Link as MaterialLink } from "@mui/material";
+import { DefaultLayout, Link, SignupForm } from "@components";
+import { HowToReg } from "@mui/icons-material";
+import { Avatar, Box, Link as MaterialLink, Typography } from "@mui/material";
 import { GetServerSideProps, NextPageWithLayout } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
 import React, { ReactElement } from "react";
-import { AiFillLock } from "react-icons/ai";
 
-const Login: NextPageWithLayout<{}> = () => {
+const Signup: NextPageWithLayout<{}> = () => {
   return (
     <>
       <Head>
-        <title>Ingresar | Ciclovía App</title>
+        <title>Registrarse | Ciclovía App</title>
       </Head>
 
       <Box
@@ -22,20 +22,20 @@ const Login: NextPageWithLayout<{}> = () => {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <AiFillLock />
+          <HowToReg />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Ingreso al Sistema
+          Nuevo Registro
         </Typography>
         <Typography color="textSecondary" gutterBottom variant="body2">
-          Utiliza tus credenciales de acceso
+          Llena los siguientes datos para obtener una cuenta
         </Typography>
-        <LoginForm />
+        <SignupForm />
         <Typography color="textSecondary" variant="body2">
-          ¿No tienes una cuenta?{" "}
-          <Link href="/registrarse" passHref withAnchor={false}>
+          ¿Ya posees una cuenta?{" "}
+          <Link href="/ingresar" passHref withAnchor={false}>
             <MaterialLink variant="subtitle2" underline="hover">
-              Regístrate
+              Ingresa ahora
             </MaterialLink>
           </Link>
         </Typography>
@@ -44,7 +44,9 @@ const Login: NextPageWithLayout<{}> = () => {
   );
 };
 
-Login.getLayout = (page: ReactElement) => <DefaultLayout>{page}</DefaultLayout>;
+Signup.getLayout = (page: ReactElement) => (
+  <DefaultLayout>{page}</DefaultLayout>
+);
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
@@ -65,4 +67,4 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-export default Login;
+export default Signup;

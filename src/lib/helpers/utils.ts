@@ -1,3 +1,4 @@
+import { Roles } from "@lib/constants";
 import { CustomErrorResponse } from "@types";
 import { UseFormSetError } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -36,3 +37,6 @@ export const toastErrors = <T = any>(err: CustomErrorResponse<T>) => {
     toast.error(error.message);
   }
 };
+
+export const hasAccess = (roles: Roles[], role?: string) =>
+  role && roles.includes(role as Roles);

@@ -1,3 +1,4 @@
+import { hasAccess, Roles } from "@lib";
 import {
   Dashboard,
   Group,
@@ -31,31 +32,37 @@ const items: ISidebar.SidebarRoutes = [
     href: "/panel",
     icon: <Dashboard fontSize="small" />,
     title: "Panel",
+    roles: [Roles.admin, Roles.cyclist],
   },
   {
     href: "/panel/ciclovias",
     icon: <Signpost fontSize="small" />,
     title: "Ciclovías",
+    roles: [Roles.admin],
   },
   {
     href: "/panel/lugares",
     icon: <Room fontSize="small" />,
     title: "Lugares",
+    roles: [Roles.admin],
   },
   {
     href: "/panel/estacionamientos",
     icon: <LocalParking fontSize="small" />,
     title: "Estacionamientos",
+    roles: [Roles.admin],
   },
   {
     href: "/panel/tiposlugar",
     icon: <PushPin fontSize="small" />,
     title: "Tipos de Lugar",
+    roles: [Roles.admin],
   },
   {
     href: "/panel/usuarios",
     icon: <Group fontSize="small" />,
     title: "Usuarios",
+    roles: [Roles.admin],
   },
 ];
 
@@ -120,7 +127,7 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
                   {data?.user?.firstName} {data?.user?.lastName}
                 </Typography>
                 <Typography color="neutral.400" variant="body2">
-                  {data?.user?.email}
+                  {data?.user?.role.name}
                 </Typography>
               </div>
               <SvgIcon
@@ -142,14 +149,16 @@ export const DashboardSidebar: FC<ISidebar.DashboardSidebarProps> = (props) => {
           }}
         />
         <Box sx={{ flexGrow: 1 }}>
-          {items.map((item) => (
-            <NavItem
-              key={item.title}
-              icon={item.icon}
-              href={item.href}
-              title={item.title}
-            />
-          ))}
+          {items.map((item) =>
+            hasAccess(item.roles, data?.user?.role.name) ? (
+              <NavItem
+                key={item.title}
+                icon={item.icon}
+                href={item.href}
+                title={item.title}
+              />
+            ) : null
+          )}
         </Box>
         <Divider sx={{ borderColor: "#2D3748" }} />
         <Box

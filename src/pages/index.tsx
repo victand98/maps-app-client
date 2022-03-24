@@ -13,10 +13,7 @@ const Home: NextPageWithLayout<HomePage.HomePageProps> = (props) => {
   return (
     <Box
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "100%",
+        flexGrow: 1,
       }}
     >
       <MapViewer places={props.places} bikeways={props.bikeways} />

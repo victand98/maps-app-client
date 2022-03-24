@@ -1,5 +1,5 @@
 import { DashboardLayout, PlaceTypeForm, PlaceTypeHelper } from "@components";
-import { getIconOptions } from "@lib";
+import { getIconOptions, Roles } from "@lib";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { PlaceTypeModel } from "@types";
 import { GetServerSideProps, NextPageWithLayout } from "next";
@@ -46,6 +46,10 @@ const NewPlaceType: NextPageWithLayout<
 NewPlaceType.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+NewPlaceType.auth = {
+  roles: [Roles.admin],
+};
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const iconOptions = getIconOptions();

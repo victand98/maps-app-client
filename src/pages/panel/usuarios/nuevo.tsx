@@ -1,4 +1,5 @@
 import { DashboardLayout, UserForm, UserPreview } from "@components";
+import { Roles } from "@lib";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { UserModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -36,6 +37,10 @@ const NewUser: NextPageWithLayout<UserModel.NewUserPageProps> = (props) => {
       </Box>
     </>
   );
+};
+
+NewUser.auth = {
+  roles: [Roles.admin],
 };
 
 NewUser.getLayout = (page: ReactElement) => (

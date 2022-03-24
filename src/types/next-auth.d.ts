@@ -1,6 +1,6 @@
-import NextAuth, { User } from "next-auth";
-import NextAuthJWT from "next-auth/jwt";
-import { LoginResponse } from "./Login";
+import { User } from "next-auth";
+import "next-auth/jwt";
+import { LoginResponse } from "./Auth";
 
 declare module "next-auth" {
   /**

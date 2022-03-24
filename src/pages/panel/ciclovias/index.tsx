@@ -3,7 +3,7 @@ import {
   BikewayListToolbar,
   DashboardLayout,
 } from "@components";
-import { useBikeways } from "@lib";
+import { Roles, useBikeways } from "@lib";
 import { Box, Container } from "@mui/material";
 import { BikewayModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -48,6 +48,10 @@ Bikeways.getInitialProps = async (context) => {
     "/bikeway"
   );
   return { bikeways: bikeways.data };
+};
+
+Bikeways.auth = {
+  roles: [Roles.admin],
 };
 
 export default Bikeways;
