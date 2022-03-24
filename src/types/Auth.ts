@@ -21,6 +21,7 @@ export interface LoginResponse {
   updatedAt: string;
   __v: number;
   id: string;
+  accessToken?: string;
 }
 
 export interface Role {
