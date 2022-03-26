@@ -19,6 +19,11 @@ declare namespace UserModel {
     status?: boolean;
   };
 
+  export type UserOptions = {
+    label: string;
+    value: string;
+  };
+
   export interface UsersPageProps {
     users: UserResponse[];
   }

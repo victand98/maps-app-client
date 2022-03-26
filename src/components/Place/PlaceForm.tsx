@@ -24,19 +24,18 @@ import {
   InputAdornment,
   ListItemIcon,
   MenuItem,
-  TextField,
   Tooltip,
 } from "@mui/material";
 import { PlaceModel } from "@types";
 import { LatLng } from "leaflet";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
-import React, { FC, Fragment, useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import React, { FC, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { useRecoilState, useResetRecoilState } from "recoil";
-import { NumberFormat, TextInput } from "..";
+import { TextInput } from "..";
 import { IPlace } from "./IPlace";
 
 const MapPicker = dynamic(() => import("@components/Map/MapPicker"), {
@@ -61,8 +60,6 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
   });
   const { control, handleSubmit, setValue, setError } =
     useForm<PlaceModel.PlaceValues>();
-
-  const spots = useWatch({ control, name: "spots", defaultValue: 1 });
 
   const handleChooseOnMap = () => {
     setShowMap(!showMap);
@@ -159,73 +156,6 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
                 ))}
               </TextInput>
             </Grid>
-
-            {placePreview.type?.name === PlaceTypes.parking && (
-              <Fragment>
-                <Grid item md={6} xs={12}>
-                  <NumberFormat<PlaceModel.PlaceValues>
-                    control={control}
-                    customInput={TextField as any}
-                    decimalScale={0}
-                    allowNegative={false}
-                    defaultValue="1"
-                    min="1"
-                    fullWidth
-                    helperText="Número de espacios"
-                    name="spots"
-                    label="Espacios"
-                    variant="outlined"
-                    required
-                    shouldUnregister
-                    rules={{
-                      required: "El campo es requerido",
-                      min: {
-                        value: 1,
-                        message: "El valor mínimo es 1",
-                      },
-                      onChange: (e) =>
-                        setPlacePreview((prev) => ({
-                          ...prev,
-                          spots: parseInt(e.target.value),
-                        })),
-                    }}
-                  />
-                </Grid>
-
-                <Grid item md={6} xs={12}>
-                  <NumberFormat<PlaceModel.PlaceValues>
-                    control={control}
-                    customInput={TextField as any}
-                    decimalScale={0}
-                    allowNegative={false}
-                    defaultValue="0"
-                    min="0"
-                    isAllowed={(values) => {
-                      const { formattedValue, floatValue } = values;
-                      return (
-                        formattedValue === "" ||
-                        (floatValue !== undefined && floatValue <= spots!)
-                      );
-                    }}
-                    fullWidth
-                    helperText="Número de espacios ocupados"
-                    name="occupied"
-                    label="Ocupados"
-                    variant="outlined"
-                    required
-                    shouldUnregister
-                    rules={{
-                      required: "El campo es requerido",
-                      onChange: (e) =>
-                        setPlacePreview((prev) => ({
-                          ...prev,
-                          occupied: parseInt(e.target.value),
-                        })),
-                    }}
-                  />
-                </Grid>
-              </Fragment>
-            )}
 
             <Grid item xs={12}>
               <TextInput<PlaceModel.PlaceValues>
@@ -342,12 +272,6 @@ export const PlaceEditForm: FC<IPlace.PlaceEditFormProps> = (props) => {
       defaultValues: {},
     });
 
-  const spots = useWatch({
-    control,
-    name: "spots",
-    defaultValue: currentPlace.spots,
-  });
-
   const onChangePosition = (position: LatLng) => {
     setValue("location.coordinates", `${position.lng},${position.lat}`, {
       shouldValidate: true,
@@ -427,64 +351,6 @@ export const PlaceEditForm: FC<IPlace.PlaceEditFormProps> = (props) => {
                 ))}
               </TextInput>
             </Grid>
-
-            {currentPlace.occupied !== undefined &&
-              currentPlace.spots !== undefined && (
-                <Fragment>
-                  <Grid item md={6} xs={12}>
-                    <NumberFormat<PlaceModel.PlaceValues>
-                      control={control}
-                      customInput={TextField as any}
-                      decimalScale={0}
-                      allowNegative={false}
-                      defaultValue={currentPlace.spots}
-                      min="1"
-                      fullWidth
-                      helperText="Número de espacios"
-                      name="spots"
-                      label="Espacios"
-                      variant="outlined"
-                      required
-                      shouldUnregister
-                      rules={{
-                        required: "El campo es requerido",
-                        min: {
-                          value: 1,
-                          message: "El valor mínimo es 1",
-                        },
-                      }}
-                    />
-                  </Grid>
-
-                  <Grid item md={6} xs={12}>
-                    <NumberFormat<PlaceModel.PlaceValues>
-                      control={control}
-                      customInput={TextField as any}
-                      decimalScale={0}
-                      allowNegative={false}
-                      defaultValue={currentPlace.occupied}
-                      min="0"
-                      isAllowed={(values) => {
-                        const { formattedValue, floatValue } = values;
-                        return (
-                          formattedValue === "" ||
-                          (floatValue !== undefined && floatValue <= spots!)
-                        );
-                      }}
-                      fullWidth
-                      helperText="Número de espacios ocupados"
-                      name="occupied"
-                      label="Ocupados"
-                      variant="outlined"
-                      required
-                      shouldUnregister
-                      rules={{
-                        required: "El campo es requerido",
-                      }}
-                    />
-                  </Grid>
-                </Fragment>
-              )}
 
             <Grid item xs={12}>
               <TextInput<PlaceModel.PlaceValues>

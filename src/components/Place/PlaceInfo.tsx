@@ -1,7 +1,8 @@
 import { PlaceTypes } from "@lib";
-import { DirectionsBike, Place, Settings, Update } from "@mui/icons-material";
+import { Place, Settings, Update } from "@mui/icons-material";
 import {
   Avatar,
+  Badge,
   Box,
   Button,
   Card,
@@ -12,7 +13,6 @@ import {
   Grid,
   Icon,
   IconButton,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { formatDistance } from "date-fns";
@@ -20,7 +20,7 @@ import { LatLngExpression } from "leaflet";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import React, { FC, useMemo } from "react";
-import { Link } from "..";
+import { Link, ParkingPointInfo } from "..";
 import { IPlace } from "./IPlace";
 
 const PlaceMinimap = dynamic(
@@ -45,9 +45,15 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
     <Card>
       <CardHeader
         avatar={
-          <Avatar sx={{ bgcolor: place.type.color }} aria-label={place.name}>
-            <Icon>{place.type.icon}</Icon>
-          </Avatar>
+          <Badge
+            overlap="circular"
+            color={place.status ? "secondary" : "error"}
+            variant="dot"
+          >
+            <Avatar sx={{ bgcolor: place.type.color }} aria-label={place.name}>
+              <Icon>{place.type.icon}</Icon>
+            </Avatar>
+          </Badge>
         }
         action={
           data ? (
@@ -79,19 +85,23 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
             flexDirection: "column",
           }}
         >
-          <Typography color="textPrimary" align="center" variant="h6">
+          <Typography
+            color="textPrimary"
+            align="center"
+            variant="h6"
+            gutterBottom
+          >
             {place.name}
           </Typography>
 
           <Box
             sx={{
               display: "flex",
-              justifyContent: "center",
-              gap: "2px",
+              gap: 0.5,
             }}
           >
             <Place color="disabled" fontSize="small" />
-            <Typography color="textSecondary" variant="body2" gutterBottom>
+            <Typography color="textSecondary" variant="body2">
               {place.formattedAddress ||
                 place.type.description ||
                 "Sin información"}
@@ -99,53 +109,7 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
           </Box>
 
           {place.type.name === PlaceTypes.parking && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                pt: 2,
-              }}
-            >
-              <Box
-                sx={{
-                  p: 1,
-                  textAlign: "center",
-                }}
-              >
-                <DirectionsBike color="action" />
-                <Typography color="textPrimary" variant="body1">
-                  Ocupados
-                </Typography>
-                <Tooltip title="Espacios de estacionamiento ocupados" arrow>
-                  <Typography
-                    style={{ color: "red", cursor: "pointer" }}
-                    variant="h4"
-                  >
-                    {place.occupied}
-                  </Typography>
-                </Tooltip>
-              </Box>
-
-              <Box
-                sx={{
-                  p: 1,
-                  textAlign: "center",
-                }}
-              >
-                <DirectionsBike color="action" />
-                <Typography color="textPrimary" variant="body1">
-                  Disponibles
-                </Typography>
-                <Tooltip title="Espacios de estacionamiento disponibles" arrow>
-                  <Typography
-                    style={{ color: "green", cursor: "pointer" }}
-                    variant="h4"
-                  >
-                    {place.spots! - place.occupied!}
-                  </Typography>
-                </Tooltip>
-              </Box>
-            </Box>
+            <ParkingPointInfo place={place} />
           )}
         </Box>
       </CardContent>

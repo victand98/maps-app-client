@@ -1,5 +1,6 @@
 import {
   PlaceService,
+  PlaceTypes,
   toastErrors,
   usePagination,
   usePlaces,
@@ -21,12 +22,14 @@ import {
   TableRow,
   Tooltip,
   Typography,
+  Link as MaterialLink,
 } from "@mui/material";
 import { PlaceModel } from "@types";
 import { format } from "date-fns";
-import React, { FC, useState } from "react";
+import React, { FC, Fragment, useState } from "react";
 import { toast } from "react-toastify";
 import { PlaceEditForm } from ".";
+import { Link } from "..";
 import { IPlace } from "./IPlace";
 
 export const PlaceListResults: FC<IPlace.IPlaceListResultsProps> = (props) => {
@@ -107,10 +110,31 @@ export const PlaceListResults: FC<IPlace.IPlaceListResultsProps> = (props) => {
                       <Typography color="textPrimary" variant="body1">
                         {place.name}
                       </Typography>
-                      {place.spots && (
-                        <Typography color="GrayText" variant="body2">
-                          {place.spots - place.occupied!} Disponibles
-                        </Typography>
+                      {place.type.name === PlaceTypes.parking && (
+                        <Fragment>
+                          {place.openingTime && place.closingTime ? (
+                            <Typography color="green" variant="body2">
+                              {place.openingTime} hasta {place.closingTime}
+                            </Typography>
+                          ) : (
+                            <Typography color="green" variant="body2">
+                              Horario no definido
+                            </Typography>
+                          )}
+                          <Link
+                            href={`/panel/estacionamientos/${place.id}`}
+                            passHref
+                            withAnchor={false}
+                          >
+                            <MaterialLink
+                              variant="subtitle2"
+                              color="GrayText"
+                              underline="hover"
+                            >
+                              Ver
+                            </MaterialLink>
+                          </Link>
+                        </Fragment>
                       )}
                     </div>
                   </Box>

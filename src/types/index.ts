@@ -15,6 +15,7 @@ export * from "./Auth";
 export * from "./Bikeway";
 export * from "./Error";
 export * from "./ParkingPoint";
+export * from "./ParkingPointStand";
 export * from "./Place";
 export * from "./PlaceType";
 export * from "./User";

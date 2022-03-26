@@ -1,6 +1,8 @@
 import { Authorization } from "@components";
 import { CacheProvider, EmotionCache } from "@emotion/react";
 import { buildClient, createEmotionCache } from "@lib";
+import { LocalizationProvider } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "@styles/theme";
 import { NextPageWithLayout } from "next";
@@ -44,29 +46,30 @@ export default function MyApp({
 
         <ThemeProvider theme={theme}>
           <CssBaseline />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <RecoilRoot>
+              {Component.auth ? (
+                <Authorization roles={Component.auth.roles}>
+                  {getLayout(<Component session={session} {...pageProps} />)}
+                </Authorization>
+              ) : (
+                getLayout(<Component session={session} {...pageProps} />)
+              )}
+            </RecoilRoot>
 
-          <RecoilRoot>
-            {Component.auth ? (
-              <Authorization roles={Component.auth.roles}>
-                {getLayout(<Component session={session} {...pageProps} />)}
-              </Authorization>
-            ) : (
-              getLayout(<Component session={session} {...pageProps} />)
-            )}
-          </RecoilRoot>
-
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            limit={2}
-          />
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              limit={2}
+            />
+          </LocalizationProvider>
         </ThemeProvider>
       </CacheProvider>
     </SessionProvider>

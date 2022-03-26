@@ -1,10 +1,5 @@
-import {
-  AutocompleteProps,
-  AutocompleteRenderInputParams,
-  AutocompleteRenderOptionState,
-  TextFieldProps,
-} from "@mui/material";
-import React from "react";
+import { TimePickerProps } from "@mui/lab";
+import { AutocompleteProps, TextFieldProps } from "@mui/material";
 import { UseControllerProps } from "react-hook-form";
 import { NumberFormatProps } from "react-number-format";
 
@@ -24,6 +19,10 @@ declare namespace IInput {
     DisableClearable extends boolean | undefined,
     FreeSolo extends boolean | undefined
   > extends AutocompleteProps<T, Multiple, DisableClearable, FreeSolo> {}
+
+  export type TimeInputProps<TFormValues> = TextInputProps<TFormValues> & {
+    timePickerProps?: Partial<TimePickerProps>;
+  };
 }
 
 export { IInput };

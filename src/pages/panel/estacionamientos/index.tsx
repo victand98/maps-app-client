@@ -62,6 +62,10 @@ ParkingPoints.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
 
+ParkingPoints.auth = {
+  roles: [Roles.admin],
+};
+
 ParkingPoints.getInitialProps = async (context) => {
   const [parkingPoints, placeTypes] = await Promise.all([
     context.client.get<ParkingPointModel.ParkingPointResponse[]>(
@@ -71,10 +75,6 @@ ParkingPoints.getInitialProps = async (context) => {
   ]);
 
   return { parkingPoints: parkingPoints.data, placeTypes: placeTypes.data };
-};
-
-ParkingPoints.auth = {
-  roles: [Roles.admin],
 };
 
 export default ParkingPoints;
