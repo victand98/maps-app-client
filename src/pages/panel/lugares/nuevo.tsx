@@ -1,4 +1,5 @@
 import { PlaceForm, PlacePreview, DashboardLayout } from "@components";
+import { Roles } from "@lib";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { PlaceModel, PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -41,6 +42,10 @@ const NewPlace: NextPageWithLayout<PlaceModel.NewPlacePageProps> = (props) => {
 NewPlace.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+NewPlace.auth = {
+  roles: [Roles.admin],
+};
 
 NewPlace.getInitialProps = async (context) => {
   const { data: placeTypes } = await context.client.get<

@@ -1,3 +1,4 @@
+import { Roles } from "@lib";
 import { ReactChild } from "react";
 
 declare namespace ISidebar {
@@ -10,6 +11,7 @@ declare namespace ISidebar {
     href: string;
     icon: ReactChild;
     title: string;
+    roles: Roles[];
   }[];
 }
 

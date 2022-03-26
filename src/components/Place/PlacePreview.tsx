@@ -1,4 +1,4 @@
-import { placePreviewState, PlaceTypes } from "@lib";
+import { placePreviewState } from "@lib";
 import { KeyboardReturn, Place } from "@mui/icons-material";
 import {
   Avatar,
@@ -61,11 +61,7 @@ export const PlacePreview: FC = (props) => {
           >
             {placePreview.name || <Skeleton variant="text" width={100} />}
           </Typography>
-          {placePreview.type?.name === PlaceTypes.parking && (
-            <Typography color="InfoText" variant="body2">
-              {placePreview.occupied} espacios ocupados de {placePreview.spots}
-            </Typography>
-          )}
+
           <Typography color="textSecondary" variant="body2" gutterBottom>
             {placePreview.location.coordinates || (
               <Skeleton variant="text" width={175} />

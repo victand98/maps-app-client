@@ -55,12 +55,12 @@ export const LoginForm = () => {
         autoFocus
         control={control}
         rules={{
+          required: "El campo es requerido",
           pattern: {
             value:
-              /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
-            message: "El correo no es válido",
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            message: "El correo proporcionado no es válido",
           },
-          required: "El campo es requerido",
         }}
       />
 
@@ -77,7 +77,10 @@ export const LoginForm = () => {
         control={control}
         rules={{
           required: "El campo es requerido",
-          minLength: { value: 4, message: "Escriba al menos 4 caracteres" },
+          minLength: {
+            value: 8,
+            message: "Escriba al menos 8 caracteres",
+          },
         }}
       />
 

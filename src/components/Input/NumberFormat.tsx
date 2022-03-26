@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import React from "react";
 import { useController } from "react-hook-form";
 import ReactNumberFormat from "react-number-format";
@@ -25,6 +26,7 @@ export const NumberFormat = <TFormValues extends Record<string, unknown>>(
       {...rest}
       error={invalid}
       {...otherProps}
+      customInput={TextField as any}
     />
   );
 };

@@ -1,4 +1,5 @@
 import { BikewayForm, DashboardLayout } from "@components";
+import { Roles } from "@lib";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { BikewayModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -51,5 +52,9 @@ const NewBikeway: NextPageWithLayout<BikewayModel.NewBikewayPageProps> = (
 NewBikeway.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+NewBikeway.auth = {
+  roles: [Roles.admin],
+};
 
 export default NewBikeway;

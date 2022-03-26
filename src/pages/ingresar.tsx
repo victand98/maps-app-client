@@ -1,5 +1,5 @@
-import { DefaultLayout, LoginForm } from "@components";
-import { Avatar, Box, Typography } from "@mui/material";
+import { DefaultLayout, Link, LoginForm } from "@components";
+import { Avatar, Box, Typography, Link as MaterialLink } from "@mui/material";
 import { GetServerSideProps, NextPageWithLayout } from "next";
 import { getSession } from "next-auth/react";
 import Head from "next/head";
@@ -27,7 +27,18 @@ const Login: NextPageWithLayout<{}> = () => {
         <Typography component="h1" variant="h5">
           Ingreso al Sistema
         </Typography>
+        <Typography color="textSecondary" gutterBottom variant="body2">
+          Utiliza tus credenciales de acceso
+        </Typography>
         <LoginForm />
+        <Typography color="textSecondary" variant="body2">
+          ¿No tienes una cuenta?{" "}
+          <Link href="/registrarse" passHref withAnchor={false}>
+            <MaterialLink variant="subtitle2" underline="hover">
+              Regístrate
+            </MaterialLink>
+          </Link>
+        </Typography>
       </Box>
     </>
   );

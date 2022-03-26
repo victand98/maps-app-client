@@ -3,7 +3,7 @@ import {
   PlaceTypeListResults,
   PlaceTypeListToolbar,
 } from "@components";
-import { buildClient, getIconOptions, usePlaceTypes } from "@lib";
+import { buildClient, getIconOptions, Roles, usePlaceTypes } from "@lib";
 import { Box, Container } from "@mui/material";
 import { PlaceTypeModel } from "@types";
 import { GetServerSideProps, NextPageWithLayout } from "next";
@@ -45,6 +45,10 @@ const PlaceTypes: NextPageWithLayout<PlaceTypeModel.IPagePlaceTypesProps> = (
 PlaceTypes.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+PlaceTypes.auth = {
+  roles: [Roles.admin],
+};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const iconOptions = getIconOptions();

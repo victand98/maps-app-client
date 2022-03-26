@@ -1,6 +1,6 @@
 import { Box, styled } from "@mui/material";
 import React, { FC, ReactElement, useState } from "react";
-import { DashboardNavbar, DashboardSidebar } from "..";
+import { BottomNavbar, DashboardNavbar, DashboardSidebar } from "..";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -35,6 +35,7 @@ export const DashboardLayout: FC = (props): ReactElement => {
         onClose={() => setSidebarOpen(false)}
         open={isSidebarOpen}
       />
+      <BottomNavbar />
     </>
   );
 };

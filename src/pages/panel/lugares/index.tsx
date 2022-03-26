@@ -3,7 +3,7 @@ import {
   PlaceListResults,
   PlaceListToolbar,
 } from "@components";
-import { usePlaces, usePlaceTypes } from "@lib";
+import { Roles, usePlaces, usePlaceTypes } from "@lib";
 import { Box, Container } from "@mui/material";
 import { PlaceModel, PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -41,6 +41,10 @@ const Places: NextPageWithLayout<PlaceModel.PlacesPageProps> = (props) => {
 Places.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+Places.auth = {
+  roles: [Roles.admin],
+};
 
 Places.getInitialProps = async (context) => {
   const [places, placeTypes] = await Promise.all([

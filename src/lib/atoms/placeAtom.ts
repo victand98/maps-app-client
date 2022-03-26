@@ -5,8 +5,6 @@ interface PlacePreviewStateAtom {
   type?: PlaceTypeModel.PlaceTypeResponse;
   location: PlaceModel.PlaceValues["location"];
   name: PlaceModel.PlaceValues["name"];
-  occupied?: PlaceModel.PlaceValues["occupied"];
-  spots?: PlaceModel.PlaceValues["spots"];
   formattedAddress?: PlaceModel.PlaceValues["formattedAddress"];
 }
 
@@ -17,7 +15,5 @@ export const placePreviewState = atom<PlacePreviewStateAtom>({
       coordinates: "",
     },
     name: "",
-    occupied: 0,
-    spots: 1,
   },
 });

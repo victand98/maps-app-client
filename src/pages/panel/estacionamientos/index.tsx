@@ -3,7 +3,7 @@ import {
   ParkingPointCard,
   ParkingPointListToolbar,
 } from "@components";
-import { useParkingPoints, usePlaceTypes } from "@lib";
+import { Roles, useParkingPoints, usePlaceTypes } from "@lib";
 import { Box, Container, Grid } from "@mui/material";
 import { ParkingPointModel, PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
@@ -61,6 +61,10 @@ const ParkingPoints: NextPageWithLayout<
 ParkingPoints.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+ParkingPoints.auth = {
+  roles: [Roles.admin],
+};
 
 ParkingPoints.getInitialProps = async (context) => {
   const [parkingPoints, placeTypes] = await Promise.all([

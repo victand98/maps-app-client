@@ -1,6 +1,6 @@
 import { PlaceService, toastErrors, useParkingPoints, useRequest } from "@lib";
 import {
-  CheckCircle,
+  DateRange,
   Edit,
   MoreHoriz,
   Place,
@@ -10,6 +10,7 @@ import {
 import {
   Avatar,
   Box,
+  Button,
   Card,
   CardContent,
   Divider,
@@ -21,17 +22,16 @@ import {
   Menu,
   MenuItem,
   SvgIcon,
-  TextField,
   Typography,
 } from "@mui/material";
-import { ParkingPointModel, PlaceModel } from "@types";
+import { PlaceModel } from "@types";
 import { formatDistance } from "date-fns";
-import React, { FC, useEffect, useState } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import React, { FC, useState } from "react";
 import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
-import { NumberFormat, PlaceEditForm } from "..";
+import { Link, PlaceEditForm } from "..";
 import { IParkingPoint } from "./ParkingPoint";
+import { ParkingPointForm } from "./ParkingPointForm";
 
 export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
   props
@@ -50,20 +50,11 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
     },
   });
 
-  const {
-    control,
-    handleSubmit,
-    formState: { isDirty },
-    reset,
-  } = useForm<ParkingPointModel.ParkingPointValues>();
-  const spots = useWatch({
-    control,
-    name: "spots",
-    defaultValue: parkingPoint.spots,
-  });
+  const [openEditTimeForm, setOpenEditTimeForm] = useState(false);
   const [openEditForm, setOpenEditForm] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -76,21 +67,15 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
     mutate();
   };
 
+  const handleEditTimeFormClose = () => {
+    setOpenEditTimeForm(false);
+    mutate();
+  };
+
   const toggleStatus = () => {
     doRequest({ status: !parkingPoint.status }, parkingPoint.id);
     handleClose();
   };
-
-  const onSubmit = (data: ParkingPointModel.ParkingPointValues) => {
-    doRequest(data, parkingPoint.id);
-  };
-
-  useEffect(() => {
-    reset({
-      occupied: parkingPoint.occupied,
-      spots: parkingPoint.spots,
-    });
-  }, [reset, parkingPoint.occupied, parkingPoint.spots]);
 
   return (
     <Card
@@ -120,6 +105,7 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
         >
           <MoreHoriz />
         </IconButton>
+
         <Menu
           id={`parkingpoint-menu-${parkingPoint.id}`}
           anchorEl={anchorEl}
@@ -147,6 +133,18 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
               <Edit fontSize="small" />
             </ListItemIcon>
             <ListItemText>Editar</ListItemText>
+          </MenuItem>
+
+          <MenuItem
+            onClick={() => {
+              setOpenEditTimeForm(true);
+              handleClose();
+            }}
+          >
+            <ListItemIcon>
+              <DateRange fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Establecer Horario</ListItemText>
           </MenuItem>
 
           <MenuItem onClick={toggleStatus}>
@@ -208,86 +206,33 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
           </Typography>
         </Box>
 
-        <form autoComplete="off" noValidate onSubmit={handleSubmit(onSubmit)}>
-          <Grid
-            container
-            sx={{
-              justifyContent: "center",
-            }}
+        {parkingPoint.openingTime && parkingPoint.closingTime ? (
+          <Typography color="green" variant="body2" align="center">
+            {parkingPoint.openingTime} hasta {parkingPoint.closingTime}
+          </Typography>
+        ) : (
+          <Typography color="GrayText" variant="body2" align="center">
+            Horario no definido
+          </Typography>
+        )}
+
+        <Box
+          sx={{
+            marginTop: 3,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Link
+            href={`/panel/estacionamientos/${parkingPoint.id}`}
+            passHref
+            withAnchor={false}
           >
-            <Grid
-              item
-              sx={{
-                alignItems: "center",
-                display: "flex",
-                width: "80%",
-              }}
-            >
-              <NumberFormat<ParkingPointModel.ParkingPointValues>
-                control={control}
-                customInput={TextField as any}
-                decimalScale={0}
-                allowNegative={false}
-                defaultValue={parkingPoint.occupied}
-                min="0"
-                isAllowed={(values) => {
-                  const { formattedValue, floatValue } = values;
-                  return (
-                    formattedValue === "" ||
-                    (floatValue !== undefined && floatValue <= spots!)
-                  );
-                }}
-                fullWidth
-                withHelpers={false}
-                name="occupied"
-                variant="outlined"
-                required
-                InputProps={{
-                  size: "small",
-                }}
-                rules={{
-                  required: true,
-                }}
-              />
-              <Typography
-                color="textSecondary"
-                display="inline"
-                sx={{ px: 1 }}
-                variant="caption"
-                textAlign="center"
-              >
-                ocupados de
-              </Typography>
-
-              <NumberFormat<ParkingPointModel.ParkingPointValues>
-                control={control}
-                customInput={TextField as any}
-                decimalScale={0}
-                allowNegative={false}
-                defaultValue={parkingPoint.spots}
-                min="1"
-                fullWidth
-                withHelpers={false}
-                name="spots"
-                variant="outlined"
-                required
-                InputProps={{
-                  size: "small",
-                }}
-                rules={{
-                  required: true,
-                  min: 1,
-                }}
-              />
-
-              {isDirty && (
-                <IconButton type="submit" color="primary" disabled={loading}>
-                  <CheckCircle />
-                </IconButton>
-              )}
-            </Grid>
-          </Grid>
-        </form>
+            <Button variant="outlined" color="primary">
+              Ver detalles
+            </Button>
+          </Link>
+        </Box>
       </CardContent>
       <Box sx={{ flexGrow: 1 }} />
 
@@ -348,6 +293,12 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
         currentPlace={parkingPoint}
         open={openEditForm}
         onClose={handleEditFormClose}
+      />
+
+      <ParkingPointForm
+        currentParkingPoint={parkingPoint}
+        open={openEditTimeForm}
+        onClose={handleEditTimeFormClose}
       />
     </Card>
   );

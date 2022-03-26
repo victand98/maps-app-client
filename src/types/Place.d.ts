@@ -3,41 +3,39 @@ import { PlaceTypeModel } from "./PlaceType";
 
 declare namespace PlaceModel {
   export type PlaceValues = {
-    spots?: number;
-    occupied?: number;
     formattedAddress?: string;
     name: string;
-    location: Location;
+    location: {
+      coordinates: string;
+    };
     type: string;
     status?: boolean;
   };
-  interface Location {
-    coordinates: string;
-  }
 
   export interface PlaceResponse {
     name: string;
+    formattedAddress: string;
     location: Point;
     type: Type;
     createdAt: string;
     updatedAt: string;
     __v: number;
-    id: string;
-    spots?: number;
-    occupied?: number;
-    kind?: string;
-    formattedAddress?: string;
     status: boolean;
+    id: string;
+    openingTime?: string;
+    closingTime?: string;
+    kind?: string;
   }
 
   interface Type {
     name: string;
     __v: number;
+    color: string;
     createdAt: string;
-    updatedAt: string;
     description: string;
     icon: string;
-    color: string;
+    status: boolean;
+    updatedAt: string;
     id: string;
   }
 
