@@ -8,7 +8,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { FC, useEffect } from "react";
+import React, { FC, Fragment, useEffect } from "react";
 import { INavbar } from "./Navbar";
 
 const items: INavbar.BottomNavbarRoutes = [
@@ -38,7 +38,7 @@ export const BottomNavbar: FC<PaperProps> = (props) => {
   });
 
   const navigateTo = (href: string) => {
-    router.push(href);
+    router.replace(href);
   };
 
   useEffect(() => {
@@ -46,7 +46,7 @@ export const BottomNavbar: FC<PaperProps> = (props) => {
     setValue(selected);
   }, [router.pathname]);
 
-  if (!lgDown) return null;
+  if (!lgDown) return <Fragment />;
 
   return (
     <Paper

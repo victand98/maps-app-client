@@ -40,7 +40,7 @@ export const toastErrors = <T = any>(err: CustomErrorResponse<T>) => {
 };
 
 export const hasAccess = (roles: Roles[], role?: string) =>
-  role && roles.includes(role as Roles);
+  !!role && roles.includes(role as Roles);
 
 export const getDateFromTime = (time: string) => {
   const timeSplit = time.split(":");

@@ -25,14 +25,8 @@ export const LoginForm = () => {
       redirect: false,
     });
 
-    if (res?.error) {
-      res.error === "CredentialsSignin"
-        ? toast.error("Las credenciales de acceso no son válidas")
-        : toast.error(
-            "Ha ocurrido un error inesperado, por favor vuelva a intentarlo"
-          );
-    }
-    if (res?.url) router.push(res.url);
+    if (res?.error) toast.error(res.error);
+    if (res?.url) router.reload();
   };
 
   return (

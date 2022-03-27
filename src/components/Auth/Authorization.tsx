@@ -8,12 +8,17 @@ import { Auth } from "./Auth";
 export const Authorization: FC<Auth.AuthorizationProps> = (props) => {
   const { roles, children } = props;
   const router = useRouter();
-  const { data, status } = useSession();
+  const session = useSession();
+  const { data, status } = session;
 
   useEffect(() => {
     if (status !== "loading") {
       if (!data) {
-        router.push("/ingresar");
+        router.push("/ingresar", {
+          query: {
+            returnUrl: router.pathname,
+          },
+        });
       } else if (!hasAccess(roles, data.user?.role.name)) {
         router.push("/no-autorizado");
       }

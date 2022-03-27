@@ -34,7 +34,7 @@ export default function MyApp({
   const getLayout = Component.getLayout ?? ((page: ReactElement) => page);
 
   return (
-    <SessionProvider>
+    <SessionProvider session={session}>
       <CacheProvider value={emotionCache}>
         <Head>
           <title>Ciclovia App</title>
@@ -78,7 +78,7 @@ export default function MyApp({
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const session = await getSession(appContext.ctx);
-  const client = await buildClient(appContext.ctx);
+  const client = buildClient(appContext.ctx, session);
 
   let pageProps = {};
   if (appContext.Component.getInitialProps)

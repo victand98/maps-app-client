@@ -22,7 +22,7 @@ export const theme = createTheme({
   components: {
     MuiUseMediaQuery: {
       defaultProps: {
-        noSsr: false,
+        noSsr: true,
       },
     },
     MuiButton: {

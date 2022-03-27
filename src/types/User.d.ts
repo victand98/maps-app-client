@@ -56,7 +56,7 @@ declare namespace UserModel {
   }
 
   export interface MyProfilePageProps {
-    profile: UserResponse;
+    profile?: UserResponse;
   }
 
   export interface ProfilePageProps {
