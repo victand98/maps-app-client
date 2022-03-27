@@ -46,23 +46,15 @@ export const ParkingPointStandListToolbar: FC<
             m: 1,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              gap: 1,
-              alignItems: "center",
-            }}
-          >
-            <Typography sx={{ display: "inline" }} variant="h4">
-              {parkingPoint.name}
-            </Typography>
+          <Typography sx={{ display: "inline", mr: 1 }} variant="h4">
+            {parkingPoint.name}
+          </Typography>
 
-            {parkingPoint.status ? (
-              <Chip label="Habilitado" color="success" size="small" />
-            ) : (
-              <Chip label="Deshabilitado" color="error" size="small" />
-            )}
-          </Box>
+          {parkingPoint.status ? (
+            <Chip label="Habilitado" color="success" size="small" />
+          ) : (
+            <Chip label="Deshabilitado" color="error" size="small" />
+          )}
 
           <Box
             sx={{
@@ -136,7 +128,9 @@ export const ParkingPointStandListToolbar: FC<
           onClose={onCloseNewStandDialog}
           parkingPoint={parkingPoint}
           defaultValue={
-            getMaxNumber(parkingPointStands.map((item) => item.number)) + 1
+            parkingPointStands.length > 0
+              ? getMaxNumber(parkingPointStands.map((item) => item.number)) + 1
+              : 1
           }
         />
       )}

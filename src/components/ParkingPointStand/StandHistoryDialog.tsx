@@ -11,9 +11,11 @@ import {
   List,
   ListItem,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/router";
 import React, { FC, Fragment } from "react";
 import { IParkingPointStand } from "./ParkingPointStand";
 
@@ -22,6 +24,8 @@ export const StandHistoryDialog: FC<
 > = (props) => {
   const { currentStandHistory, onClose, open } = props;
   const { entryTime, user } = currentStandHistory;
+
+  const router = useRouter();
 
   return (
     <Dialog
@@ -37,7 +41,11 @@ export const StandHistoryDialog: FC<
 
       <DialogContent id="view-current-stand-history-description">
         <List sx={{ width: "100%" }}>
-          <ListItem>
+          <ListItemButton
+            onClick={() => {
+              router.push(`/panel/perfil/${user.id}`);
+            }}
+          >
             <ListItemAvatar>
               <Avatar
                 sx={{
@@ -63,7 +71,7 @@ export const StandHistoryDialog: FC<
               }
               secondary={user.email}
             />
-          </ListItem>
+          </ListItemButton>
 
           <ListItem>
             <ListItemAvatar>

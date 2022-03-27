@@ -20,7 +20,7 @@ import { LatLngExpression } from "leaflet";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import React, { FC, useMemo } from "react";
-import { Link, ParkingPointInfo } from "..";
+import { Link, ParkingPointInfo, StatusBadge } from "..";
 import { IPlace } from "./IPlace";
 
 const PlaceMinimap = dynamic(
@@ -45,15 +45,19 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
     <Card>
       <CardHeader
         avatar={
-          <Badge
+          <StatusBadge
             overlap="circular"
             color={place.status ? "secondary" : "error"}
             variant="dot"
+            anchorOrigin={{
+              horizontal: "right",
+              vertical: "bottom",
+            }}
           >
             <Avatar sx={{ bgcolor: place.type.color }} aria-label={place.name}>
               <Icon>{place.type.icon}</Icon>
             </Avatar>
-          </Badge>
+          </StatusBadge>
         }
         action={
           data ? (

@@ -1,4 +1,4 @@
-import useSWRRequest from "@lib/hooks/useSWRRequest";
+import useSWRRequest, { SWRParams } from "@lib/hooks/useSWRRequest";
 import { UserModel } from "@types";
 
 export const useUsers = (fallbackData?: UserModel.UserResponse[]) => {
@@ -8,4 +8,13 @@ export const useUsers = (fallbackData?: UserModel.UserResponse[]) => {
   );
 
   return users;
+};
+
+export const useUser = (params: SWRParams<UserModel.UserResponse>) => {
+  const { id, ...config } = params;
+  const user = useSWRRequest<UserModel.UserResponse>(
+    { url: `/user/${id}` },
+    config
+  );
+  return user;
 };

@@ -295,11 +295,13 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
         onClose={handleEditFormClose}
       />
 
-      <ParkingPointForm
-        currentParkingPoint={parkingPoint}
-        open={openEditTimeForm}
-        onClose={handleEditTimeFormClose}
-      />
+      {openEditTimeForm && (
+        <ParkingPointForm
+          currentParkingPoint={parkingPoint}
+          open={openEditTimeForm}
+          onClose={handleEditTimeFormClose}
+        />
+      )}
     </Card>
   );
 };

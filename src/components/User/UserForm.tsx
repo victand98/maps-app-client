@@ -17,11 +17,12 @@ import {
   DialogTitle,
   Divider,
   Grid,
+  MenuItem,
   Typography,
 } from "@mui/material";
 import { UserModel } from "@types";
 import { useRouter } from "next/router";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRecoilState, useResetRecoilState } from "recoil";
@@ -29,9 +30,15 @@ import { TextInput } from "..";
 import { IUser } from "./IUser";
 
 export const UserForm: FC<IUser.UserFormProps> = (props) => {
+  const { roles } = props;
   const router = useRouter();
   const [userPreview, setUserPreview] = useRecoilState(userPreviewState);
   const resetUserPreviewState = useResetRecoilState(userPreviewState);
+  const roleOptions = useMemo(
+    () => roles.map((role) => ({ label: role.name, value: role.id })),
+    [roles]
+  );
+
   const { doRequest, loading } = useRequest<UserModel.UserResponse>({
     request: UserService.save,
     onSuccess: (data) => {
@@ -132,11 +139,11 @@ export const UserForm: FC<IUser.UserFormProps> = (props) => {
               />
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item md={6} xs={12}>
               <TextInput<UserModel.UserValues>
                 type="email"
                 fullWidth
-                helperText="Especifique los correo electrónico del usuario"
+                helperText="Especifique el correo electrónico del usuario"
                 defaultValue=""
                 label="Correo"
                 name="email"
@@ -158,6 +165,27 @@ export const UserForm: FC<IUser.UserFormProps> = (props) => {
                     })),
                 }}
               />
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <TextInput<UserModel.UserValues>
+                fullWidth
+                label="Rol"
+                name="role"
+                required
+                defaultValue=""
+                select
+                control={control}
+                rules={{
+                  required: "El campo es requerido",
+                }}
+              >
+                {roleOptions.map((role) => (
+                  <MenuItem key={role.value} value={role.value}>
+                    {role.label}
+                  </MenuItem>
+                ))}
+              </TextInput>
             </Grid>
 
             <Grid item md={6} xs={12}>

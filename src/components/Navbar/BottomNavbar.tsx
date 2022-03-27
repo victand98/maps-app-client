@@ -8,7 +8,7 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { INavbar } from "./Navbar";
 
 const items: INavbar.BottomNavbarRoutes = [
@@ -32,18 +32,19 @@ const items: INavbar.BottomNavbarRoutes = [
 export const BottomNavbar: FC<PaperProps> = (props) => {
   const { sx, ...rest } = props;
   const router = useRouter();
-  const [value, setValue] = React.useState<number>(
-    items.findIndex((item) => item.href === router.pathname)
-  );
-
+  const [value, setValue] = React.useState<number>(-1);
   const lgDown = useMediaQuery<Theme>((theme) => theme.breakpoints.down("lg"), {
     defaultMatches: true,
-    noSsr: false,
   });
 
   const navigateTo = (href: string) => {
     router.push(href);
   };
+
+  useEffect(() => {
+    const selected = items.findIndex((item) => item.href === router.pathname);
+    setValue(selected);
+  }, [router.pathname]);
 
   if (!lgDown) return null;
 

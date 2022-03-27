@@ -20,6 +20,11 @@ export const theme = createTheme({
     },
   },
   components: {
+    MuiUseMediaQuery: {
+      defaultProps: {
+        noSsr: false,
+      },
+    },
     MuiButton: {
       defaultProps: {
         disableElevation: true,
