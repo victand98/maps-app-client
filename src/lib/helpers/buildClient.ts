@@ -1,15 +1,15 @@
 import axios from "axios";
 import { GetServerSidePropsContext, NextPageContext, PreviewData } from "next";
-import { getSession } from "next-auth/react";
+import { Session } from "next-auth";
 import { ParsedUrlQuery } from "querystring";
 import { httpClient, SERVER_URI_PRIVATE } from ".";
 
-const buildClient = async (
-  ctx: NextPageContext | GetServerSidePropsContext<ParsedUrlQuery, PreviewData>
+const buildClient = (
+  ctx: NextPageContext | GetServerSidePropsContext<ParsedUrlQuery, PreviewData>,
+  session: Session | null
 ) => {
   if (typeof window === "undefined") {
     // We are on the server
-    const session = await getSession(ctx);
     const instance = axios.create();
     instance.defaults.baseURL = SERVER_URI_PRIVATE;
     instance.defaults.withCredentials = true;

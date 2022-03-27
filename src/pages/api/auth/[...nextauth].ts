@@ -1,4 +1,5 @@
 import { AuthService } from "@lib";
+import { CustomErrorResponse } from "@types";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
@@ -35,7 +36,7 @@ const nextAuthOptions = (
           const response = await AuthService.login(payload);
           return response.data;
         } catch (error) {
-          return null;
+          throw new Error((error as CustomErrorResponse).errors[0].message);
         }
       },
     }),

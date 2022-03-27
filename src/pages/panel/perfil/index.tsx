@@ -8,14 +8,13 @@ import { Roles, useUser } from "@lib";
 import { Box, Container, Grid, Typography } from "@mui/material";
 import { UserModel } from "@types";
 import { NextPageWithLayout } from "next";
-import { getSession } from "next-auth/react";
 import Head from "next/head";
 import React, { ReactElement } from "react";
 
 const MyProfile: NextPageWithLayout<UserModel.MyProfilePageProps> = (props) => {
   const { data: profile } = useUser({
     fallbackData: props.profile,
-    id: props.profile.id,
+    id: props?.profile?.id,
   });
 
   return (
@@ -64,12 +63,16 @@ MyProfile.auth = {
 };
 
 MyProfile.getInitialProps = async (context) => {
-  const session = await getSession(context);
-  const user = await context.client.get<UserModel.UserResponse>(
-    `/user/${session!.user!.id}`
-  );
+  const { session } = context;
 
-  return { profile: user.data };
+  if (session) {
+    const user = await context.client.get<UserModel.UserResponse>(
+      `/user/${session!.user!.id}`
+    );
+    return { profile: user.data };
+  }
+
+  return {};
 };
 
 export default MyProfile;
