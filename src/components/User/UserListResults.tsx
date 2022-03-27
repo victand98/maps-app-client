@@ -6,13 +6,14 @@ import {
   UserService,
   useUsers,
 } from "@lib";
-import { Edit, LockReset, ToggleOff, ToggleOn } from "@mui/icons-material";
+import { LockReset, ToggleOff, ToggleOn } from "@mui/icons-material";
 import {
   Avatar,
   Box,
   Card,
   Chip,
   IconButton,
+  Link as MaterialLink,
   Table,
   TableBody,
   TableCell,
@@ -27,6 +28,7 @@ import { format } from "date-fns";
 import { useSession } from "next-auth/react";
 import React, { FC, useState } from "react";
 import { toast } from "react-toastify";
+import { Link } from "..";
 import { IUser } from "./IUser";
 import { UserEditForm } from "./UserForm";
 
@@ -72,6 +74,7 @@ export const UserListResults: FC<IUser.UserListResultsProps> = (props) => {
             <TableRow>
               <TableCell padding="normal"></TableCell>
               <TableCell>Usuario</TableCell>
+              <TableCell>Rol</TableCell>
               <TableCell>Estado</TableCell>
               <TableCell>Historial</TableCell>
             </TableRow>
@@ -112,9 +115,25 @@ export const UserListResults: FC<IUser.UserListResultsProps> = (props) => {
                       <Typography color="GrayText" variant="body2">
                         {user.email}
                       </Typography>
+
+                      <Link
+                        href={`/panel/perfil/${user.id}`}
+                        passHref
+                        withAnchor={false}
+                      >
+                        <MaterialLink
+                          variant="subtitle2"
+                          color="GrayText"
+                          underline="hover"
+                        >
+                          Ver Perfil
+                        </MaterialLink>
+                      </Link>
                     </div>
                   </Box>
                 </TableCell>
+
+                <TableCell padding="normal">{user.role.name}</TableCell>
 
                 <TableCell>
                   {user.status ? (

@@ -17,6 +17,20 @@ declare namespace INavbar {
     icon: ReactChild;
     label: string;
   }[];
+
+  /**
+   * Map Navbar
+   */
+  export interface MapNavbarProps {
+    open: boolean;
+    onClose: () => void;
+  }
+
+  export type MapNavbarRoutes = {
+    href: string;
+    icon: ReactChild;
+    label: string;
+  };
 }
 
 export { INavbar };

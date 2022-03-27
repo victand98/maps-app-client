@@ -1,12 +1,14 @@
 import { DashboardLayout, UserForm, UserPreview } from "@components";
-import { Roles } from "@lib";
+import { Roles, useRoles } from "@lib";
 import { Box, Container, Grid, Typography } from "@mui/material";
-import { UserModel } from "@types";
+import { RoleModel, UserModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
 import React, { ReactElement } from "react";
 
 const NewUser: NextPageWithLayout<UserModel.NewUserPageProps> = (props) => {
+  const { data: roles } = useRoles({ fallbackData: props.roles });
+
   return (
     <>
       <Head>
@@ -30,7 +32,7 @@ const NewUser: NextPageWithLayout<UserModel.NewUserPageProps> = (props) => {
             </Grid>
 
             <Grid item lg={8} md={6} xs={12}>
-              <UserForm />
+              <UserForm roles={roles!} />
             </Grid>
           </Grid>
         </Container>
@@ -46,5 +48,11 @@ NewUser.auth = {
 NewUser.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
+
+NewUser.getInitialProps = async (ctx) => {
+  const roles = await ctx.client.get<RoleModel.RoleResponse[]>(`/role`);
+
+  return { roles: roles.data };
+};
 
 export default NewUser;

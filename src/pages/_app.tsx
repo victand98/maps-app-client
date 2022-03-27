@@ -7,7 +7,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { theme } from "@styles/theme";
 import { NextPageWithLayout } from "next";
 import { Session } from "next-auth";
-import { SessionProvider } from "next-auth/react";
+import { getSession, SessionProvider } from "next-auth/react";
 import { AppContext, AppProps } from "next/app";
 import Head from "next/head";
 import { ReactElement } from "react";
@@ -77,6 +77,7 @@ export default function MyApp({
 }
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
+  const session = await getSession(appContext.ctx);
   const client = await buildClient(appContext.ctx);
 
   let pageProps = {};
@@ -84,6 +85,7 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     pageProps = await appContext.Component.getInitialProps({
       ...appContext.ctx,
       client,
+      session,
     });
 
   return {

@@ -1,11 +1,13 @@
-import { UserModel } from "@types";
+import { RoleModel, UserModel } from "@types";
 
 declare namespace IUser {
   export interface UserListResultsProps {
     users?: UserModel.UserResponse[];
   }
 
-  export interface UserFormProps {}
+  export interface UserFormProps {
+    roles: RoleModel.RoleResponse[];
+  }
 
   export interface UserEditFormProps {
     open: boolean;

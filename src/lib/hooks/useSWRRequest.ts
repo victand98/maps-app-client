@@ -61,3 +61,7 @@ export default function useSWRRequest<
     mutate,
   };
 }
+
+export type SWRParams<Data> = Config<Data, CustomErrorResponse> & {
+  id?: string;
+};

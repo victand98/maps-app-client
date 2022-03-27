@@ -4,6 +4,7 @@ import {
   Group,
   LocalParking,
   Logout,
+  Person,
   PushPin,
   Room,
   Signpost,
@@ -63,6 +64,12 @@ const items: ISidebar.SidebarRoutes = [
     icon: <Group fontSize="small" />,
     title: "Usuarios",
     roles: [Roles.admin],
+  },
+  {
+    href: "/panel/perfil",
+    icon: <Person fontSize="small" />,
+    title: "Perfil",
+    roles: [Roles.admin, Roles.cyclist],
   },
 ];
 

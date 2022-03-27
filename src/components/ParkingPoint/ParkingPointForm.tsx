@@ -72,7 +72,7 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
                 defaultValue={
                   currentParkingPoint.openingTime
                     ? getDateFromTime(currentParkingPoint.openingTime)
-                    : ""
+                    : new Date()
                 }
                 rules={{ required: "El campo es requerido" }}
               />
@@ -89,7 +89,7 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
                 defaultValue={
                   currentParkingPoint.closingTime
                     ? getDateFromTime(currentParkingPoint.closingTime)
-                    : ""
+                    : new Date().setHours(new Date().getHours() + 2)
                 }
                 rules={{ required: "El campo es requerido" }}
               />

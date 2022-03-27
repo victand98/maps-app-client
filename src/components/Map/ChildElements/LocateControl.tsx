@@ -32,13 +32,11 @@ const LocateButton: FC<{ map: L.Map }> = (props) => {
   }, [findLocation]);
 
   return (
-    <Tooltip title="Localizar">
+    <Tooltip title="Localizar" placement="left">
       <IconButton
         onClick={findLocation}
         size="large"
         style={{
-          width: "35px",
-          height: "35px",
           backgroundColor: "#f5f5f5",
           boxShadow: "3px 3px 10px rgba(0, 0, 0, 0.2)",
         }}

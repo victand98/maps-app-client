@@ -19,7 +19,7 @@ Home.getLayout = (page: ReactElement) => (
 );
 
 Home.auth = {
-  roles: [Roles.admin, Roles.cyclist],
+  roles: Object.values(Roles),
 };
 
 export default Home;

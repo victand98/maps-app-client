@@ -1,4 +1,5 @@
 export * from "@components/Auth";
+export * from "@components/Badge";
 export * from "@components/Bikeway";
 export * from "@components/Copyright";
 export * from "@components/Input";
@@ -10,6 +11,7 @@ export * from "@components/ParkingPoint";
 export * from "@components/ParkingPointStand";
 export * from "@components/Place";
 export * from "@components/PlaceType";
+export * from "@components/Profile";
 export * from "@components/Progress";
 export * from "@components/Sidebar";
 export * from "@components/User";
