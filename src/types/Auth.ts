@@ -1,9 +1,13 @@
+import { CyclistTypes, Genders } from "@lib";
+
 export type SignupFormValues = {
   email: string;
   password: string;
   firstName: string;
   lastName: string;
   repeatPassword?: string;
+  cyclistType: CyclistTypes;
+  gender: Genders;
 };
 
 export type LoginFormValues = {

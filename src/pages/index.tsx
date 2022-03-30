@@ -4,6 +4,7 @@ import { useCurrentRoute } from "@lib";
 import { Box } from "@mui/material";
 import { BikewayModel, HomePage, PlaceModel, RouteModel } from "@types";
 import { NextPageWithLayout } from "next";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import React, { ReactElement } from "react";
 
@@ -12,8 +13,9 @@ const MapViewer = dynamic(() => import("@components/Map/MapViewer"), {
 });
 
 const Home: NextPageWithLayout<HomePage.HomePageProps> = (props) => {
+  const { data: session } = useSession();
   const { data: currentRoute } = useCurrentRoute({
-    execute: !!props.currentRoute,
+    execute: !!session,
     fallbackData: props.currentRoute,
   });
 

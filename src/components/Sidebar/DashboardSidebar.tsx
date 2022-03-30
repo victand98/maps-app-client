@@ -7,6 +7,7 @@ import {
   Person,
   PushPin,
   Room,
+  Route,
   Signpost,
 } from "@mui/icons-material";
 import {
@@ -70,6 +71,18 @@ const items: ISidebar.SidebarRoutes = [
     icon: <Person fontSize="small" />,
     title: "Perfil",
     roles: [Roles.admin, Roles.cyclist],
+  },
+  {
+    href: "/panel/rutas",
+    icon: <Route fontSize="small" />,
+    title: "Rutas",
+    roles: [Roles.admin],
+  },
+  {
+    href: "/panel/rutas/recorridas",
+    icon: <Route fontSize="small" />,
+    title: "Mis rutas",
+    roles: Object.values(Roles),
   },
 ];
 

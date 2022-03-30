@@ -1,6 +1,12 @@
-import { AuthService, handleFormError, useRequest } from "@lib";
+import {
+  AuthService,
+  CyclistTypes,
+  Genders,
+  handleFormError,
+  useRequest,
+} from "@lib";
 import { LoadingButton } from "@mui/lab";
-import { Box } from "@mui/material";
+import { Box, MenuItem } from "@mui/material";
 import { SignupFormValues } from "@types";
 import { useRouter } from "next/router";
 import React from "react";
@@ -90,6 +96,46 @@ export const SignupForm = () => {
           },
         }}
       />
+
+      <TextInput<SignupFormValues>
+        fullWidth
+        margin="normal"
+        label="Género"
+        name="gender"
+        required
+        defaultValue=""
+        select
+        control={control}
+        rules={{
+          required: "El campo es requerido",
+        }}
+      >
+        {Object.values(Genders).map((gender) => (
+          <MenuItem key={gender} value={gender}>
+            {gender}
+          </MenuItem>
+        ))}
+      </TextInput>
+
+      <TextInput<SignupFormValues>
+        fullWidth
+        margin="normal"
+        label="Tipo de ciclista"
+        name="cyclistType"
+        required
+        defaultValue=""
+        select
+        control={control}
+        rules={{
+          required: "El campo es requerido",
+        }}
+      >
+        {Object.values(CyclistTypes).map((cyclistType) => (
+          <MenuItem key={cyclistType} value={cyclistType}>
+            {cyclistType}
+          </MenuItem>
+        ))}
+      </TextInput>
 
       <TextInput<SignupFormValues>
         defaultValue=""

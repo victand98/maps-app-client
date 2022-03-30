@@ -51,6 +51,28 @@ export const ProfileDetails: FC<IProfile.ProfileDetailsProps> = (props) => {
               InputProps={{ readOnly: true }}
             />
           </Grid>
+
+          <Grid item md={6} xs={12}>
+            <TextField
+              type="text"
+              fullWidth
+              defaultValue={profile.gender || "Sin información"}
+              label="Género"
+              name="gender"
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <TextField
+              type="text"
+              fullWidth
+              defaultValue={profile.cyclistType || "Sin información"}
+              label="Tipo de ciclista"
+              name="cyclistType"
+              InputProps={{ readOnly: true }}
+            />
+          </Grid>
         </Grid>
       </CardContent>
       <Divider />

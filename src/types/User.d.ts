@@ -1,3 +1,4 @@
+import { CyclistTypes, Genders } from "@lib";
 import { RoleModel } from "@types";
 
 declare namespace UserModel {
@@ -14,6 +15,8 @@ declare namespace UserModel {
     updatedAt: string;
     __v: number;
     id: string;
+    cyclistType?: CyclistTypes;
+    gender?: Genders;
   }
 
   export interface Role {
@@ -37,6 +40,8 @@ declare namespace UserModel {
     repeatPassword?: string;
     status?: boolean;
     role?: string;
+    cyclistType: CyclistTypes;
+    gender: Genders;
   };
 
   export type UserOptions = {

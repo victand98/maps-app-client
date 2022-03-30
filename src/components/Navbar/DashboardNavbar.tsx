@@ -1,3 +1,4 @@
+import { stringAvatar } from "@lib";
 import { Group, Menu, Notifications, Search } from "@mui/icons-material";
 import {
   AppBar,
@@ -11,6 +12,7 @@ import {
 } from "@mui/material";
 import { useSession } from "next-auth/react";
 import React, { FC } from "react";
+import { StatusBadge } from "..";
 import { INavbar } from "./Navbar";
 
 const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
@@ -72,17 +74,24 @@ export const DashboardNavbar: FC<INavbar.DashboardNavbarProps> = (props) => {
               </Badge>
             </IconButton>
           </Tooltip>
-          <Avatar
-            sx={{
-              height: 40,
-              width: 40,
-              ml: 1,
-              bgcolor: "purple",
-            }}
+
+          <StatusBadge
+            overlap="circular"
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            variant="dot"
+            color={data?.user?.status ? "secondary" : "error"}
           >
-            {data?.user?.firstName[0]}
-            {data?.user?.lastName[0]}
-          </Avatar>
+            <Avatar
+              {...stringAvatar(
+                `${data?.user?.firstName} ${data?.user?.lastName}`,
+                {
+                  height: 40,
+                  width: 40,
+                  ml: 1,
+                }
+              )}
+            />
+          </StatusBadge>
         </Toolbar>
       </DashboardNavbarRoot>
     </>
