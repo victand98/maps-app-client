@@ -40,8 +40,8 @@ declare namespace UserModel {
     repeatPassword?: string;
     status?: boolean;
     role?: string;
-    cyclistType: CyclistTypes;
-    gender: Genders;
+    cyclistType?: CyclistTypes;
+    gender?: Genders;
   };
 
   export type UserOptions = {
