@@ -26,8 +26,6 @@ const MapOffline: FC<MapContainerProps> = (props) => {
       const tileLayerOffline = L.tileLayer.offline(
         "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
         {
-          attribution:
-            '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
           subdomains: "abc",
           minZoom: 13,
           maxZoom: 17,
@@ -90,7 +88,13 @@ const MapOffline: FC<MapContainerProps> = (props) => {
   };
 
   return (
-    <Map minZoom={13} maxZoom={17} {...rest} whenCreated={setMap}>
+    <Map
+      minZoom={13}
+      maxZoom={17}
+      {...rest}
+      whenCreated={setMap}
+      attributionControl={false}
+    >
       {children}
       <Dialog
         open={open}

@@ -4,4 +4,5 @@ export * from "./ParkingPointService";
 export * from "./ParkingPointStandService";
 export * from "./PlaceService";
 export * from "./PlaceTypeService";
+export * from "./RouteService";
 export * from "./UserService";

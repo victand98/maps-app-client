@@ -1,4 +1,4 @@
-import { BikewayModel, PlaceModel } from "@types";
+import { BikewayModel, PlaceModel, RouteModel } from "@types";
 import { LatLngExpression } from "leaflet";
 import { MarkerProps } from "react-leaflet";
 
@@ -28,6 +28,18 @@ declare namespace ChildElements {
     color: string;
     width: number;
     opacity: number;
+  }
+
+  /**
+   * Controls
+   */
+
+  export interface RouteControlProps {
+    currentRoute?: RouteModel.NewRouteResponse;
+  }
+
+  export interface LocateControlProps {
+    currentRoute?: RouteModel.NewRouteResponse;
   }
 }
 

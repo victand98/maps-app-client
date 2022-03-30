@@ -4,7 +4,7 @@ import { useState } from "react";
 
 interface Props<T, E> {
   request: (data: any, id: any) => Promise<AxiosResponse<T>>;
-  onSuccess?: (data: T) => void;
+  onSuccess?: (response: AxiosResponse<T>) => void;
   onError?: (err: CustomErrorResponse<E>) => void;
 }
 
@@ -21,7 +21,7 @@ export const useRequest = <T, E = any>(props: Props<T, E>) => {
       const resp = await props.request(data, id);
       setLoading(false);
       setResponse(resp);
-      if (props.onSuccess) props.onSuccess(resp.data);
+      if (props.onSuccess) props.onSuccess(resp);
     } catch (err) {
       setLoading(false);
       setError(err as CustomErrorResponse<E>);

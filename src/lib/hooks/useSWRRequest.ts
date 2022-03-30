@@ -20,6 +20,7 @@ export interface Config<Data = unknown, Error = unknown>
     "fallbackData"
   > {
   fallbackData?: Data;
+  execute?: boolean;
 }
 
 export default function useSWRRequest<
@@ -27,7 +28,7 @@ export default function useSWRRequest<
   Error = CustomErrorResponse
 >(
   request: GetRequest,
-  { fallbackData, ...config }: Config<Data, Error> = {}
+  { fallbackData, execute = true, ...config }: Config<Data, Error> = {}
 ): Return<Data, Error> {
   const {
     data: response,
@@ -35,7 +36,7 @@ export default function useSWRRequest<
     isValidating,
     mutate,
   } = useSWR<AxiosResponse<Data>, AxiosError<Error>>(
-    request && JSON.stringify(request),
+    execute && request && JSON.stringify(request),
     /**
      * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
      * function is actually only called by `useSWR` when it isn't.

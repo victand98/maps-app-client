@@ -1,5 +1,11 @@
 import { TimePickerProps } from "@mui/lab";
-import { AutocompleteProps, TextFieldProps } from "@mui/material";
+import {
+  AutocompleteProps,
+  FormControlLabelProps,
+  RadioGroupProps,
+  TextFieldProps,
+} from "@mui/material";
+import { ReactNode } from "react";
 import { UseControllerProps } from "react-hook-form";
 import { NumberFormatProps } from "react-number-format";
 
@@ -23,6 +29,16 @@ declare namespace IInput {
   export type TimeInputProps<TFormValues> = TextInputProps<TFormValues> & {
     timePickerProps?: Partial<TimePickerProps>;
   };
+
+  export type RadioInputProps<TFormValues = any> = RadioGroupProps &
+    UseControllerProps<TFormValues> & {
+      label: ReactNode;
+      helperText?: ReactNode;
+      options: (Partial<FormControlLabelProps> & {
+        label: string;
+        value: string;
+      })[];
+    };
 }
 
 export { IInput };
