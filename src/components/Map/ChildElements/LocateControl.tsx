@@ -37,7 +37,7 @@ export const LocateControl: FC<ChildElements.LocateControlProps> = (props) => {
   });
 
   const findLocation = useCallback(() => {
-    map.locate({ watch: true, enableHighAccuracy: true });
+    map.locate({ watch: true });
   }, [map]);
 
   useEffect(() => {
