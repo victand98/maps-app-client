@@ -1,4 +1,11 @@
-import { handleFormError, useRequest, UserService, useUser } from "@lib";
+import {
+  CyclistTypes,
+  Genders,
+  handleFormError,
+  useRequest,
+  UserService,
+  useUser,
+} from "@lib";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -7,6 +14,7 @@ import {
   CardHeader,
   Divider,
   Grid,
+  MenuItem,
 } from "@mui/material";
 import { UserModel } from "@types";
 import React, { FC } from "react";
@@ -114,6 +122,50 @@ export const ProfileForm: FC<IProfile.ProfileFormProps> = (props) => {
                   },
                 }}
               />
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <TextInput<UserModel.UserValues>
+                fullWidth
+                margin="normal"
+                label="Género"
+                name="gender"
+                required
+                defaultValue={profile.gender || ""}
+                select
+                control={control}
+                rules={{
+                  required: "El campo es requerido",
+                }}
+              >
+                {Object.values(Genders).map((gender) => (
+                  <MenuItem key={gender} value={gender}>
+                    {gender}
+                  </MenuItem>
+                ))}
+              </TextInput>
+            </Grid>
+
+            <Grid item md={6} xs={12}>
+              <TextInput<UserModel.UserValues>
+                fullWidth
+                margin="normal"
+                label="Tipo de ciclista"
+                name="cyclistType"
+                required
+                defaultValue={profile.cyclistType || ""}
+                select
+                control={control}
+                rules={{
+                  required: "El campo es requerido",
+                }}
+              >
+                {Object.values(CyclistTypes).map((cyclistType) => (
+                  <MenuItem key={cyclistType} value={cyclistType}>
+                    {cyclistType}
+                  </MenuItem>
+                ))}
+              </TextInput>
             </Grid>
           </Grid>
         </CardContent>

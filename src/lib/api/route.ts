@@ -11,3 +11,31 @@ export const useCurrentRoute = (
 
   return currentRoute;
 };
+
+export const useMyRoutes = (params?: SWRParams<RouteModel.RouteResponse[]>) => {
+  const myRoutes = useSWRRequest<RouteModel.RouteResponse[]>(
+    { url: "/route/me" },
+    params
+  );
+
+  return myRoutes;
+};
+
+export const useRoute = (params: SWRParams<RouteModel.SingleRouteResponse>) => {
+  const { id } = params;
+  const route = useSWRRequest<RouteModel.SingleRouteResponse>(
+    { url: `/route/${id}` },
+    params
+  );
+
+  return route;
+};
+
+export const useRoutes = (params?: SWRParams<RouteModel.RouteResponse[]>) => {
+  const routes = useSWRRequest<RouteModel.RouteResponse[]>(
+    { url: `/route/` },
+    params
+  );
+
+  return routes;
+};
