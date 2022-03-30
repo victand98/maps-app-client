@@ -19,4 +19,5 @@ export * from "./ParkingPointStand";
 export * from "./Place";
 export * from "./PlaceType";
 export * from "./Role";
+export * from "./Route";
 export * from "./User";

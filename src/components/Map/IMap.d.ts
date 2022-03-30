@@ -1,4 +1,4 @@
-import { BikewayModel, PlaceModel } from "@types";
+import { BikewayModel, PlaceModel, RouteModel } from "@types";
 import { LineString } from "geojson";
 import { LatLng } from "leaflet";
 
@@ -12,6 +12,7 @@ declare namespace IMap {
   export interface MapViewerProps {
     places: PlaceModel.PlaceResponse[];
     bikeways: BikewayModel.BikewayResponse[];
+    currentRoute?: RouteModel.NewRouteResponse;
   }
 
   export interface MapBikewayDrawerProps {
