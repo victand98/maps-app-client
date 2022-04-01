@@ -58,7 +58,7 @@ export const RouteOverview: FC<UIRoute.RouteOverviewProps> = (props) => {
       const savedLocation = JSON.parse(localStorage.getItem("location")!);
       if (
         (savedLocation as RouteModel.UpdateRouteValues["location"]).coordinates
-          .length > 0
+          .length > 1
       ) {
         const data: RouteModel.UpdateRouteValues = {
           endTime: format(new Date(), "HH:mm"),

@@ -9,7 +9,6 @@ const Home = () => {
       <Head>
         <title>Panel | Ciclovía App</title>
       </Head>
-      <div>Panel Principal</div>
     </>
   );
 };

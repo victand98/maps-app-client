@@ -2,7 +2,7 @@ import { BikewayCoordinatesState } from "@lib";
 import { FeatureCollection, LineString } from "geojson";
 import L from "leaflet";
 import React, { FC, useEffect, useMemo, useRef } from "react";
-import { Polyline } from "react-leaflet";
+import { MapConsumer, Polyline } from "react-leaflet";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { IMap } from "./IMap";
 import MapDrawer from "./MapDrawer";
@@ -76,6 +76,15 @@ const MapBikewayDrawer: FC<IMap.MapBikewayDrawerProps> = (props) => {
       onDeleted={onDeleted}
     >
       {positions && <Polyline positions={positions} />}
+      {positions && (
+        <MapConsumer>
+          {(map) => {
+            let bounds = new L.LatLngBounds(positions as L.LatLngBoundsLiteral);
+            map.fitBounds(bounds);
+            return null;
+          }}
+        </MapConsumer>
+      )}
     </MapDrawer>
   );
 };

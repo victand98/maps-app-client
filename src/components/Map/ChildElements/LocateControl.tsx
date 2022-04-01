@@ -15,15 +15,28 @@ export const LocateControl: FC<ChildElements.LocateControlProps> = (props) => {
 
   const map = useMapEvents({
     locationfound(e) {
-      if (currentRoute) {
+      const storageLocation = localStorage.getItem("location");
+
+      if (storageLocation !== null) {
         const location: RouteModel.UpdateRouteValues["location"] = {
           coordinates: [],
         };
-        if (localStorage.getItem("location") !== null) {
-          const savedLocations: RouteModel.UpdateRouteValues["location"] =
-            JSON.parse(localStorage.getItem("location")!);
-          location.coordinates.push(...savedLocations.coordinates);
+        const savedLocations: RouteModel.UpdateRouteValues["location"] =
+          JSON.parse(storageLocation!);
+        location.coordinates.push(...savedLocations.coordinates);
+        const lastLocation =
+          location.coordinates[location.coordinates.length - 1];
+        if (
+          lastLocation === undefined ||
+          (lastLocation[0] !== e.latlng.lng && lastLocation[1] !== e.latlng.lat)
+        ) {
+          location.coordinates.push([e.latlng.lng, e.latlng.lat]);
+          localStorage.setItem("location", JSON.stringify(location));
         }
+      } else if (currentRoute) {
+        const location: RouteModel.UpdateRouteValues["location"] = {
+          coordinates: [],
+        };
         location.coordinates.push([e.latlng.lng, e.latlng.lat]);
         localStorage.setItem("location", JSON.stringify(location));
       }
@@ -37,7 +50,12 @@ export const LocateControl: FC<ChildElements.LocateControlProps> = (props) => {
   });
 
   const findLocation = useCallback(() => {
-    map.locate({ watch: true });
+    map.locate({
+      watch: true,
+      enableHighAccuracy: true,
+      timeout: 5000,
+      maximumAge: 0,
+    });
   }, [map]);
 
   useEffect(() => {
