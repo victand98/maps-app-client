@@ -1,4 +1,4 @@
-import { PlaceTypes } from "@lib";
+import { Permissions, PlaceTypes } from "@lib";
 import { Place, Settings, Update } from "@mui/icons-material";
 import {
   Avatar,
@@ -20,7 +20,7 @@ import { LatLngExpression } from "leaflet";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import React, { FC, useMemo } from "react";
-import { Link, ParkingPointInfo, StatusBadge } from "..";
+import { Link, ParkingPointInfo, StatusBadge, WithPermissions } from "..";
 import { IPlace } from "./IPlace";
 
 const PlaceMinimap = dynamic(
@@ -61,11 +61,13 @@ export const PlaceInfo: FC<IPlace.PlaceInfoProps> = (props) => {
         }
         action={
           data ? (
-            <Link href="/panel/lugares" withAnchor={false} passHref>
-              <IconButton aria-label="configuración">
-                <Settings />
-              </IconButton>
-            </Link>
+            <WithPermissions permission={Permissions["save:place"]}>  
+              <Link href="/panel/lugares" withAnchor={false} passHref>
+                <IconButton aria-label="configuración">
+                  <Settings />
+                </IconButton>
+              </Link>
+            </WithPermissions>
           ) : null
         }
         title={place.name}

@@ -14,6 +14,7 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Skeleton,
   Typography,
 } from "@mui/material";
 import React, { FC, Fragment } from "react";
@@ -24,9 +25,6 @@ export const ParkingPointDetails: FC<IParkingPoint.ParkingPointDetailsProps> = (
 ) => {
   const { place, open, onClose } = props;
   const { data } = useParkingPoint(undefined, place.id);
-
-  if (!data) return null;
-  const { parkingPoint, parkingPointStands } = data;
 
   return (
     <Dialog
@@ -40,61 +38,69 @@ export const ParkingPointDetails: FC<IParkingPoint.ParkingPointDetailsProps> = (
         Puestos de Parqueo
       </DialogTitle>
 
-      <DialogContent id="view-parkingpoint-details-description">
-        <Typography variant="subtitle2" color="GrayText">
-          {parkingPoint.name}
-        </Typography>
+      {data ? (
+        <DialogContent id="view-parkingpoint-details-description">
+          <Typography variant="subtitle2" color="GrayText">
+            {data.parkingPoint.name}
+          </Typography>
 
-        <Box
-          sx={{
-            display: "flex",
-            gap: 0.5,
-          }}
-        >
-          <AccessAlarms color="disabled" fontSize="small" />
+          <Box
+            sx={{
+              display: "flex",
+              gap: 0.5,
+            }}
+          >
+            <AccessAlarms color="disabled" fontSize="small" />
 
-          {parkingPoint.openingTime && parkingPoint.closingTime ? (
-            <Typography color="green" variant="body2">
-              {parkingPoint.openingTime} hasta {parkingPoint.closingTime}
-            </Typography>
-          ) : (
-            <Typography color="GrayText" variant="body2">
-              Horario no definido
-            </Typography>
-          )}
-        </Box>
+            {data.parkingPoint.openingTime && data.parkingPoint.closingTime ? (
+              <Typography color="green" variant="body2">
+                {data.parkingPoint.openingTime} hasta{" "}
+                {data.parkingPoint.closingTime}
+              </Typography>
+            ) : (
+              <Typography color="GrayText" variant="body2">
+                Horario no definido
+              </Typography>
+            )}
+          </Box>
 
-        <List sx={{ width: "100%" }}>
-          {parkingPointStands.map((stand) => (
-            <Fragment key={stand.id}>
-              <ListItem>
-                <ListItemAvatar>
-                  <Avatar
-                    sx={{
-                      bgcolor: "purple",
-                    }}
-                  >
-                    <DirectionsBike />
-                  </Avatar>
-                </ListItemAvatar>
+          <List sx={{ width: "100%" }}>
+            {data.parkingPointStands.map((stand) => (
+              <Fragment key={stand.id}>
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar
+                      sx={{
+                        bgcolor: "purple",
+                      }}
+                    >
+                      <DirectionsBike />
+                    </Avatar>
+                  </ListItemAvatar>
 
-                <ListItemText
-                  primary={`Puesto de parqueo #${stand.number}`}
-                  secondary={
-                    <Chip
-                      component="span"
-                      label={stand.status}
-                      color={getStandChipColor(stand.status)}
-                      size="small"
-                    />
-                  }
-                />
-              </ListItem>
-              <Divider variant="inset" component="li" />
-            </Fragment>
-          ))}
-        </List>
-      </DialogContent>
+                  <ListItemText
+                    primary={`Puesto de parqueo #${stand.number}`}
+                    secondary={
+                      <Chip
+                        component="span"
+                        label={stand.status}
+                        color={getStandChipColor(stand.status)}
+                        size="small"
+                      />
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </Fragment>
+            ))}
+          </List>
+        </DialogContent>
+      ) : (
+        <DialogContent id="view-parkingpoint-details-description">
+          <Skeleton variant="text" />
+          <Skeleton variant="rectangular" width={210} height={300} />
+        </DialogContent>
+      )}
 
       <DialogActions>
         <Button onClick={onClose}>Cerrar</Button>

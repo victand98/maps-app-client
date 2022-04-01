@@ -1,4 +1,4 @@
-import { CyclistTypes, Genders } from "@lib";
+import { CyclistTypes, Genders, Permissions } from "@lib";
 
 export type SignupFormValues = {
   email: string;
@@ -49,4 +49,14 @@ export interface CurrentUser {
     id: string;
     iat: number;
   } | null;
+}
+
+export interface Permission {
+  name: Permissions;
+  __v: number;
+  createdAt: string;
+  roles: string[];
+  status: boolean;
+  updatedAt: string;
+  id: string;
 }

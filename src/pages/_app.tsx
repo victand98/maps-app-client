@@ -1,6 +1,10 @@
 import { Authorization } from "@components";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import { buildClient, createEmotionCache } from "@lib";
+import {
+  buildClient,
+  createEmotionCache,
+  PermissionsContextProvider,
+} from "@lib";
 import { LocalizationProvider } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -35,43 +39,45 @@ export default function MyApp({
 
   return (
     <SessionProvider session={session}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <title>Ciclovia App</title>
-          <meta
-            name="viewport"
-            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
-          />
-        </Head>
-
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <RecoilRoot>
-              {Component.auth ? (
-                <Authorization roles={Component.auth.roles}>
-                  {getLayout(<Component session={session} {...pageProps} />)}
-                </Authorization>
-              ) : (
-                getLayout(<Component session={session} {...pageProps} />)
-              )}
-            </RecoilRoot>
-
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              limit={2}
+      <PermissionsContextProvider>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <title>Ciclovia App</title>
+            <meta
+              name="viewport"
+              content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
             />
-          </LocalizationProvider>
-        </ThemeProvider>
-      </CacheProvider>
+          </Head>
+
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <RecoilRoot>
+                {Component.auth ? (
+                  <Authorization roles={Component.auth.roles}>
+                    {getLayout(<Component session={session} {...pageProps} />)}
+                  </Authorization>
+                ) : (
+                  getLayout(<Component session={session} {...pageProps} />)
+                )}
+              </RecoilRoot>
+
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                limit={2}
+              />
+            </LocalizationProvider>
+          </ThemeProvider>
+        </CacheProvider>
+      </PermissionsContextProvider>
     </SessionProvider>
   );
 }

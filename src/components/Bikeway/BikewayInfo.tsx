@@ -1,3 +1,4 @@
+import { Permissions } from "@lib";
 import { Feedback, Settings, Signpost, Update } from "@mui/icons-material";
 import {
   Avatar,
@@ -17,7 +18,7 @@ import { LatLngExpression } from "leaflet";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import React, { FC, useMemo } from "react";
-import { Link } from "..";
+import { Link, StatusBadge, WithPermissions } from "..";
 import { IBikeway } from "./IBikeway";
 
 const BikewayMinimap = dynamic(
@@ -43,20 +44,32 @@ export const BikewayInfo: FC<IBikeway.BikewayInfoProps> = (props) => {
     <Card>
       <CardHeader
         avatar={
-          <Avatar
-            sx={{ bgcolor: bikeway.color, opacity: bikeway.opacity }}
-            aria-label={bikeway.name}
+          <StatusBadge
+            overlap="circular"
+            color={bikeway.status ? "secondary" : "error"}
+            variant="dot"
+            anchorOrigin={{
+              horizontal: "right",
+              vertical: "bottom",
+            }}
           >
-            <Signpost />
-          </Avatar>
+            <Avatar
+              sx={{ bgcolor: bikeway.color, opacity: bikeway.opacity }}
+              aria-label={bikeway.name}
+            >
+              <Signpost />
+            </Avatar>
+          </StatusBadge>
         }
         action={
           data ? (
-            <Link href="/panel/ciclovias" withAnchor={false} passHref>
-              <IconButton aria-label="configuración">
-                <Settings />
-              </IconButton>
-            </Link>
+            <WithPermissions permission={Permissions["save:bikeway"]}>
+              <Link href="/panel/ciclovias" withAnchor={false} passHref>
+                <IconButton aria-label="configuración">
+                  <Settings />
+                </IconButton>
+              </Link>
+            </WithPermissions>
           ) : null
         }
         title={bikeway.name}

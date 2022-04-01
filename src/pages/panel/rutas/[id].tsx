@@ -43,7 +43,7 @@ const Route: NextPageWithLayout<RouteModel.RoutePageProps> = (props) => {
               <RouteDetails route={route!} />
             </Grid>
 
-            <Grid item md={8} xs={12}>
+            <Grid item md={8} xs={12} minHeight={500}>
               <RouteMapViewer route={route!} />
             </Grid>
           </Grid>
