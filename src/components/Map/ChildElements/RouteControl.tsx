@@ -15,7 +15,7 @@ export const RouteControl: FC<ChildElements.RouteControlProps> = (props) => {
   );
 
   return (
-    <CustomControl position="topright">
+    <CustomControl position="topright" className="route-control">
       <NewRouteForm
         open={openNewRoute}
         onClose={() => setOpenNewRoute(false)}

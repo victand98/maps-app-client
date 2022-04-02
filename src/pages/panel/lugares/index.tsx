@@ -4,7 +4,7 @@ import {
   PlaceListToolbar,
 } from "@components";
 import { Roles, usePlaces, usePlaceTypes } from "@lib";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { PlaceModel, PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
@@ -20,19 +20,9 @@ const Places: NextPageWithLayout<PlaceModel.PlacesPageProps> = (props) => {
         <title>Lugares | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth={false}>
-          <PlaceListToolbar />
-          <Box sx={{ mt: 3 }}>
-            <PlaceListResults places={places} placeTypes={placeTypes!} />
-          </Box>
-        </Container>
+      <PlaceListToolbar />
+      <Box sx={{ mt: 3 }}>
+        <PlaceListResults places={places} placeTypes={placeTypes!} />
       </Box>
     </>
   );

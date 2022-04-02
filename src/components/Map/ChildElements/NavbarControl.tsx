@@ -8,7 +8,7 @@ export const NavbarControl = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   return (
-    <CustomControl position="topright">
+    <CustomControl position="topright" className="navbar-control">
       <Fragment>
         <MapNavbar open={openDrawer} onClose={() => setOpenDrawer(false)} />
 

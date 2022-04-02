@@ -4,7 +4,7 @@ import {
   DashboardLayout,
 } from "@components";
 import { Roles, useBikeways } from "@lib";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { BikewayModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
@@ -21,19 +21,9 @@ const Bikeways: NextPageWithLayout<BikewayModel.BikewaysPageProps> = (
         <title>Ciclovías | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth={false}>
-          <BikewayListToolbar />
-          <Box sx={{ mt: 3 }}>
-            <BikewayListResults bikeways={bikeways} />
-          </Box>
-        </Container>
+      <BikewayListToolbar />
+      <Box sx={{ mt: 3 }}>
+        <BikewayListResults bikeways={bikeways} />
       </Box>
     </>
   );

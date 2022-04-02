@@ -1,6 +1,6 @@
 import { BikewayForm, DashboardLayout } from "@components";
 import { Roles } from "@lib";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { BikewayModel } from "@types";
 import { NextPageWithLayout } from "next";
 import dynamic from "next/dynamic";
@@ -23,28 +23,18 @@ const NewBikeway: NextPageWithLayout<BikewayModel.NewBikewayPageProps> = (
         <title>Nueva Ciclovía | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Typography sx={{ mb: 3 }} variant="h4">
-            Nueva Ciclovía
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item lg={8} md={12} xs={12}>
-              <MapBikewayDrawer />
-            </Grid>
+      <Typography sx={{ mb: 3 }} variant="h4">
+        Nueva Ciclovía
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item lg={8} md={12} xs={12}>
+          <MapBikewayDrawer />
+        </Grid>
 
-            <Grid item lg={4} md={12} xs={12}>
-              <BikewayForm />
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+        <Grid item lg={4} md={12} xs={12}>
+          <BikewayForm />
+        </Grid>
+      </Grid>
     </>
   );
 };

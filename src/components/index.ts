@@ -1,6 +1,7 @@
 export * from "@components/Auth";
 export * from "@components/Badge";
 export * from "@components/Bikeway";
+export * from "@components/Breadcrumbs";
 export * from "@components/Copyright";
 export * from "@components/Drawer";
 export * from "@components/Input";
@@ -16,4 +17,5 @@ export * from "@components/Profile";
 export * from "@components/Progress";
 export * from "@components/Route";
 export * from "@components/Sidebar";
+export * from "@components/Tour";
 export * from "@components/User";

@@ -4,7 +4,7 @@ import {
   ParkingPointStandListToolbar,
 } from "@components";
 import { Roles, useParkingPoint } from "@lib";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { ParkingPointModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
@@ -20,25 +20,16 @@ const ParkingPoint: NextPageWithLayout<
       <Head>
         <title>{parkingPoint?.parkingPoint.name} | Ciclovía App</title>
       </Head>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth={false}>
-          <ParkingPointStandListToolbar
-            parkingPoint={parkingPoint!.parkingPoint}
-            parkingPointStands={parkingPoint!.parkingPointStands}
-          />
 
-          <Box sx={{ mt: 3 }}>
-            <ParkingPointStandListResults
-              parkingPointStands={parkingPoint!.parkingPointStands}
-            />
-          </Box>
-        </Container>
+      <ParkingPointStandListToolbar
+        parkingPoint={parkingPoint!.parkingPoint}
+        parkingPointStands={parkingPoint!.parkingPointStands}
+      />
+
+      <Box sx={{ mt: 3 }}>
+        <ParkingPointStandListResults
+          parkingPointStands={parkingPoint!.parkingPointStands}
+        />
       </Box>
     </>
   );

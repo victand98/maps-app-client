@@ -1,6 +1,6 @@
 import { DashboardLayout, PlaceTypeForm, PlaceTypeHelper } from "@components";
 import { getIconOptions, Roles } from "@lib";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { PlaceTypeModel } from "@types";
 import { GetServerSideProps, NextPageWithLayout } from "next";
 import Head from "next/head";
@@ -17,28 +17,18 @@ const NewPlaceType: NextPageWithLayout<
         <title>Nuevo tipo de lugar | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Typography sx={{ mb: 3 }} variant="h4">
-            Nuevo tipo de lugar
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item lg={8} md={6} xs={12}>
-              <PlaceTypeForm iconOptions={iconOptions} />
-            </Grid>
+      <Typography sx={{ mb: 3 }} variant="h4">
+        Nuevo tipo de lugar
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item lg={8} md={6} xs={12}>
+          <PlaceTypeForm iconOptions={iconOptions} />
+        </Grid>
 
-            <Grid item lg={4} md={6} xs={12}>
-              <PlaceTypeHelper />
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+        <Grid item lg={4} md={6} xs={12}>
+          <PlaceTypeHelper />
+        </Grid>
+      </Grid>
     </>
   );
 };

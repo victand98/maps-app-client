@@ -4,7 +4,7 @@ import {
   MyRoutesListToolbar,
 } from "@components";
 import { Roles, useMyRoutes } from "@lib";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { RouteModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
@@ -21,20 +21,10 @@ const MyRoutes: NextPageWithLayout<RouteModel.MyRoutesPageProps> = (props) => {
         <title>Mis rutas | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth={false}>
-          <MyRoutesListToolbar />
+      <MyRoutesListToolbar />
 
-          <Box sx={{ mt: 3 }}>
-            <MyRoutesListResults myRoutes={myRoutes!} />
-          </Box>
-        </Container>
+      <Box sx={{ mt: 3 }}>
+        <MyRoutesListResults myRoutes={myRoutes!} />
       </Box>
     </>
   );

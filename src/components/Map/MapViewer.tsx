@@ -4,6 +4,7 @@ import { LocateControl } from "./ChildElements/LocateControl";
 import { NavbarControl } from "./ChildElements/NavbarControl";
 import { PlaceData } from "./ChildElements/PlaceData";
 import { RouteControl } from "./ChildElements/RouteControl";
+import { TourControl } from "./ChildElements/TourControl";
 import { IMap } from "./IMap";
 import MapOffline from "./MapOffline";
 
@@ -15,6 +16,7 @@ const MapViewer: FC<IMap.MapViewerProps> = (props) => {
       <NavbarControl />
       <RouteControl currentRoute={props.currentRoute} />
       <LocateControl currentRoute={props.currentRoute} />
+      <TourControl />
     </MapOffline>
   );
 };
