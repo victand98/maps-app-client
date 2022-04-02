@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import L from "leaflet";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -6,6 +7,7 @@ interface Props {
   position: L.ControlPosition;
   children?: React.ReactNode;
   style?: React.CSSProperties;
+  className?: string;
 }
 
 const POSITION_CLASSES = {
@@ -28,8 +30,10 @@ export const CustomControl = (props: Props): JSX.Element => {
     setContainer(targetDiv[0]);
   }, [positionClass]);
 
+  const controlClass = classNames("leaflet-control", props.className);
+
   const controlContainer = (
-    <div className="leaflet-control" style={props.style}>
+    <div className={controlClass} style={props.style}>
       {props.children}
     </div>
   );

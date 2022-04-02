@@ -4,7 +4,7 @@ import {
   ParkingPointListToolbar,
 } from "@components";
 import { Roles, useParkingPoints, usePlaceTypes } from "@lib";
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { ParkingPointModel, PlaceTypeModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
@@ -22,28 +22,20 @@ const ParkingPoints: NextPageWithLayout<
         <title>Puntos de estacionamiento | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth={false}>
-          <ParkingPointListToolbar />
-          <Box sx={{ pt: 3 }}>
-            <Grid container spacing={3}>
-              {parkingPoints?.map((parkingPoint) => (
-                <Grid item key={parkingPoint.id} lg={4} md={6} xs={12}>
-                  <ParkingPointCard
-                    parkingPoint={parkingPoint}
-                    placeTypes={placeTypes!}
-                  />
-                </Grid>
-              ))}
+      <ParkingPointListToolbar />
+      <Box sx={{ pt: 3 }}>
+        <Grid container spacing={3}>
+          {parkingPoints?.map((parkingPoint) => (
+            <Grid item key={parkingPoint.id} lg={4} md={6} xs={12}>
+              <ParkingPointCard
+                parkingPoint={parkingPoint}
+                placeTypes={placeTypes!}
+              />
             </Grid>
-          </Box>
-          {/* <Box
+          ))}
+        </Grid>
+      </Box>
+      {/* <Box
             sx={{
               display: "flex",
               justifyContent: "center",
@@ -52,8 +44,6 @@ const ParkingPoints: NextPageWithLayout<
           >
             <Pagination color="primary" count={3} size="small" />
           </Box> */}
-        </Container>
-      </Box>
     </>
   );
 };

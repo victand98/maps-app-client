@@ -4,7 +4,7 @@ import {
   PlaceTypeListToolbar,
 } from "@components";
 import { buildClient, getIconOptions, Roles, usePlaceTypes } from "@lib";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import { PlaceTypeModel } from "@types";
 import { GetServerSideProps, NextPageWithLayout } from "next";
 import Head from "next/head";
@@ -21,22 +21,12 @@ const PlaceTypes: NextPageWithLayout<PlaceTypeModel.IPagePlaceTypesProps> = (
         <title>Tipos de lugar | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth={false}>
-          <PlaceTypeListToolbar />
-          <Box sx={{ mt: 3 }}>
-            <PlaceTypeListResults
-              placeTypes={placeTypes}
-              iconOptions={props.iconOptions!}
-            />
-          </Box>
-        </Container>
+      <PlaceTypeListToolbar />
+      <Box sx={{ mt: 3 }}>
+        <PlaceTypeListResults
+          placeTypes={placeTypes}
+          iconOptions={props.iconOptions!}
+        />
       </Box>
     </>
   );

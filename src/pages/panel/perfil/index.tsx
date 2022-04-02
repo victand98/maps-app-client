@@ -5,7 +5,7 @@ import {
   ProfileForm,
 } from "@components";
 import { Roles, useUser } from "@lib";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { UserModel } from "@types";
 import { NextPageWithLayout } from "next";
 import Head from "next/head";
@@ -23,33 +23,23 @@ const MyProfile: NextPageWithLayout<UserModel.MyProfilePageProps> = (props) => {
         <title>Mi perfil | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Typography sx={{ mb: 3 }} variant="h4">
-            Mi perfil
-          </Typography>
-          <Grid container spacing={3}>
-            <Grid item lg={4} md={6} xs={12}>
-              <ProfileCard profile={profile!} />
-            </Grid>
+      <Typography sx={{ mb: 3 }} variant="h4">
+        Mi perfil
+      </Typography>
+      <Grid container spacing={3}>
+        <Grid item lg={4} md={6} xs={12}>
+          <ProfileCard profile={profile!} />
+        </Grid>
 
-            <Grid item container lg={8} md={6} xs={12} spacing={3}>
-              <Grid item xs={12}>
-                <ProfileForm profile={profile!} />
-              </Grid>
-              <Grid item xs={12}>
-                <ChangePasswordForm />
-              </Grid>
-            </Grid>
+        <Grid item container lg={8} md={6} xs={12} spacing={3}>
+          <Grid item xs={12}>
+            <ProfileForm profile={profile!} />
           </Grid>
-        </Container>
-      </Box>
+          <Grid item xs={12}>
+            <ChangePasswordForm />
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 };

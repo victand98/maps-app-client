@@ -1,6 +1,6 @@
 import { DashboardLayout, RouteDetails } from "@components";
 import { Roles, useRoute } from "@lib";
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { RouteModel } from "@types";
 import { NextPageWithLayout } from "next";
 import dynamic from "next/dynamic";
@@ -26,29 +26,19 @@ const Route: NextPageWithLayout<RouteModel.RoutePageProps> = (props) => {
         <title>{route!.name} | Ciclovía App</title>
       </Head>
 
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          py: 8,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Typography sx={{ mb: 3 }} variant="h6">
-            {route!.name}
-          </Typography>
+      <Typography sx={{ mb: 3 }} variant="h6">
+        {route!.name}
+      </Typography>
 
-          <Grid container spacing={3}>
-            <Grid container item md={4} xs={12} spacing={3}>
-              <RouteDetails route={route!} />
-            </Grid>
+      <Grid container spacing={3}>
+        <Grid container item md={4} xs={12} spacing={3}>
+          <RouteDetails route={route!} />
+        </Grid>
 
-            <Grid item md={8} xs={12} minHeight={500}>
-              <RouteMapViewer route={route!} />
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
+        <Grid item md={8} xs={12} minHeight={500}>
+          <RouteMapViewer route={route!} />
+        </Grid>
+      </Grid>
     </>
   );
 };

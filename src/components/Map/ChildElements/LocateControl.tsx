@@ -68,7 +68,7 @@ export const LocateControl: FC<ChildElements.LocateControlProps> = (props) => {
         <Marker position={position}>Mi ubicación actual</Marker>
       )}
 
-      <CustomControl position="bottomright">
+      <CustomControl position="bottomright" className="locate-control">
         <Tooltip title="Encontrar mi ubicación" placement="left">
           <IconButton
             onClick={findLocation}
