@@ -3,12 +3,14 @@ import {
   PlaceTypeListResults,
   PlaceTypeListToolbar,
 } from "@components";
-import { buildClient, getIconOptions, Roles, usePlaceTypes } from "@lib";
+import { Roles, getIconOptions, httpClient, usePlaceTypes } from "@lib";
 import { Box } from "@mui/material";
 import { PlaceTypeModel } from "@types";
-import { GetServerSideProps, NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const PlaceTypes: NextPageWithLayout<PlaceTypeModel.IPagePlaceTypesProps> = (
   props
@@ -40,14 +42,20 @@ PlaceTypes.auth = {
   roles: [Roles.admin],
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
   const iconOptions = getIconOptions();
-  const client = await buildClient(context, null);
-  const { data: placeTypes } = await client.get<
+  const { data: placeTypes } = await httpClient.get<
     PlaceTypeModel.PlaceTypeResponse[]
-  >("/placetype");
+  >("/placetype", { params: { session } });
 
-  return { props: { iconOptions, placeTypes } };
+  return {
+    props: {
+      session,
+      iconOptions,
+      placeTypes,
+    },
+  };
 };
 
 export default PlaceTypes;

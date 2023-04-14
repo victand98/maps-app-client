@@ -1,10 +1,12 @@
 import { DashboardLayout, UserListResults, UserListToolbar } from "@components";
-import { Roles, useUsers } from "@lib";
+import { Roles, httpClient, useUsers } from "@lib";
 import { Box } from "@mui/material";
 import { UserModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const Users: NextPageWithLayout<UserModel.UsersPageProps> = (props) => {
   const { data: users } = useUsers(props.users);
@@ -31,10 +33,18 @@ Users.auth = {
   roles: [Roles.admin],
 };
 
-Users.getInitialProps = async (context) => {
-  const users = await context.client.get<UserModel.UserResponse[]>("/user");
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const users = await httpClient.get<UserModel.UserResponse[]>("/user", {
+    params: { session },
+  });
 
-  return { users: users.data };
+  return {
+    props: {
+      session,
+      users: users.data,
+    },
+  };
 };
 
 export default Users;

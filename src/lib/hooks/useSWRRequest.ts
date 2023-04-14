@@ -1,6 +1,7 @@
 import { httpClient } from "@lib";
 import { CustomErrorResponse } from "@types";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { useSession } from "next-auth/react";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 
 export type GetRequest = AxiosRequestConfig | null;
@@ -30,6 +31,13 @@ export default function useSWRRequest<
   request: GetRequest,
   { fallbackData, execute = true, ...config }: Config<Data, Error> = {}
 ): Return<Data, Error> {
+  const { data: session } = useSession();
+
+  const finalRequest: GetRequest = {
+    ...request,
+    params: { ...request?.params, session },
+  };
+
   const {
     data: response,
     error,
@@ -41,13 +49,13 @@ export default function useSWRRequest<
      * NOTE: Typescript thinks `request` can be `null` here, but the fetcher
      * function is actually only called by `useSWR` when it isn't.
      */
-    () => httpClient.request<Data>(request!),
+    () => httpClient.request<Data>(finalRequest!),
     {
       ...config,
       fallbackData: fallbackData && {
         status: 200,
         statusText: "InitialData",
-        config: request!,
+        config: finalRequest!,
         headers: {},
         data: fallbackData,
       },

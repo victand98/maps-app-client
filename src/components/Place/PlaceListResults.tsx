@@ -14,6 +14,7 @@ import {
   Chip,
   Icon,
   IconButton,
+  Link as MaterialLink,
   Table,
   TableBody,
   TableCell,
@@ -22,11 +23,11 @@ import {
   TableRow,
   Tooltip,
   Typography,
-  Link as MaterialLink,
 } from "@mui/material";
 import { PlaceModel } from "@types";
 import { format } from "date-fns";
-import React, { FC, Fragment, useState } from "react";
+import { useSession } from "next-auth/react";
+import { FC, Fragment, useState } from "react";
 import { toast } from "react-toastify";
 import { PlaceEditForm } from ".";
 import { Link } from "..";
@@ -34,6 +35,7 @@ import { IPlace } from "./IPlace";
 
 export const PlaceListResults: FC<IPlace.IPlaceListResultsProps> = (props) => {
   const { places, placeTypes } = props;
+  const { data: session } = useSession();
   const { mutate } = usePlaces();
   const [open, setOpen] = useState(false);
   const { limit, onLimitChange, onPageChange, page } = usePagination({
@@ -42,7 +44,7 @@ export const PlaceListResults: FC<IPlace.IPlaceListResultsProps> = (props) => {
   });
   const [currentPlace, setCurrentPlace] = useState<PlaceModel.PlaceResponse>();
 
-  const { doRequest, loading } = useRequest<PlaceModel.PlaceResponse>({
+  const { doRequest, loading } = useRequest({
     request: PlaceService.update,
     onSuccess: (data) => {
       toast.success("Estado actualizado");
@@ -54,7 +56,7 @@ export const PlaceListResults: FC<IPlace.IPlaceListResultsProps> = (props) => {
   });
 
   const toggleStatus = (currentStatus: boolean, id: string) => {
-    doRequest({ status: !currentStatus }, id);
+    doRequest({ status: !currentStatus }, id, session!);
   };
 
   const handleClose = () => {

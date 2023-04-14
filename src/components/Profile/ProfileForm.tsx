@@ -17,7 +17,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import { UserModel } from "@types";
-import React, { FC } from "react";
+import { useSession } from "next-auth/react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { TextInput } from "..";
@@ -25,23 +26,23 @@ import { IProfile } from "./IProfile";
 
 export const ProfileForm: FC<IProfile.ProfileFormProps> = (props) => {
   const { profile } = props;
-
+  const { data: session } = useSession();
   const { mutate } = useUser({ id: profile.id });
 
-  const { doRequest, loading } = useRequest<UserModel.UserResponse>({
+  const { doRequest, loading } = useRequest({
     request: UserService.update,
     onSuccess: (data) => {
       toast.success("Perfil modificado con éxito");
       mutate();
     },
     onError: (err) => {
-      handleFormError(err, setError);
+      handleFormError(err as any, setError);
     },
   });
   const { control, handleSubmit, setError } = useForm<UserModel.UserValues>();
 
   const onSubmit = (data: UserModel.UserValues) => {
-    doRequest(data, profile.id);
+    doRequest(data, profile.id, session!);
   };
 
   return (

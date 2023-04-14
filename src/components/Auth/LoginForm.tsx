@@ -10,6 +10,7 @@ import { TextInput } from "..";
 
 export const LoginForm = () => {
   const router = useRouter();
+  const [loading, setLoading] = React.useState(false);
 
   const {
     control,
@@ -18,15 +19,17 @@ export const LoginForm = () => {
   } = useForm<LoginFormValues>();
 
   const onSubmit = async ({ email, password }: LoginFormValues) => {
+    setLoading(true);
     const res = await signIn<any>("credentials", {
       email,
       password,
-      callbackUrl: (router.query.returnUrl as string) || "/panel",
+      callbackUrl: router.query.callbackUrl?.toString() || "/panel",
       redirect: false,
     });
 
     if (res?.error) toast.error(res.error);
-    if (res?.url) router.reload();
+    if (res?.url) router.push(res.url);
+    setLoading(false);
   };
 
   return (
@@ -79,7 +82,7 @@ export const LoginForm = () => {
       />
 
       <LoadingButton
-        loading={isSubmitting}
+        loading={isSubmitting || loading}
         type="submit"
         fullWidth
         variant="contained"

@@ -1,12 +1,14 @@
 import { IndexLayout } from "@components/Layout";
 import { RouteOverview } from "@components/Route";
-import { useCurrentRoute } from "@lib";
+import { httpClient, useCurrentRoute } from "@lib";
 import { Box } from "@mui/material";
 import { BikewayModel, HomePage, PlaceModel, RouteModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const MapViewer = dynamic(() => import("@components/Map/MapViewer"), {
   ssr: false,
@@ -37,22 +39,31 @@ const Home: NextPageWithLayout<HomePage.HomePageProps> = (props) => {
 
 Home.getLayout = (page: ReactElement) => <IndexLayout>{page}</IndexLayout>;
 
-Home.getInitialProps = async (context) => {
-  let currentRoute: HomePage.HomePageProps["currentRoute"];
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  let currentRoute: HomePage.HomePageProps["currentRoute"] | null = null;
 
-  if (context.session) {
-    const { data } = await context.client.get<RouteModel.NewRouteResponse>(
-      "/route/current"
+  if (session) {
+    const { data } = await httpClient.get<RouteModel.NewRouteResponse>(
+      "/route/current",
+      { params: { session } }
     );
     currentRoute = data;
   }
 
   const [places, bikeways] = await Promise.all([
-    context.client.get<PlaceModel.PlaceResponse[]>("/place"),
-    context.client.get<BikewayModel.BikewayResponse[]>("/bikeway"),
+    httpClient.get<PlaceModel.PlaceResponse[]>("/place"),
+    httpClient.get<BikewayModel.BikewayResponse[]>("/bikeway"),
   ]);
 
-  return { places: places.data, bikeways: bikeways.data, currentRoute };
+  return {
+    props: {
+      session,
+      places: places.data,
+      bikeways: bikeways.data,
+      currentRoute,
+    },
+  };
 };
 
 export default Home;

@@ -1,10 +1,12 @@
 import { DashboardLayout, UserForm, UserPreview } from "@components";
-import { Roles, useRoles } from "@lib";
+import { Roles, httpClient, useRoles } from "@lib";
 import { Grid, Typography } from "@mui/material";
 import { RoleModel, UserModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const NewUser: NextPageWithLayout<UserModel.NewUserPageProps> = (props) => {
   const { data: roles } = useRoles({ fallbackData: props.roles });
@@ -39,10 +41,18 @@ NewUser.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
 
-NewUser.getInitialProps = async (ctx) => {
-  const roles = await ctx.client.get<RoleModel.RoleResponse[]>(`/role`);
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const roles = await httpClient.get<RoleModel.RoleResponse[]>(`/role`, {
+    params: { session },
+  });
 
-  return { roles: roles.data };
+  return {
+    props: {
+      session,
+      roles: roles.data,
+    },
+  };
 };
 
 export default NewUser;

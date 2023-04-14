@@ -24,7 +24,8 @@ import {
 } from "@mui/material";
 import { RouteModel } from "@types";
 import { format } from "date-fns";
-import React, { FC, useState } from "react";
+import { useSession } from "next-auth/react";
+import { FC, useState } from "react";
 import { toast } from "react-toastify";
 import { useRecoilState } from "recoil";
 import { SwipeableDrawer } from "..";
@@ -32,16 +33,14 @@ import { UIRoute } from "./UIRoute";
 
 export const RouteOverview: FC<UIRoute.RouteOverviewProps> = (props) => {
   const { currentRoute } = props;
+  const { data: session } = useSession();
   const { mutate } = useCurrentRoute();
   const [openOverview, setOpenOverview] = useState(false);
   const [openRouteOverview, setOpenRouteOverview] = useRecoilState(
     openRouteOverviewState
   );
 
-  const { doRequest, loading } = useRequest<
-    RouteModel.NewRouteResponse,
-    RouteModel.UpdateRouteValues
-  >({
+  const { doRequest, loading } = useRequest({
     request: RouteService.update,
     onSuccess: (data) => {
       mutate();
@@ -64,7 +63,7 @@ export const RouteOverview: FC<UIRoute.RouteOverviewProps> = (props) => {
           endTime: format(new Date(), "HH:mm"),
           location: savedLocation as RouteModel.UpdateRouteValues["location"],
         };
-        doRequest(data, currentRoute!.id);
+        doRequest(data, currentRoute!.id, session!);
       } else {
         toast.error("Aun no hay datos suficientes para guardar su recorrido");
       }

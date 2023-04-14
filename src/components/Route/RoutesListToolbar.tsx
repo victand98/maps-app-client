@@ -1,4 +1,4 @@
-import { RouteService, toastErrors, useRequest, Permissions } from "@lib";
+import { Permissions, RouteService, toastErrors, useRequest } from "@lib";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -10,7 +10,8 @@ import {
   Typography,
 } from "@mui/material";
 import fileDownload from "js-file-download";
-import React, { FC } from "react";
+import { useSession } from "next-auth/react";
+import { FC } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FaFileCsv } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -21,6 +22,7 @@ import { UIRoute } from "./UIRoute";
 export const RoutesListToolbar: FC<UIRoute.RoutesListToolbarProps> = (
   props
 ) => {
+  const { data: session } = useSession();
   const { doRequest, loading } = useRequest({
     request: RouteService.downloadCSV,
     onSuccess: (response) => {
@@ -33,7 +35,7 @@ export const RoutesListToolbar: FC<UIRoute.RoutesListToolbarProps> = (
   });
 
   const downloadCSV = () => {
-    doRequest();
+    doRequest(session!);
   };
 
   return (

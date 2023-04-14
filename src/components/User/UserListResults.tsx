@@ -26,7 +26,7 @@ import {
 import { UserModel } from "@types";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { toast } from "react-toastify";
 import { Link } from "..";
 import { IUser } from "./IUser";
@@ -43,7 +43,7 @@ export const UserListResults: FC<IUser.UserListResultsProps> = (props) => {
   });
   const [currentUser, setCurrentUser] = useState<UserModel.UserResponse>();
 
-  const { doRequest, loading } = useRequest<UserModel.UserResponse>({
+  const { doRequest, loading } = useRequest({
     request: UserService.update,
     onSuccess: (data) => {
       toast.success("Estado actualizado");
@@ -55,7 +55,7 @@ export const UserListResults: FC<IUser.UserListResultsProps> = (props) => {
   });
 
   const toggleStatus = (currentStatus: boolean, id: string) => {
-    doRequest({ status: !currentStatus }, id);
+    doRequest({ status: !currentStatus }, id, session!);
   };
 
   const handleClose = () => {

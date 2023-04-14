@@ -1,7 +1,7 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { SERVER_URI } from "./constants";
 import { CustomErrorResponse } from "@types";
-import { getSession } from "next-auth/react";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { Session } from "next-auth";
+import { SERVER_URI } from "./constants";
 
 const instance = axios.create({
   baseURL: SERVER_URI,
@@ -39,10 +39,11 @@ instance.interceptors.response.use(
   (error) => errorHandler(error)
 );
 
-instance.interceptors.request.use(async (config) => {
-  const session = await getSession();
-  if (session) config.headers!.Authorization = `Bearer ${session.accessToken}`;
-
+instance.interceptors.request.use((config) => {
+  const session: Session | undefined = config.params?.session;
+  const token: string | undefined = session?.accessToken;
+  if (token) config.headers!.Authorization = `Bearer ${token}`;
+  delete config.params?.session;
   return config;
 });
 

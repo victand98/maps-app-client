@@ -21,7 +21,7 @@ import {
 import { RouteModel } from "@types";
 import { format } from "date-fns";
 import { useSession } from "next-auth/react";
-import React, { FC, Fragment } from "react";
+import { FC, Fragment } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Link, RadioInput, TextInput } from "..";
@@ -33,10 +33,7 @@ export const NewRouteForm: FC<UIRoute.NewRouteFormProps> = (props) => {
   const { data: session } = useSession();
   const { mutate } = useCurrentRoute();
 
-  const { doRequest, loading } = useRequest<
-    RouteModel.NewRouteResponse,
-    RouteModel.NewRouteValues
-  >({
+  const { doRequest, loading } = useRequest({
     request: RouteService.save,
     onSuccess: (data) => {
       mutate(data);
@@ -61,7 +58,7 @@ export const NewRouteForm: FC<UIRoute.NewRouteFormProps> = (props) => {
     data.startTime = format(currentDate, "HH:mm");
     data.name = `Maratón de ${firstName} - ${format(currentDate, "Pp")}`;
     data.user = id;
-    doRequest(data);
+    doRequest(data, session!);
   };
 
   return (

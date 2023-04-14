@@ -21,9 +21,9 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { BikewayModel } from "@types";
 import { format } from "date-fns";
-import React, { FC } from "react";
+import { useSession } from "next-auth/react";
+import { FC } from "react";
 import { toast } from "react-toastify";
 import { Link } from "..";
 import { IBikeway } from "./IBikeway";
@@ -32,13 +32,14 @@ export const BikewayListResults: FC<IBikeway.IBikewayListResultsProps> = (
   props
 ) => {
   const { bikeways } = props;
+  const { data: session } = useSession();
   const { mutate } = useBikeways();
   const { limit, onLimitChange, onPageChange, page } = usePagination({
     initialLimit: 10,
     initialPage: 0,
   });
 
-  const { doRequest, loading } = useRequest<BikewayModel.BikewayResponse>({
+  const { doRequest, loading } = useRequest({
     request: BikewayService.update,
     onSuccess: (data) => {
       toast.success("Estado actualizado");
@@ -50,7 +51,7 @@ export const BikewayListResults: FC<IBikeway.IBikewayListResultsProps> = (
   });
 
   const toggleStatus = (currentStatus: boolean, id: string) => {
-    doRequest({ status: !currentStatus }, id);
+    doRequest({ status: !currentStatus }, id, session!);
   };
 
   if (!bikeways) return null;

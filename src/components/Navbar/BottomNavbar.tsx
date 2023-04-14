@@ -46,7 +46,7 @@ export const BottomNavbar: FC<PaperProps> = (props) => {
     setValue(selected);
   }, [router.pathname]);
 
-  if (!lgDown) return <div></div>;
+  if (!lgDown) return null;
 
   return (
     <Paper

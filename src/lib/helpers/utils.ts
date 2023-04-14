@@ -1,7 +1,7 @@
 import { ParkingPointStandStatus, Roles } from "@lib/constants";
 import { ChipProps, SxProps, Theme } from "@mui/material";
 import { CustomErrorResponse } from "@types";
-import { UseFormSetError } from "react-hook-form";
+import { FieldValues, UseFormSetError } from "react-hook-form";
 import { toast } from "react-toastify";
 
 export const getInitials = (name: string = "") =>
@@ -12,7 +12,7 @@ export const getInitials = (name: string = "") =>
     .map((v) => v && v[0].toUpperCase())
     .join("");
 
-export const handleFormError = <T = any>(
+export const handleFormError = <T extends FieldValues>(
   err: CustomErrorResponse<T>,
   setError: UseFormSetError<T>,
   withToast: boolean = true
@@ -49,6 +49,13 @@ export const getDateFromTime = (time: string) => {
   date.setMinutes(parseInt(timeSplit[1]));
 
   return date;
+};
+
+export const getDatePlusHours = (date: Date, hours: number) => {
+  const newDate = new Date(date);
+  newDate.setHours(newDate.getHours() + hours);
+
+  return newDate;
 };
 
 export const getMaxNumber = (array: number[]) => Math.max(...array);

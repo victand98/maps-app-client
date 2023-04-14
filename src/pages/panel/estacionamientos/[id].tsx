@@ -3,12 +3,14 @@ import {
   ParkingPointStandListResults,
   ParkingPointStandListToolbar,
 } from "@components";
-import { Roles, useParkingPoint } from "@lib";
+import { Roles, httpClient, useParkingPoint } from "@lib";
 import { Box } from "@mui/material";
 import { ParkingPointModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const ParkingPoint: NextPageWithLayout<
   ParkingPointModel.ParkingPointPageProps
@@ -43,15 +45,22 @@ ParkingPoint.auth = {
   roles: [Roles.admin],
 };
 
-ParkingPoint.getInitialProps = async (context) => {
-  const { id } = context.query;
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const { id } = ctx.query;
   const [parkingPoint] = await Promise.all([
-    context.client.get<ParkingPointModel.SingleParkingPointResponse>(
-      `/parkingpoint/${id}`
+    httpClient.get<ParkingPointModel.SingleParkingPointResponse>(
+      `/parkingpoint/${id}`,
+      { params: { session } }
     ),
   ]);
 
-  return { parkingPoint: parkingPoint.data };
+  return {
+    props: {
+      session,
+      parkingPoint: parkingPoint.data,
+    },
+  };
 };
 
 export default ParkingPoint;

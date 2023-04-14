@@ -4,12 +4,14 @@ import {
   ProfileCard,
   ProfileForm,
 } from "@components";
-import { Roles, useUser } from "@lib";
+import { Roles, httpClient, useUser } from "@lib";
 import { Grid, Typography } from "@mui/material";
 import { UserModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const MyProfile: NextPageWithLayout<UserModel.MyProfilePageProps> = (props) => {
   const { data: profile } = useUser({
@@ -52,17 +54,18 @@ MyProfile.auth = {
   roles: Object.values(Roles),
 };
 
-MyProfile.getInitialProps = async (context) => {
-  const { session } = context;
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
 
   if (session) {
-    const user = await context.client.get<UserModel.UserResponse>(
-      `/user/${session!.user!.id}`
+    const user = await httpClient.get<UserModel.UserResponse>(
+      `/user/${session!.user!.id}`,
+      { params: { session } }
     );
-    return { profile: user.data };
+    return { props: { session, profile: user.data } };
   }
 
-  return {};
+  return { props: { session } };
 };
 
 export default MyProfile;

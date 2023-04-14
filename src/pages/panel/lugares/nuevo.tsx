@@ -1,10 +1,12 @@
 import { DashboardLayout, PlaceForm, PlacePreview } from "@components";
-import { Roles } from "@lib";
+import { Roles, httpClient } from "@lib";
 import { Grid, Typography } from "@mui/material";
 import { PlaceModel, PlaceTypeModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const NewPlace: NextPageWithLayout<PlaceModel.NewPlacePageProps> = (props) => {
   return (
@@ -37,12 +39,18 @@ NewPlace.auth = {
   roles: [Roles.admin],
 };
 
-NewPlace.getInitialProps = async (context) => {
-  const { data: placeTypes } = await context.client.get<
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const { data: placeTypes } = await httpClient.get<
     PlaceTypeModel.PlaceTypeResponse[]
-  >("/placetype");
+  >("/placetype", { params: { session } });
 
-  return { placeTypes };
+  return {
+    props: {
+      session,
+      placeTypes,
+    },
+  };
 };
 
 export default NewPlace;
