@@ -3,12 +3,14 @@ import {
   PlaceListResults,
   PlaceListToolbar,
 } from "@components";
-import { Roles, usePlaces, usePlaceTypes } from "@lib";
+import { Roles, httpClient, usePlaceTypes, usePlaces } from "@lib";
 import { Box } from "@mui/material";
 import { PlaceModel, PlaceTypeModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const Places: NextPageWithLayout<PlaceModel.PlacesPageProps> = (props) => {
   const { data: places } = usePlaces(props.places);
@@ -36,13 +38,24 @@ Places.auth = {
   roles: [Roles.admin],
 };
 
-Places.getInitialProps = async (context) => {
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
   const [places, placeTypes] = await Promise.all([
-    context.client.get<PlaceModel.PlaceResponse[]>("/place"),
-    context.client.get<PlaceTypeModel.PlaceTypeResponse[]>("/placetype"),
+    httpClient.get<PlaceModel.PlaceResponse[]>("/place", {
+      params: { session },
+    }),
+    httpClient.get<PlaceTypeModel.PlaceTypeResponse[]>("/placetype", {
+      params: { session },
+    }),
   ]);
 
-  return { places: places.data, placeTypes: placeTypes.data };
+  return {
+    props: {
+      session,
+      places: places.data,
+      placeTypes: placeTypes.data,
+    },
+  };
 };
 
 export default Places;

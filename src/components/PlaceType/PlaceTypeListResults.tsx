@@ -24,7 +24,8 @@ import {
 } from "@mui/material";
 import { PlaceTypeModel } from "@types";
 import { format } from "date-fns";
-import React, { FC, useState } from "react";
+import { useSession } from "next-auth/react";
+import { FC, useState } from "react";
 import { toast } from "react-toastify";
 import { PlaceTypeEditForm } from ".";
 import { IPlaceType } from "./IPlaceType";
@@ -33,6 +34,7 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
   props
 ) => {
   const { placeTypes, iconOptions } = props;
+  const { data: session } = useSession();
   const { mutate } = usePlaceTypes();
   const [open, setOpen] = useState(false);
   const { limit, onLimitChange, onPageChange, page } = usePagination({
@@ -42,7 +44,7 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
   const [currentPlaceType, setCurrentPlaceType] =
     useState<PlaceTypeModel.PlaceTypeResponse>();
 
-  const { doRequest } = useRequest<PlaceTypeModel.PlaceTypeResponse>({
+  const { doRequest } = useRequest({
     request: PlaceTypeService.update,
     onSuccess: (data) => {
       toast.success("Estado actualizado");
@@ -54,7 +56,7 @@ export const PlaceTypeListResults: FC<IPlaceType.IPlaceTypeListResultsProps> = (
   });
 
   const toggleStatus = (currentStatus: boolean, id: string) => {
-    doRequest({ status: !currentStatus }, id);
+    doRequest({ status: !currentStatus }, id, session!);
   };
 
   const handleClose = () => {

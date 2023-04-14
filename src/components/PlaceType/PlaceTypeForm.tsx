@@ -21,6 +21,7 @@ import {
   TextField,
 } from "@mui/material";
 import { IconsModel, PlaceTypeModel } from "@types";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { useForm } from "react-hook-form";
@@ -31,11 +32,9 @@ import { IPlaceType } from "./IPlaceType";
 export const PlaceTypeForm: FC<IPlaceType.PlaceTypeFormProps> = (props) => {
   const { iconOptions } = props;
   const router = useRouter();
+  const { data: session } = useSession();
 
-  const { doRequest } = useRequest<
-    PlaceTypeModel.PlaceTypeResponse,
-    PlaceTypeModel.PlaceTypeValues
-  >({
+  const { doRequest } = useRequest({
     request: PlaceTypeService.save,
     onSuccess: (data) => {
       toast.success("Tipo de lugar guardado con éxito");
@@ -64,7 +63,7 @@ export const PlaceTypeForm: FC<IPlaceType.PlaceTypeFormProps> = (props) => {
   }, [register]);
 
   const onSubmit = (data: PlaceTypeModel.PlaceTypeValues) => {
-    doRequest(data);
+    doRequest(data, session!);
   };
 
   return (
@@ -108,7 +107,7 @@ export const PlaceTypeForm: FC<IPlaceType.PlaceTypeFormProps> = (props) => {
                   );
                 }}
                 options={iconOptions}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option: any) => option.name}
                 groupBy={(option: IconsModel.IconsResponse) =>
                   option.name[0].toUpperCase()
                 }
@@ -203,18 +202,15 @@ export const PlaceTypeEditForm: FC<IPlaceType.PlaceTypeEditFormProps> = (
   props
 ) => {
   const { iconOptions, open, onClose, currentPlaceType } = props;
-
-  const { doRequest } = useRequest<
-    PlaceTypeModel.PlaceTypeResponse,
-    PlaceTypeModel.PlaceTypeValues
-  >({
+  const { data: session } = useSession();
+  const { doRequest } = useRequest({
     request: PlaceTypeService.update,
     onSuccess: (data) => {
       toast.success("Tipo de lugar modificado con éxito");
       onClose();
     },
     onError: (err) => {
-      handleFormError(err, setError);
+      handleFormError(err as any, setError);
     },
   });
 
@@ -238,7 +234,7 @@ export const PlaceTypeEditForm: FC<IPlaceType.PlaceTypeEditFormProps> = (
   }, [register]);
 
   const onSubmit = (data: PlaceTypeModel.PlaceTypeValues) => {
-    doRequest(data, currentPlaceType.id);
+    doRequest(data, currentPlaceType.id, session!);
   };
 
   return (
@@ -299,7 +295,7 @@ export const PlaceTypeEditForm: FC<IPlaceType.PlaceTypeEditFormProps> = (
                 isOptionEqualToValue={(option, value) =>
                   option.name === value.name
                 }
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option: any) => option.name}
                 groupBy={(option: IconsModel.IconsResponse) =>
                   option.name[0].toUpperCase()
                 }

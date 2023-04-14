@@ -1,11 +1,13 @@
 import { DashboardLayout, RouteDetails } from "@components";
-import { Roles, useRoute } from "@lib";
+import { Roles, httpClient, useRoute } from "@lib";
 import { Grid, Typography } from "@mui/material";
 import { RouteModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const RouteMapViewer = dynamic(
   () => import("@components/Route/RouteMapViewer"),
@@ -51,13 +53,20 @@ Route.auth = {
   roles: Object.values(Roles),
 };
 
-Route.getInitialProps = async (context) => {
-  const { id } = context.query;
-  const route = await context.client.get<RouteModel.SingleRouteResponse>(
-    `/route/${id}`
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const { id } = ctx.query;
+  const route = await httpClient.get<RouteModel.SingleRouteResponse>(
+    `/route/${id}`,
+    { params: { session } }
   );
 
-  return { route: route.data };
+  return {
+    props: {
+      session,
+      route: route.data,
+    },
+  };
 };
 
 export default Route;

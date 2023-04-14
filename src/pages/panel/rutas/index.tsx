@@ -3,12 +3,14 @@ import {
   RoutesListResults,
   RoutesListToolbar,
 } from "@components";
-import { Roles, useRoutes } from "@lib";
+import { Roles, httpClient, useRoutes } from "@lib";
 import { Box } from "@mui/material";
 import { RouteModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const Routes: NextPageWithLayout<RouteModel.RoutesPageProps> = (props) => {
   const { data: routes } = useRoutes({
@@ -38,12 +40,16 @@ Routes.auth = {
   roles: Object.values(Roles),
 };
 
-Routes.getInitialProps = async (context) => {
-  const routes = await context.client.get<RouteModel.RouteResponse[]>(
-    `/route/`
-  );
-
-  return { routes: routes.data };
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const routes = await httpClient.get<RouteModel.RouteResponse[]>(`/route/`, {
+    params: { session },
+  });
+  return {
+    props: {
+      session,
+      routes: routes.data,
+    },
+  };
 };
-
 export default Routes;

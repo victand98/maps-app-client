@@ -1,20 +1,14 @@
 import { Authorization } from "@components";
 import { CacheProvider, EmotionCache } from "@emotion/react";
-import {
-  buildClient,
-  createEmotionCache,
-  PermissionsContextProvider,
-} from "@lib";
-import { LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import { PermissionsContextProvider, createEmotionCache } from "@lib";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { theme } from "@styles/theme";
 import { NextPageWithLayout } from "next";
-import { Session } from "next-auth";
-import { getSession, SessionProvider } from "next-auth/react";
-import { AppContext, AppProps } from "next/app";
+import { SessionProvider } from "next-auth/react";
+import { AppProps } from "next/app";
 import Head from "next/head";
-import { ReactElement } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { RecoilRoot } from "recoil";
@@ -22,7 +16,6 @@ import "../styles/globals.css";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
-  session: Session;
   emotionCache?: EmotionCache;
 };
 
@@ -32,13 +25,12 @@ const clientSideEmotionCache = createEmotionCache();
 export default function MyApp({
   Component,
   pageProps,
-  session,
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) {
-  const getLayout = Component.getLayout ?? ((page: ReactElement) => page);
+  const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={(pageProps as any).session}>
       <PermissionsContextProvider>
         <CacheProvider value={emotionCache}>
           <Head>
@@ -55,10 +47,10 @@ export default function MyApp({
               <RecoilRoot>
                 {Component.auth ? (
                   <Authorization roles={Component.auth.roles}>
-                    {getLayout(<Component session={session} {...pageProps} />)}
+                    {getLayout(<Component {...pageProps} />)}
                   </Authorization>
                 ) : (
-                  getLayout(<Component session={session} {...pageProps} />)
+                  getLayout(<Component {...pageProps} />)
                 )}
               </RecoilRoot>
 
@@ -81,20 +73,3 @@ export default function MyApp({
     </SessionProvider>
   );
 }
-
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const session = await getSession(appContext.ctx);
-  const client = buildClient(appContext.ctx, session);
-
-  let pageProps = {};
-  if (appContext.Component.getInitialProps)
-    pageProps = await appContext.Component.getInitialProps({
-      ...appContext.ctx,
-      client,
-      session,
-    });
-
-  return {
-    pageProps,
-  };
-};

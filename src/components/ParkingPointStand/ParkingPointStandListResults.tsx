@@ -49,17 +49,16 @@ export const ParkingPointStandListResults: FC<
   const [currentStandHistory, setCurrentStandHistory] =
     useState<ParkingPointModel.CurrentStandHistory>();
 
-  const { doRequest, loading } =
-    useRequest<ParkingPointModel.ParkingPointStand>({
-      request: PlaceService.update,
-      onSuccess: (data) => {
-        toast.success("Estado actualizado");
-        mutate();
-      },
-      onError: (error) => {
-        toastErrors(error);
-      },
-    });
+  const { doRequest, loading } = useRequest({
+    request: PlaceService.update,
+    onSuccess: (data) => {
+      toast.success("Estado actualizado");
+      mutate();
+    },
+    onError: (error) => {
+      toastErrors(error);
+    },
+  });
 
   const handleClose = () => {
     setOpen(false);

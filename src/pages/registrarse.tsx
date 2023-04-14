@@ -48,12 +48,9 @@ Signup.getLayout = (page: ReactElement) => (
   <DefaultLayout>{page}</DefaultLayout>
 );
 
-export const getServerSideProps: GetServerSideProps = async ({
-  req,
-  query,
-}) => {
-  const session = await getSession({ req });
-  const { returnUrl = "/panel" } = query;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const session = await getSession({ ctx });
+  const { returnUrl = "/panel" } = ctx.query;
   if (session) {
     return {
       redirect: {
@@ -62,9 +59,7 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
   }
-  return {
-    props: {},
-  };
+  return { props: { session } };
 };
 
 export default Signup;

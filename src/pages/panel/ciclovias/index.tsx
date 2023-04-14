@@ -3,12 +3,14 @@ import {
   BikewayListToolbar,
   DashboardLayout,
 } from "@components";
-import { Roles, useBikeways } from "@lib";
+import { Roles, httpClient, useBikeways } from "@lib";
 import { Box } from "@mui/material";
 import { BikewayModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const Bikeways: NextPageWithLayout<BikewayModel.BikewaysPageProps> = (
   props
@@ -33,15 +35,23 @@ Bikeways.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
 
-Bikeways.getInitialProps = async (context) => {
-  const bikeways = await context.client.get<BikewayModel.BikewayResponse[]>(
-    "/bikeway"
-  );
-  return { bikeways: bikeways.data };
-};
-
 Bikeways.auth = {
   roles: [Roles.admin],
+};
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const bikeways = await httpClient.get<BikewayModel.BikewayResponse[]>(
+    "/bikeway",
+    { params: { session } }
+  );
+
+  return {
+    props: {
+      session,
+      bikeways: bikeways.data,
+    },
+  };
 };
 
 export default Bikeways;

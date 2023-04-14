@@ -1,21 +1,23 @@
 /** @type {import('next').NextConfig} */
-const withPWA = require("next-pwa");
-const runtimeCaching = require("next-pwa/cache");
 
-module.exports = withPWA({
-  reactStrictMode: true,
-  pwa: {
-    dest: "public",
-    register: true,
-    skipWaiting: true,
-    runtimeCaching,
-    disable: process.env.NODE_ENV === "development",
-    buildExcludes: [
-      /middleware-chunks\/.*$/,
-      /middleware-runtime\.js$/,
-      /_middleware\.js$/,
-    ],
-  },
+const intercept = require("intercept-stdout");
+const runtimeCaching = require("./cache");
+const withPWA = require("next-pwa")({
+  dest: "public",
+  disable: process.env.NODE_ENV === "development",
+  runtimeCaching,
+});
+
+function interceptStdout(text) {
+  if (text.includes("Duplicate atom key")) {
+    return "";
+  }
+  return text;
+}
+intercept(interceptStdout);
+
+const nextConfig = withPWA({
+  output: "standalone",
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback.fs = false;
@@ -23,3 +25,5 @@ module.exports = withPWA({
     return config;
   },
 });
+
+module.exports = nextConfig;

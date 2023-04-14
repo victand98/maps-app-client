@@ -37,6 +37,7 @@ import { toast } from "react-toastify";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { TextInput } from "..";
 import { IPlace } from "./IPlace";
+import { useSession } from "next-auth/react";
 
 const MapPicker = dynamic(() => import("@components/Map/MapPicker"), {
   ssr: false,
@@ -44,10 +45,11 @@ const MapPicker = dynamic(() => import("@components/Map/MapPicker"), {
 
 export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
   const router = useRouter();
+  const { data: session } = useSession();
   const [placePreview, setPlacePreview] = useRecoilState(placePreviewState);
   const resetPlacePreviewState = useResetRecoilState(placePreviewState);
   const [showMap, setShowMap] = React.useState(false);
-  const { doRequest, loading } = useRequest<PlaceModel.PlaceResponse>({
+  const { doRequest, loading } = useRequest({
     request: PlaceService.save,
     onSuccess: (data) => {
       toast.success("Lugar guardado con éxito");
@@ -77,8 +79,12 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
 
   const onSubmit = (data: PlaceModel.PlaceValues) => {
     const { location, ...rest } = data;
-    const coordinates = location.coordinates.split(",").map(Number);
-    doRequest({ ...rest, location: { coordinates } }, placePreview.type?.name);
+    const coordinates = location.coordinates.split(",").map(Number) as any;
+    doRequest(
+      { ...rest, location: { coordinates } },
+      placePreview.type?.name as any,
+      session!
+    );
   };
 
   useEffect(() => {
@@ -255,15 +261,16 @@ export const PlaceForm: FC<IPlace.PlaceFormProps> = (props) => {
 
 export const PlaceEditForm: FC<IPlace.PlaceEditFormProps> = (props) => {
   const { placeTypes, open, onClose, currentPlace } = props;
+  const { data: session } = useSession();
   const [showMap, setShowMap] = React.useState(false);
-  const { doRequest, loading } = useRequest<PlaceModel.PlaceResponse>({
+  const { doRequest, loading } = useRequest({
     request: PlaceService.update,
     onSuccess: (data) => {
       toast.success("Lugar modificado con éxito");
       onClose();
     },
     onError: (err) => {
-      handleFormError(err, setError);
+      handleFormError(err as any, setError);
     },
   });
 
@@ -282,8 +289,12 @@ export const PlaceEditForm: FC<IPlace.PlaceEditFormProps> = (props) => {
 
   const onSubmit = (data: PlaceModel.PlaceValues) => {
     const { location, ...rest } = data;
-    const coordinates = location.coordinates.split(",").map(Number);
-    doRequest({ ...rest, location: { coordinates } }, currentPlace.id);
+    const coordinates = location.coordinates.split(",").map(Number) as any;
+    doRequest(
+      { ...rest, location: { coordinates } },
+      currentPlace.id,
+      session!
+    );
   };
 
   return (

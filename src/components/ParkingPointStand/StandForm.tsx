@@ -32,29 +32,29 @@ import {
   TimeInput,
 } from "..";
 import { IParkingPointStand } from "./ParkingPointStand";
+import { useSession } from "next-auth/react";
 
 export const NewStandForm: FC<IParkingPointStand.NewStandFormProps> = (
   props
 ) => {
   const { onClose, open, parkingPoint, defaultValue } = props;
-
+  const { data: session } = useSession();
   const { control, handleSubmit, setError } =
     useForm<ParkingPointStandModel.ParkingPointStandValues>();
-  const { doRequest, loading } =
-    useRequest<ParkingPointStandModel.ParkingPointStandResponse>({
-      request: ParkingPointStandService.save,
-      onSuccess: (data) => {
-        toast.success("Puesto agregado con éxito");
-        onClose();
-      },
-      onError: (err) => {
-        handleFormError(err, setError);
-      },
-    });
+  const { doRequest, loading } = useRequest({
+    request: ParkingPointStandService.save,
+    onSuccess: (data) => {
+      toast.success("Puesto agregado con éxito");
+      onClose();
+    },
+    onError: (err) => {
+      handleFormError(err, setError);
+    },
+  });
 
   const onSubmit = (data: ParkingPointStandModel.ParkingPointStandValues) => {
     data.parkingPoint = parkingPoint.id;
-    doRequest(data);
+    doRequest(data, session!);
   };
 
   return (
@@ -124,23 +124,22 @@ export const UpdateStandForm: FC<IParkingPointStand.UpdateStandFormProps> = (
   props
 ) => {
   const { onClose, open, currentParkingPointStand } = props;
-
+  const { data: session } = useSession();
   const { control, handleSubmit, setError } =
     useForm<ParkingPointStandModel.ParkingPointStandValues>();
-  const { doRequest, loading } =
-    useRequest<ParkingPointStandModel.ParkingPointStandResponse>({
-      request: ParkingPointStandService.update,
-      onSuccess: (data) => {
-        toast.success("Puesto modificado con éxito");
-        onClose();
-      },
-      onError: (err) => {
-        handleFormError(err, setError);
-      },
-    });
+  const { doRequest, loading } = useRequest({
+    request: ParkingPointStandService.update,
+    onSuccess: (data) => {
+      toast.success("Puesto modificado con éxito");
+      onClose();
+    },
+    onError: (err) => {
+      handleFormError(err, setError);
+    },
+  });
 
   const onSubmit = (data: ParkingPointStandModel.ParkingPointStandValues) => {
-    doRequest(data, currentParkingPointStand.id);
+    doRequest(data, currentParkingPointStand.id, session!);
   };
 
   return (
@@ -205,7 +204,7 @@ export const UpdateStandStatusForm: FC<
   IParkingPointStand.UpdateStandFormProps
 > = (props) => {
   const { onClose, open, currentParkingPointStand } = props;
-
+  const { data: session } = useSession();
   const { data: users } = useUsers();
   const {
     control,
@@ -220,17 +219,16 @@ export const UpdateStandStatusForm: FC<
       user: currentParkingPointStand.currentStandHistory?.user.id,
     },
   });
-  const { doRequest, loading } =
-    useRequest<ParkingPointStandModel.ParkingPointStandResponse>({
-      request: ParkingPointStandService.update,
-      onSuccess: (data) => {
-        toast.success("Estado modificado con éxito");
-        onClose();
-      },
-      onError: (err) => {
-        handleFormError(err, setError);
-      },
-    });
+  const { doRequest, loading } = useRequest({
+    request: ParkingPointStandService.update,
+    onSuccess: (data) => {
+      toast.success("Estado modificado con éxito");
+      onClose();
+    },
+    onError: (err) => {
+      handleFormError(err, setError);
+    },
+  });
   const selectedStatus = useWatch({
     control,
     name: "status",
@@ -262,7 +260,7 @@ export const UpdateStandStatusForm: FC<
       ? format(data.exitTime as Date, "HH:mm")
       : undefined;
     data.currentStandHistory = currentParkingPointStand.currentStandHistory?.id;
-    doRequest(data, currentParkingPointStand.id);
+    doRequest(data, currentParkingPointStand.id, session!);
   };
 
   return (
@@ -341,7 +339,7 @@ export const UpdateStandStatusForm: FC<
                     isOptionEqualToValue={(option, value) =>
                       option.value === value.value
                     }
-                    getOptionLabel={(option) => option.label}
+                    getOptionLabel={(option: any) => option.label}
                     groupBy={(option) => option.label[0].toUpperCase()}
                     renderGroup={(params) => params}
                     renderOption={(props, option) => (

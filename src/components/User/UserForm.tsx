@@ -21,8 +21,9 @@ import {
   Typography,
 } from "@mui/material";
 import { UserModel } from "@types";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { FC, useEffect, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRecoilState, useResetRecoilState } from "recoil";
@@ -31,6 +32,7 @@ import { IUser } from "./IUser";
 
 export const UserForm: FC<IUser.UserFormProps> = (props) => {
   const { roles } = props;
+  const { data: session } = useSession();
   const router = useRouter();
   const [userPreview, setUserPreview] = useRecoilState(userPreviewState);
   const resetUserPreviewState = useResetRecoilState(userPreviewState);
@@ -39,7 +41,7 @@ export const UserForm: FC<IUser.UserFormProps> = (props) => {
     [roles]
   );
 
-  const { doRequest, loading } = useRequest<UserModel.UserResponse>({
+  const { doRequest, loading } = useRequest({
     request: UserService.save,
     onSuccess: (data) => {
       toast.success("Usuario guardado con éxito");
@@ -60,7 +62,7 @@ export const UserForm: FC<IUser.UserFormProps> = (props) => {
   });
 
   const onSubmit = (data: UserModel.UserValues) => {
-    doRequest(data);
+    doRequest(data, session!);
   };
 
   useEffect(() => {
@@ -263,15 +265,15 @@ export const UserForm: FC<IUser.UserFormProps> = (props) => {
 
 export const UserEditForm: FC<IUser.UserEditFormProps> = (props) => {
   const { open, onClose, currentUser } = props;
-
-  const { doRequest, loading } = useRequest<UserModel.UserResponse>({
+  const { data: session } = useSession();
+  const { doRequest, loading } = useRequest({
     request: UserService.update,
     onSuccess: (data) => {
       toast.success("Contraseña modificada con éxito");
       onClose();
     },
     onError: (err) => {
-      handleFormError(err, setError);
+      handleFormError(err as any, setError);
     },
   });
 
@@ -285,7 +287,7 @@ export const UserEditForm: FC<IUser.UserEditFormProps> = (props) => {
   });
 
   const onSubmit = (data: UserModel.UserValues) => {
-    doRequest(data, currentUser.id);
+    doRequest(data, currentUser.id, session!);
   };
 
   return (

@@ -1,11 +1,13 @@
 import { BikewayEditForm, DashboardLayout } from "@components";
-import { Roles } from "@lib";
+import { Roles, httpClient } from "@lib";
 import { Grid, Typography } from "@mui/material";
 import { BikewayModel } from "@types";
-import { NextPageWithLayout } from "next";
+import { GetServerSidePropsContext, NextPageWithLayout } from "next";
+import { getServerSession } from "next-auth";
 import dynamic from "next/dynamic";
 import Head from "next/head";
-import React, { ReactElement } from "react";
+import { ReactElement } from "react";
+import { authOptions } from "src/pages/api/auth/[...nextauth]";
 
 const MapBikewayDrawer = dynamic(
   () => import("@components/Map/MapBikewayDrawer"),
@@ -42,16 +44,24 @@ Bikeway.getLayout = (page: ReactElement) => (
   <DashboardLayout>{page}</DashboardLayout>
 );
 
-Bikeway.getInitialProps = async (ctx) => {
-  const { id } = ctx.query;
-  const bikeway = await ctx.client.get<BikewayModel.BikewayResponse>(
-    `/bikeway/${id}`
-  );
-  return { bikeway: bikeway.data };
-};
-
 Bikeway.auth = {
   roles: [Roles.admin],
+};
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  const session = await getServerSession(ctx.req, ctx.res, authOptions);
+  const { id } = ctx.query;
+  const bikeway = await httpClient.get<BikewayModel.BikewayResponse>(
+    `/bikeway/${id}`,
+    { params: { session } }
+  );
+
+  return {
+    props: {
+      session,
+      bikeway: bikeway.data,
+    },
+  };
 };
 
 export default Bikeway;

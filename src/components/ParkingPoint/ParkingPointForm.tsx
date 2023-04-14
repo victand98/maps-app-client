@@ -1,5 +1,6 @@
 import {
   getDateFromTime,
+  getDatePlusHours,
   handleFormError,
   PlaceService,
   useRequest,
@@ -15,7 +16,8 @@ import {
 } from "@mui/material";
 import { ParkingPointModel } from "@types";
 import { format } from "date-fns";
-import React, { FC } from "react";
+import { useSession } from "next-auth/react";
+import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { TimeInput } from "..";
@@ -25,25 +27,24 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
   props
 ) => {
   const { currentParkingPoint, onClose, open } = props;
-
-  const { doRequest, loading } =
-    useRequest<ParkingPointModel.ParkingPointResponse>({
-      request: PlaceService.update,
-      onSuccess: (data) => {
-        toast.success("Punto de estacionamiento modificado con éxito");
-        onClose();
-      },
-      onError: (err) => {
-        handleFormError(err, setError);
-      },
-    });
+  const { data: session } = useSession();
+  const { doRequest, loading } = useRequest({
+    request: PlaceService.update,
+    onSuccess: (data) => {
+      toast.success("Punto de estacionamiento modificado con éxito");
+      onClose();
+    },
+    onError: (err) => {
+      handleFormError(err as any, setError);
+    },
+  });
   const { control, handleSubmit, setError } =
     useForm<ParkingPointModel.ParkingPointValues>();
 
   const onSubmit = (data: ParkingPointModel.ParkingPointValues) => {
     data.openingTime = format(data.openingTime as Date, "HH:mm");
     data.closingTime = format(data.closingTime as Date, "HH:mm");
-    doRequest(data, currentParkingPoint.id);
+    doRequest(data as any, currentParkingPoint.id, session!);
   };
 
   return (
@@ -89,7 +90,7 @@ export const ParkingPointForm: FC<IParkingPoint.ParkingPointFormProps> = (
                 defaultValue={
                   currentParkingPoint.closingTime
                     ? getDateFromTime(currentParkingPoint.closingTime)
-                    : new Date().setHours(new Date().getHours() + 2)
+                    : getDatePlusHours(new Date(), 2)
                 }
                 rules={{ required: "El campo es requerido" }}
               />

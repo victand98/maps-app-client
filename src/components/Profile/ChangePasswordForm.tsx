@@ -8,8 +8,8 @@ import {
   Divider,
   Grid,
 } from "@mui/material";
-import { UserModel } from "@types";
-import React, { FC } from "react";
+import { useSession } from "next-auth/react";
+import { FC } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { toast } from "react-toastify";
 import { TextInput } from "..";
@@ -18,7 +18,8 @@ import { IProfile } from "./IProfile";
 export const ChangePasswordForm: FC<IProfile.ChangePasswordFormProps> = (
   props
 ) => {
-  const { doRequest, loading } = useRequest<IProfile.ChangePasswordValues>({
+  const { data: session } = useSession();
+  const { doRequest, loading } = useRequest({
     request: AuthService.updatePassword,
     onSuccess: (data) => {
       toast.success("Contraseña modificado con éxito");
@@ -41,7 +42,7 @@ export const ChangePasswordForm: FC<IProfile.ChangePasswordFormProps> = (
     defaultValue: "",
   });
   const onSubmit = (data: IProfile.ChangePasswordValues) => {
-    doRequest(data);
+    doRequest(data, session!);
   };
 
   return (

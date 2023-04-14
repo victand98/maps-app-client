@@ -17,8 +17,9 @@ import {
   Typography,
 } from "@mui/material";
 import { BikewayModel } from "@types";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { FC, useEffect } from "react";
+import { FC, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useRecoilState, useResetRecoilState } from "recoil";
@@ -27,11 +28,12 @@ import { IBikeway } from "./IBikeway";
 
 export const BikewayForm = () => {
   const router = useRouter();
+  const { data: session } = useSession();
   const [bikewayCoordinates] = useRecoilState(BikewayCoordinatesState);
   const resetBikewayCoordinatesState = useResetRecoilState(
     BikewayCoordinatesState
   );
-  const { doRequest, loading } = useRequest<BikewayModel.BikewayResponse>({
+  const { doRequest, loading } = useRequest({
     request: BikewayService.save,
     onSuccess: (data) => {
       toast.success("Ruta guardado con éxito");
@@ -52,7 +54,7 @@ export const BikewayForm = () => {
       toast.warn("Es necesario que dibuje la ruta en el mapa");
       return;
     }
-    doRequest({ ...data, location: bikewayCoordinates.geometry });
+    doRequest({ ...data, location: bikewayCoordinates.geometry }, session!);
   };
 
   useEffect(() => {
@@ -200,11 +202,12 @@ export const BikewayForm = () => {
 export const BikewayEditForm: FC<IBikeway.BikewayEditFormProps> = (props) => {
   const { currentBikeway } = props;
   const router = useRouter();
+  const { data: session } = useSession();
   const [bikewayCoordinates] = useRecoilState(BikewayCoordinatesState);
   const resetBikewayCoordinatesState = useResetRecoilState(
     BikewayCoordinatesState
   );
-  const { doRequest, loading } = useRequest<BikewayModel.BikewayResponse>({
+  const { doRequest, loading } = useRequest({
     request: BikewayService.update,
     onSuccess: (data) => {
       toast.success("Ruta modificada con éxito");
@@ -213,7 +216,7 @@ export const BikewayEditForm: FC<IBikeway.BikewayEditFormProps> = (props) => {
       router.push(returnUrl);
     },
     onError: (err) => {
-      handleFormError(err, setError);
+      handleFormError(err as any, setError);
     },
   });
 
@@ -227,7 +230,8 @@ export const BikewayEditForm: FC<IBikeway.BikewayEditFormProps> = (props) => {
     }
     doRequest(
       { ...data, location: bikewayCoordinates.geometry },
-      currentBikeway.id
+      currentBikeway.id,
+      session!
     );
   };
 

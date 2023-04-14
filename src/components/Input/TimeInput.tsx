@@ -19,7 +19,7 @@ export const TimeInput = <TFormValues extends Record<string, unknown>>(
       inputRef={ref}
       ignoreInvalidInputs
       {...timePickerProps}
-      renderInput={(params) => (
+      renderInput={(params: any) => (
         <TextField
           {...params}
           {...rest}

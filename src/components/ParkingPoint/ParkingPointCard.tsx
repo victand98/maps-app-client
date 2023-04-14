@@ -24,8 +24,8 @@ import {
   SvgIcon,
   Typography,
 } from "@mui/material";
-import { PlaceModel } from "@types";
 import { formatDistance } from "date-fns";
+import { useSession } from "next-auth/react";
 import React, { FC, useState } from "react";
 import { MdUpdate } from "react-icons/md";
 import { toast } from "react-toastify";
@@ -37,9 +37,10 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
   props
 ) => {
   const { parkingPoint, placeTypes } = props;
+  const { data: session } = useSession();
   const { mutate } = useParkingPoints();
 
-  const { doRequest, loading } = useRequest<PlaceModel.PlaceResponse>({
+  const { doRequest, loading } = useRequest({
     request: PlaceService.update,
     onSuccess: (data) => {
       toast.success("Punto de estacionamiento actualizado");
@@ -73,7 +74,7 @@ export const ParkingPointCard: FC<IParkingPoint.ParkingPointCardProps> = (
   };
 
   const toggleStatus = () => {
-    doRequest({ status: !parkingPoint.status }, parkingPoint.id);
+    doRequest({ status: !parkingPoint.status }, parkingPoint.id, session!);
     handleClose();
   };
 
